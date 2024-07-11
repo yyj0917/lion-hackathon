@@ -37,7 +37,11 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'accounts',
+    'rest_framework',
 ]
+
+AUTH_USER_MODEL = 'accounts.User' #장고에게 내가 만든 커스텀 모델이 회원이 될거라고 알림
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
