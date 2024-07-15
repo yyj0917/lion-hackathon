@@ -1,8 +1,8 @@
 import styled from "styled-components";
-import './App.css';
-import Header from "./components/Header";
-import Section from "./components/Section";
-import Footer from "./components/Footer";
+import '../styles/App.css';
+import Header from "../components/Header";
+import Section from "../components/Section";
+import Footer from "../components/Footer";
 
 const Wrapper = styled.div`
   display: flex;

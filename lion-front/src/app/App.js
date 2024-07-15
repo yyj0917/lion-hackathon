@@ -1,8 +1,8 @@
-import './App.css';
+import '../styles/App.css';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import Landing from "./landing";
-import Login from "./login";
-import SignUp from "./signup";
+import Landing from "../pages/landing";
+import Login from "../pages/login";
+import SignUp from "../pages/signup";
 
 // const Wrapper = styled.div`
 //   display: flex;

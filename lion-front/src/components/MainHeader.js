@@ -1,7 +1,5 @@
 import styled from "styled-components";
-import LoginBtn from "./LoginBtn";
-import SignUpBtn from "./SignUpBtn";
-
+import { useNavigate } from "react-router-dom";
 const Wrapper = styled.header`
   border: 3px solid red;
   width: 95%;
@@ -26,15 +24,22 @@ const Center = styled.h1`
 `;
 const Right = styled.div`
   margin-left: auto;
+  img {
+    width: 50px;
+  }
 `;
 
-export default function Header() {
+export default function MainHeader() {
+    const navigate = useNavigate();
+
+    const handleClick = () => {
+        navigate('/profile');
+    }
     return (
         <Wrapper>
             <Center>ForHero</Center>
             <Right>
-                <LoginBtn></LoginBtn>
-                <SignUpBtn></SignUpBtn>
+                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSeHn-eBXuPZ7uAFLlIEKdL2bSfPcDveLnrha_Q1e1vqh2G1Q_sdwC_GyKB13qf4ZcbBpg&usqp=CAU" onClick={handleClick} alt="firefighter"></img>
             </Right>
         </Wrapper>
     )
