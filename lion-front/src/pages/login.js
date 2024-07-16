@@ -2,6 +2,7 @@ import styled from "styled-components";
 import React from 'react';
 import { useForm } from 'react-hook-form';
 import "../styles/App.css";
+import { login } from "../api/auth";
 
 
 const Wrapper = styled.div`
@@ -42,19 +43,30 @@ const Article = styled.div`
     flex-grow: 7;
 `;
 export default function Login() {
-    const { register, handleSubmit, formState: { errors } } = useForm();
+    const [username, setUsername] = useState('');
+    const [password, setPassword] = useState('');
+    const [accessToken, setAccessToken] = useState(null);
+    const [refreshToken, setRefreshToken] = useState(null);
 
-    const onSubmit = data => {
-        console.log(data);
-        // 로그인 로직을 여기에 추가하세요
+
+    const handleLogin = async () => {
+        try {
+            const response = await login(username, password);
+            setAccessToken(response.access);
+            setRefreshToken(response.refresh);
+            console.log(response);
+        } catch (error) {
+            console.error('Login failed', error);
+        }
     };
+    
     return (
         <Wrapper>
             <LoginHeader>
                 <h1>ForHero</h1>
             </LoginHeader>
             <FormWrapper>
-                <form className="loginForm" onSubmit={handleSubmit(onSubmit)}>
+                <form className="loginForm" onSubmit={handleLogin}>
                     <div className="form-group">
                         <label htmlFor="email">Email</label>
                         <input
