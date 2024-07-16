@@ -4,12 +4,15 @@ import styled from "styled-components";
 const Btn = styled.button`
     width: 120px;
     height: 60px;
-    border-radius: 40%;
+    border-radius: 10px;
     border: white;
     background-color: white;
-    font-family: "Black Han Sans", sans-serif;
+    cursor: pointer;
+    &:hover {
+        background-color: rgb(255,0,0, 0.3);
+    }
     text-align: center;
-    font-size: 18px;
+    font-size: 17px;
 `;
 
 export default function SignUpBtn() {

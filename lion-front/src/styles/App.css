@@ -1,8 +1,44 @@
-body {
-  display: flex;
-  justify-content: center;
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+@keyframes slideUp {
+  0% { transform: translateY(0); }
+  100% { transform: translateY(-100%); }
 }
 
+body {
+  display: flex;
+  flex-direction: column;
+}
+.chat-wrapper {
+  display: flex;
+  justify-content: space-around;
+  height: 80%;
+  align-items: center;
+  margin: 5px 0;
+}
+#messageBubble {
+  position: relative;
+	background: #e6b2b22a;
+	border-radius: .4em;
+  margin-left: 10px;
+  height: 50px;
+}
+#messageBubble:after {
+  content: '';
+	position: absolute;
+	left: 0;
+	top: 50%;
+	width: 0;
+	height: 0;
+	border: 20px solid transparent;
+	border-right-color: #e6b2b22a;
+	border-left: 0;
+	border-bottom: 0;
+	margin-top: -10px;
+	margin-left: -20px;
+}
 .loginForm {
   border: 3px solid red;
   flex-grow: 2;

@@ -4,14 +4,16 @@ import { useNavigate } from 'react-router-dom';
 const Btn = styled.button`
     width: 120px;
     height: 60px;
-    border-radius: 40%;
+    border-radius: 10px;
     border: white;
     background-color: white;
+    cursor: pointer;
+    &:hover {
+        background-color: rgb(255,0,0, 0.5);
+    }
     text-align: center;
     margin: 5px;
-    font-family: "Black Han Sans", sans-serif;
-    font-size: 18px;
-
+    font-size: 17px;
 `;
 
 export default function LoginBtn() {
