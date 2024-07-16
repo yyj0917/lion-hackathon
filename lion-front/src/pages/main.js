@@ -1,18 +1,22 @@
 // login이 되었을 때 page
 import styled from "styled-components";
-import './styles/App.css';
-import Section from "./components/Section";
-import Footer from "./components/Footer";
+import '../styles/App.css';
+import Section from "../components/Section";
 import MainHeader from "../components/MainHeader";
 
-const Wrapper = styled.div`
+const HeaderWrapper = styled.div`
+
+  width: 100%;
+  height: 100px;
+  border-bottom: 1px solid gray;
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  width: 1024px;
-  height: 100vh;
-  border: 3px solid black;
-  padding: 10px;
+  justify-content: center;
+  /* padding: 10px; */
+`;
+const SectionWrapper = styled.div`
+  display: flex;
+  height: calc(100vh - 100px);
+  padding: 40px 0;
 `;
 
 
@@ -21,11 +25,15 @@ function Main() {
 
 
   return (
-    <Wrapper>
-      <MainHeader/>
-      <Section/>
-      <Footer/>
-    </Wrapper>
+    <>
+      <HeaderWrapper>
+        <MainHeader/>
+      </HeaderWrapper>
+      <SectionWrapper>
+        <Section/>
+      </SectionWrapper>
+        {/* <Footer/> */}
+    </>
   );
 }
 
