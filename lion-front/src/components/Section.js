@@ -1,12 +1,11 @@
 
 import styled from "styled-components";
-import ChatBanner from "./ChatBanner";
-import Features from "./Features";
+import ChatBanner from "./messages/ChatBanner";
+import Features from "./features/Features";
 
 const Wrapper = styled.div`
     /* border: 3px solid red; */
-    width: 100%;
-    max-width: 1440px;
+    width: 1200px;
     margin: 0 auto;
     display: flex;
     justify-content: space-between;

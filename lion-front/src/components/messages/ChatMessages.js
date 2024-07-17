@@ -1,7 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import '../styles/App.css';
-// import { MessageSquare } from 'lucide-react';
+import '../../styles/App.css';
 
 const ChatMessage = styled.div`
     background-color: aliceblue;
