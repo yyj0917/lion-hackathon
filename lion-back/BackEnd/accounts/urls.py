@@ -1,8 +1,13 @@
 from django.urls import path, include
-from . import views
-from rest_framework import urls
+from .views import RegisterAPIVIew, AuthAPIView
+from rest_framework_simplejwt.views import TokenRefreshView
+from rest_framework.routers import DefaultRouter 
+
+router = DefaultRouter()
 
 urlpatterns =[
-    path('signup/', views.UserCreate.as_view()),
-    path('api-auth/', include('rest_framework.urls')),
+    path('register/', RegisterAPIVIew.as_view()),
+    path('auth/', AuthAPIView.as_view()),
+    path('auth/refresh/', TokenRefreshView.as_view()),
+    path("", include(router.urls))
  ]
