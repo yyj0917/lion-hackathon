@@ -1,49 +1,33 @@
 import styled from "styled-components";
-import React from 'react';
-import { useForm } from 'react-hook-form';
+import React, { useState } from 'react';
 import "../styles/App.css";
 import { login } from "../api/auth";
 
 
 const Wrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  width: 1024px;
-  height: 100vh;
-  border: 3px solid black;
-  padding: 10px;
-`;
-const LoginHeader = styled.div`
-    width: 95%;
-    height: 15%;
-    border: 3px solid red;
-    margin-bottom: 20px;
-    margin-top: 20px;
-    h1 {
-        text-align: center;
-        font-size: 50px;
-        font-family: "Black Han Sans", sans-serif;
-        font-weight: 400;
-        font-style: normal;
-        color: red;
-    };
-`;
-const FormWrapper = styled.div`
-    width: 95%;
-    height: 75%;
-    border: 3px solid red;
     display: flex;
-    padding: 10px;
+    height: calc(100vh - 100px - 40px);
+    padding: 20px 0;
+`;
+
+const FormWrapper = styled.div`
+    width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
 `;
 const Article = styled.div`
+    position: relative; 
     padding: 20px;
     margin: 5px;
-    border: 3px solid red;
     flex-grow: 7;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    border-radius: 8px;
+    background-color: rgba(249, 249, 249, 0.2); /* 배경색 투명도 설정 */
+    overflow: hidden;
 `;
 export default function Login() {
-    const [username, setUsername] = useState('');
+    const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [accessToken, setAccessToken] = useState(null);
     const [refreshToken, setRefreshToken] = useState(null);
@@ -51,7 +35,7 @@ export default function Login() {
 
     const handleLogin = async () => {
         try {
-            const response = await login(username, password);
+            const response = await login(email, password);
             setAccessToken(response.access);
             setRefreshToken(response.refresh);
             console.log(response);
@@ -62,35 +46,55 @@ export default function Login() {
     
     return (
         <Wrapper>
-            <LoginHeader>
-                <h1>ForHero</h1>
-            </LoginHeader>
             <FormWrapper>
-                <form className="loginForm" onSubmit={handleLogin}>
-                    <div className="form-group">
-                        <label htmlFor="email">Email</label>
-                        <input
-                            id="email"
-                            type="email"
-                            {...register('email', { required: 'Email is required' })}
-                        />
-                        {errors.email && <p>{errors.email.message}</p>}
-                    </div>
-                    <div className="form-group">
-                        <label htmlFor="password">Password</label>
-                        <input
-                            id="password"
-                            type="password"
-                            {...register('password', { required: 'Password is required' })}
-                        />
-                        {errors.password && <p>{errors.password.message}</p>}
-                    </div>
-                    <button className="btn" type="submit">Login</button>
-                </form>
-                <Article>
-                    <h1>text header</h1>
-                    <p>text</p>
-                </Article>
+                    <form className="loginForm" onSubmit={handleLogin}>
+                        <div className="form-group">
+                            <label htmlFor="email">Email</label>
+                            <input
+                                id="email"
+                                type="email"
+                                onChange={(e) => setEmail(e.target.value)}
+                            />
+                        </div>
+                        <div className="form-group">
+                            <label htmlFor="password">Password</label>
+                            <input
+                                id="password"
+                                type="password"
+                                onChange={(e) => setPassword(e.target.value)}
+
+                            />
+                        </div>
+                        <div className="btn-group">
+                            <button className="btn" type="submit">로그인</button>
+                            <button className="btn" >회원가입</button>
+                        </div>
+                    </form>
+                    <Article className="poem-container">
+                        <div className="poem-header">소방관의 기도</div>
+                        <div className="poem-content">
+                            신이시여, <br />
+                            제가 부름을 받을 때에는 <br />
+                            아무리 강렬한 화염 속에서도 <br />
+                            한 생명을 구할 수 있는 힘을 저에게 주소서.<br />
+                            너무 늦기 전에 <br />
+                            어린아이를 감싸 안을 수 있게 하시고 <br />
+                            공포에 떠는 노인을 구하게 하소서.<br />
+                            <br />
+                            저에게는 언제나 안전을 기할 수 있게 하시어 <br />
+                            가냘픈 외침까지도 들을 수 있게 하시고, <br />
+                            빠르고 효율적으로 화재를 진압하게 하소서.<br />
+                            <br />
+                            저의 임무를 충실히 수행케 하시고 <br />
+                            제가 최선을 다할 수 있게 하시어, <br />
+                            이웃의 생명과 재산을 보호하게 하소서.<br />
+                            <br />
+                            그리고 당신의 뜻에 따라 <br />
+                            제 목숨이 다하게 되거든, <br />
+                            부디 은총의 손길로 <br />
+                            제 아내와 아이들을 돌보아주소서.
+                        </div>
+                    </Article>
             </FormWrapper>
         </Wrapper>
     )
