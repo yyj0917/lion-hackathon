@@ -1,20 +1,19 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import styled from "styled-components";
 import ChatMessages from "./ChatMessages";
-import '../styles/App.css';
+import '../../styles/App.css';
 import { UsersRound } from "lucide-react";
 
 const Wrapper = styled.div`
     /* padding: 10px; */
-    width: 40%;
+    flex-grow: 1;
+    margin-right: 5px;
     position: relative;
-    max-height: 740px;
     border-radius: 10px;
     overflow: hidden;
-    border: 1px solid gray;
+    box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.1);
     display: flex;
     flex-direction: column;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 
 `;
 const BannerHeader = styled.div`
@@ -40,23 +39,11 @@ const allMessages = [
     { message: 'Message 2', timestamp: '10:01 AM' },
     { message: 'Message 3', timestamp: '10:02 AM' },
     { message: 'Message 4', timestamp: '10:03 AM' },
-    { message: 'Message 5', timestamp: '10:04 AM' },
-    { message: 'Message 6', timestamp: '10:05 AM' },
-    { message: 'Message 7', timestamp: '10:06 AM' },
-    { message: 'Message 8', timestamp: '10:07 AM' },
 ];
 export default function Banner() {
     const [visibleMessages, setVisibleMessages] = useState(allMessages.slice(0, 4));
-    const [startIndex, setStartIndex] = useState(0);
-    
-    useEffect(() => {
-        const interval = setInterval(() => {
-            setStartIndex(prevIndex => (prevIndex + 1) % allMessages.length);
-            setVisibleMessages(allMessages.slice(startIndex, startIndex + 4));
-        }, 3000); // Change message every 3 seconds
+    // const [startIndex, setStartIndex] = useState(0);
 
-        return () => clearInterval(interval);
-    }, [startIndex]);
 
 
     return (
