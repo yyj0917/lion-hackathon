@@ -10,8 +10,7 @@ from rest_framework.permissions import IsAuthenticated
 from .models import User
 import jwt
 
-# 회원가입
-class RegisterAPIVIew(APIView):
+class RegisterAPIView(APIView):
     def post(self, request):
         serializer = UserSerializer(data=request.data)
         if serializer.is_valid():
