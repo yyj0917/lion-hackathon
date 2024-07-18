@@ -24,5 +24,6 @@ urlpatterns = [
     path('user/', include('accounts.urls')),
     path('posts/', include('posts.urls')),
     path('message/', include('message.urls')),
+    path('diary/', include('diary.urls')),
     path('', TemplateView.as_view(template_name='index.html')),
  ]
