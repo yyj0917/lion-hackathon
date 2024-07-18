@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
 
+#헬퍼 클래스
 class UserManager(BaseUserManager):
     # 일반 user 생성
     def create_user(self, email, password, **kwargs):
