@@ -1,5 +1,6 @@
 from django.urls import path, include
 from .views import RegisterAPIView, AuthAPIView
+
 from rest_framework_simplejwt.views import TokenRefreshView
 from rest_framework.routers import DefaultRouter 
 
