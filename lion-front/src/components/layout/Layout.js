@@ -5,7 +5,7 @@ import MainHeader from './MainHeader';
 const HeaderWrapper = styled.div`
   
   width: 100%;
-  height: 100px;
+  height: 80px;
   border-bottom: 1px solid gray;
   display: flex;
   justify-content: center;
