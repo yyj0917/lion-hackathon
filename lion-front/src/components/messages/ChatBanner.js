@@ -1,17 +1,18 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import styled from "styled-components";
 import ChatMessages from "./ChatMessages";
 import '../../styles/App.css';
-import { UsersRound } from "lucide-react";
+import fetchMessages from "../../api/message";
 
 const Wrapper = styled.div`
     /* padding: 10px; */
-    flex-grow: 1;
+    width: 30%;
     margin-right: 5px;
     position: relative;
-    border-radius: 10px;
+    border-radius: 50px;
     overflow: hidden;
     box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.1);
+    border: 5px solid black;
     display: flex;
     flex-direction: column;
 
@@ -20,31 +21,68 @@ const BannerHeader = styled.div`
     padding-top: 5px;
     font-size: 18px;
     font-weight: 700;
-    text-align: center;
+    height: 50px;
+    background-color: #0078ff;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-top-left-radius: 36px;
+    border-top-right-radius: 36px;
 `;
 const BannerMessages = styled.div`
     display: flex;
     flex-direction: column;
-    justify-content: space-around;
-    flex-grow: 1;
+    justify-content: center;
+    /* flex-grow: 1; */
     overflow: hidden;
-    background-color: #fff;
     border-radius: 5px;
     padding: 10px;
     position: relative;
-
+    flex: 1;
+    background: #dfe9f3;
+    overflow-y: auto;
+    height: 100%;
+`;
+const BannerFooter = styled.div`
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #ffffff;
+    border-bottom-left-radius: 36px;
+    border-bottom-right-radius: 36px;
+    input {
+        width: 80%;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 20px;
+        outline: none;
+    }
 `;
 const allMessages = [
-    { message: 'Message 1', timestamp: '10:00 AM' },
-    { message: 'Message 2', timestamp: '10:01 AM' },
-    { message: 'Message 3', timestamp: '10:02 AM' },
-    { message: 'Message 4', timestamp: '10:03 AM' },
+    { message: 'Message 1', writer: '익명' },
+    { message: 'Message 2', writer: '익명' },
+    { message: 'Message 3', writer: '서울시 동작구 준혁맘' },
+    { message: 'Message 4', writer: '영주시 초등학생' },
 ];
 export default function Banner() {
     const [visibleMessages, setVisibleMessages] = useState(allMessages.slice(0, 4));
     // const [startIndex, setStartIndex] = useState(0);
-
-
+    // const fetchMsg = async () => {
+    //     try {
+    //         const response = await fetchMessages();
+    //         console.log('Diary entry Read:', response);
+    //         setVisibleMessages(response);
+    //       } catch (error) {
+    //         console.error('Error creating diary entry:', error);
+    //       }
+    //     }
+    // useEffect(() => {
+    //     fetchMsg();
+    // }, []);
+    
+    // 어떤 식으로 많은 메세지들을 보여줄지 생각. 
 
     return (
         <Wrapper>
@@ -52,11 +90,13 @@ export default function Banner() {
             <BannerMessages>
                 {visibleMessages.map((msg, index) => (
                         <div className="chat-wrapper">
-                            <UsersRound size={36}/>
-                            <ChatMessages key={index} message={msg.message} timestamp={msg.timestamp} />
+                            <ChatMessages key={index} message={msg.message} writer={msg.writer} />
                         </div>
                     ))}   
             </BannerMessages>
+            <BannerFooter>
+                <input type="text" placeholder="메시지를 입력하세요..."></input>
+            </BannerFooter>
         </Wrapper>
     );
 }

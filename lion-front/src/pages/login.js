@@ -1,7 +1,9 @@
 import styled from "styled-components";
 import React, { useState } from 'react';
 import "../styles/App.css";
-import { login } from "../api/auth";
+import { loginApi } from "../api/auth";
+import { useAuth } from "../contexts/AuthContext";
+import { useNavigate } from "react-router-dom";
 
 
 const Wrapper = styled.div`
@@ -20,24 +22,23 @@ const Article = styled.div`
     position: relative; 
     padding: 20px;
     margin: 5px;
-    flex-grow: 7;
+    flex-grow: 15;
     box-shadow: 0 4px 8px rgba(0,0,0,0.1);
     border-radius: 8px;
     background-color: rgba(249, 249, 249, 0.2); /* 배경색 투명도 설정 */
     overflow: hidden;
 `;
 export default function Login() {
+    const { login } = useAuth();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [accessToken, setAccessToken] = useState(null);
-    const [refreshToken, setRefreshToken] = useState(null);
+    const navigate = useNavigate();
 
 
     const handleLogin = async () => {
         try {
-            const response = await login(email, password);
-            setAccessToken(response.access);
-            setRefreshToken(response.refresh);
+            const response = await loginApi(email, password);
+            login(response.access, response.refresh);
             console.log(response);
         } catch (error) {
             console.error('Login failed', error);
@@ -67,7 +68,7 @@ export default function Login() {
                         </div>
                         <div className="btn-group">
                             <button className="btn" type="submit">로그인</button>
-                            <button className="btn" >회원가입</button>
+                            <button onClick={()=>{navigate('/signup')}} className="btn" >회원가입</button>
                         </div>
                     </form>
                     <Article className="poem-container">

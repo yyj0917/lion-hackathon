@@ -33,10 +33,9 @@ const Select = styled.div`
   align-items: center;
 `;
 const LogoText = styled.h1`
-  font-family: "Nanum Pen Script", cursive;
-  font-size: 48px;
-  font-weight: bold;
-  color: red; /* 로고 텍스트 색상 */
+  font-size: 24px;
+  font-weight: 500;
+  color: #282828; /* 로고 텍스트 색상 */
   margin: 0;
   padding: 0;
   text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2); /* 텍스트 그림자 효과 */
