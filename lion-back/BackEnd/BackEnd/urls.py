@@ -17,6 +17,8 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from django.views.generic import TemplateView
+from accounts.views import RegisterAPIView, LogInAPIView, LogOutView  # 필요한 뷰 임포트
+from rest_framework_simplejwt.views import TokenRefreshView
 
 
 urlpatterns = [
@@ -26,4 +28,10 @@ urlpatterns = [
     path('message/', include('message.urls')),
     path('diary/', include('diary.urls')),
     path('', TemplateView.as_view(template_name='index.html')),
+    
+    path('register/', RegisterAPIView.as_view(), name='register'),
+    path('auth/LogIn', LogInAPIView.as_view(), name='login'),
+    path('auth/LogOut', LogOutView.as_view(), name='logout'),
+    path('auth/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
+
  ]

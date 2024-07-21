@@ -1,7 +1,9 @@
 // src/components/Tabs.js
 import React from 'react';
 import styled from 'styled-components';
-import Diary from '../diary/Diary';
+import Diary from '../diary/PublicDiary';
+import PublicDiary from '../diary/PublicDiary';
+import PrivateDiary from '../diary/PrivateDiary';
 
 const TabContainer = styled.div`
   display: flex;
@@ -58,8 +60,8 @@ const ActiveTabIndicator = styled.div`
 
 const TabContent = styled.div`
   width: 80%;
-  height: 80%;
-  margin-top: 20px;
+  height: 95%;
+  margin: auto;
   overflow: hidden;
   display: flex;
   flex-direction: column;
@@ -93,8 +95,8 @@ const Tabs = () => {
         <TabLabel htmlFor="tab2">개인 일기</TabLabel>
       </TabContainer>
       <TabContent>
-        {activeIndex === 0 && <Diary/>}
-        {activeIndex === 1 && <div>동료 매칭 상담</div>}
+        {activeIndex === 0 && <PublicDiary/>}
+        {activeIndex === 1 && <PrivateDiary/>}
       </TabContent>
     </>
   );

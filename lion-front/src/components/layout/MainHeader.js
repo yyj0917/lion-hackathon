@@ -3,6 +3,7 @@ import styled from "styled-components";
 import LoginBtn from "../button/LoginBtn";
 import SignUpBtn from "../button/SignUpBtn";
 import { useNavigate } from "react-router-dom";
+import redlogo from "../../assets/redlogo.png";
 const Wrapper = styled.header`
   display: flex;
   flex-direction: row;
@@ -11,8 +12,8 @@ const Wrapper = styled.header`
   width: 1200px;
   margin-left: 5px;
   img {
-    width: auto;
-    height: 90px;
+    width: 70px;
+    height: 55px;
     cursor: pointer;
   }
   z-index: 1;
@@ -34,8 +35,8 @@ const Select = styled.div`
 `;
 const LogoText = styled.h1`
   font-size: 24px;
-  font-weight: 500;
-  color: #282828; /* 로고 텍스트 색상 */
+  font-weight: 800;
+  color: #F06E6E; /* 로고 텍스트 색상 */
   margin: 0;
   padding: 0;
   text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2); /* 텍스트 그림자 효과 */
@@ -50,9 +51,17 @@ export default function MainHeader() {
     }
     return (
         <Wrapper>
-            {/* <img src={fireheroLogo} alt="logo" onClick={handleClick}></img> */}
-            <LogoText onClick={handleClick}>ForHero</LogoText>
-          
+            <div style={{
+                display: 'flex',
+                alignItems: 'center',
+                cursor: 'pointer',
+                gap: '5px',
+            }}>
+
+              <img src={redlogo} alt="logo" onClick={handleClick}></img>
+              <LogoText onClick={handleClick}>FORHERO</LogoText>
+            
+            </div>
             <Auth>
               <LoginBtn/>
               <SignUpBtn/>

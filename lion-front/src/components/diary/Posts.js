@@ -43,20 +43,27 @@ const PostWrapper = styled.div`
     border-radius: 10px;
     position: relative;
     box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.1);
-    display: flex;
-    flex-direction: column;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
     overflow-y: auto;
-    border-bottom: 1px solid #e3e3e3;
+    box-sizing: border-box;
+    padding: 20px;
+
 
 `;
 const Post = styled.div`
     &:hover {
         background-color: #f9f9f9;
     }
+    width: 100%;
     padding: 20px;
     margin-bottom: -1px;
     box-sizing: border-box;
-    border: 1px solid #e3e3e3;
+    border-radius: 20px;
+
+    box-shadow: 0px 0px 5px 0px rgba(0,0,0,0.1);
+
     background-color: #fff;
     border-width: 1px 0;
     a {
@@ -67,6 +74,10 @@ const Post = styled.div`
 `;
 const Desc = styled.div`
     overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100%;
     h2 {
         line-height: 20px;
         white-space: nowrap;
@@ -118,8 +129,10 @@ export default function Posts() {
                     <Post key={post.id} className="post">
                         <Link>
                             <Desc>
-                                <h2>{post.title}</h2>
-                                <p>{post.body}</p>
+                                <div>
+                                    <h2>{post.title}</h2>
+                                    <p>{post.body}</p>
+                                </div>
                                 <div className="info">
                                     <span>❤️ {post.likes}</span>
                                     <span>💬 {post.comments}</span>
