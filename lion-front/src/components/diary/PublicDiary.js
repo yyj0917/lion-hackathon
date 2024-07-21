@@ -54,7 +54,7 @@ const Write = styled.button`
         
     }
 `;
-export default function Diary() {
+export default function PublicDiary() {
     const [modal, setModal] = useState(true);
 
     return (
