@@ -22,3 +22,6 @@ Back-end  : 변호영, 이석원, 정세진, 김지민
 7/17 윤영준 main, login 디자인 수정
 
 7/19 변호영 BE diary 앱 생성, 전체 앱 admin.py 수정
+
+7/21 윤영준 FE matching view 수정
+
