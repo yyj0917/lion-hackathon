@@ -8,4 +8,5 @@ class Diary(models.Model):
     date = models.DateField()
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-    # sentiment = models.FloatField() # 추후 감정분석 결과값 저장할 예정
+    sentiment = models.TextField(blank=True) # 감정분석 결과
+    confidence = models.FloatField(blank=True, null=True) # 감정에 대한 신뢰도
