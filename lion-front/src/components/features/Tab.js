@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import Diary from '../diary/PublicDiary';
 import PublicDiary from '../diary/PublicDiary';
 import PrivateDiary from '../diary/PrivateDiary';
+import Matching from '../matching/Matching';
 
 const TabContainer = styled.div`
   display: flex;
@@ -60,13 +61,12 @@ const ActiveTabIndicator = styled.div`
 
 const TabContent = styled.div`
   width: 80%;
-  height: 95%;
+  height: 80%;
   margin: auto;
   overflow: hidden;
   display: flex;
   flex-direction: column;
   position: relative;
-  /* flex: 1; */
 `;
 
 const Tabs = () => {
@@ -92,11 +92,11 @@ const Tabs = () => {
           checked={activeIndex === 1}
           onChange={() => setActiveIndex(1)}
         />
-        <TabLabel htmlFor="tab2">개인 일기</TabLabel>
+        <TabLabel htmlFor="tab2">동료 매칭</TabLabel>
       </TabContainer>
       <TabContent>
         {activeIndex === 0 && <PublicDiary/>}
-        {activeIndex === 1 && <PrivateDiary/>}
+        {activeIndex === 1 && <Matching/>}
       </TabContent>
     </>
   );

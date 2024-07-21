@@ -37,19 +37,23 @@ import { ReadPostsApi } from "../../api/diary";
 // export default Diary;
 const PostWrapper = styled.div`
     flex: 1;
-
+    height: 100%;
     width: 100%;
     /* margin-right: 5px; */
     border-radius: 10px;
     position: relative;
     box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.1);
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(2, 1fr); /* 처음에 4개의 요소가 꽉 차게 */
+    grid-auto-rows: minmax(150px, auto); /* 각 행의 높이 */
+
     gap: 20px;
     overflow-y: auto;
     box-sizing: border-box;
     padding: 20px;
-
+    @media (max-width: 600px) {
+    grid-template-columns: 1fr; /* 화면이 좁아지면 1열 */
+    }
 
 `;
 const Post = styled.div`
