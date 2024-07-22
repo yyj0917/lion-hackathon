@@ -1,6 +1,10 @@
 // src/components/Tabs.js
 import React from 'react';
 import styled from 'styled-components';
+import Diary from '../diary/PublicDiary';
+import PublicDiary from '../diary/PublicDiary';
+import PrivateDiary from '../diary/PrivateDiary';
+import Matching from '../matching/Matching';
 
 const TabContainer = styled.div`
   display: flex;
@@ -56,7 +60,13 @@ const ActiveTabIndicator = styled.div`
 `;
 
 const TabContent = styled.div`
-  margin-top: 20px;
+  width: 80%;
+  height: 80%;
+  margin: auto;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  position: relative;
 `;
 
 const Tabs = () => {
@@ -72,7 +82,7 @@ const Tabs = () => {
           checked={activeIndex === 0}
           onChange={() => setActiveIndex(0)}
         />
-        <TabLabel htmlFor="tab1">나의 하루 기록</TabLabel>
+        <TabLabel htmlFor="tab1">공유 일기</TabLabel>
         <ActiveTabIndicator style={{ left: `calc(${activeIndex * 100}% / 2)` }} />
 
         <RadioInput
@@ -82,11 +92,11 @@ const Tabs = () => {
           checked={activeIndex === 1}
           onChange={() => setActiveIndex(1)}
         />
-        <TabLabel htmlFor="tab2">동료 매칭 상담</TabLabel>
+        <TabLabel htmlFor="tab2">동료 매칭</TabLabel>
       </TabContainer>
       <TabContent>
-        {activeIndex === 0 && <div>나의 하루 기록</div>}
-        {activeIndex === 1 && <div>동료 매칭 상담</div>}
+        {activeIndex === 0 && <PublicDiary/>}
+        {activeIndex === 1 && <Matching/>}
       </TabContent>
     </>
   );

@@ -11,6 +11,8 @@ body {
   display: flex;
   flex-direction: column;
   height: 100vh;
+  box-sizing: border-box;
+  margin: 0;
 }
 
 /* ChatBanner && ChatMessage */
@@ -24,12 +26,12 @@ body {
 }
 #messageBubble {
   position: relative;
-	background: #e6b2b22a;
+	background: white;
 	border-radius: .4em;
   margin-left: 10px;
   height: 50px;
 }
-#messageBubble:after {
+/* #messageBubble:after {
   content: '';
 	position: absolute;
 	left: 0;
@@ -42,11 +44,11 @@ body {
 	border-bottom: 0;
 	margin-top: -10px;
 	margin-left: -20px;
-}
+} */
 
 /* LoginForm */
 .loginForm {
-  flex-grow: 2;
+  flex-grow: 1;
   margin: 5px;
   display: flex;
   flex-direction: column;
@@ -168,14 +170,17 @@ input {
 }
 .movingBar {
   position: absolute;
-    top: -1px;
-    left: 0;
-    margin: auto;
-    width: 33.33%;
-    height: 52px;
-    border-radius: 50px;
-    background: #2e84f5;
-    box-shadow: 4px 8px 12px 0px rgba(46, 132, 245, 0.25);
-    z-index: 1;
-    transition: 0.25s ease-out;
+  top: -1px;
+  left: 0;
+  margin: auto;
+  width: 33.33%;
+  height: 52px;
+  border-radius: 50px;
+  background: #2e84f5;
+  box-shadow: 4px 8px 12px 0px rgba(46, 132, 245, 0.25);
+  z-index: 1;
+  transition: 0.25s ease-out;
 }
+
+/* Posts */
+

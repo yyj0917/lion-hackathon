@@ -43,9 +43,21 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
+    'corsheaders',
+
+
+    # accounts
     'rest_framework_simplejwt',
     'accounts',
-    'posts'
+
+    # post
+    'posts',
+
+    # message
+    'message',
+
+    # diary
+    'diary',
 ]
 
 AUTH_USER_MODEL = 'accounts.User' #장고에게 내가 만든 커스텀 모델이 회원이 될거라고 알림
@@ -100,6 +112,11 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
+    'django.middleware.common.CommonMiddleware',
+]
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:3000",  # React 앱의 주소
 ]
 
 ROOT_URLCONF = 'BackEnd.urls'

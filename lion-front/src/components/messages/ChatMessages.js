@@ -3,12 +3,13 @@ import styled from 'styled-components';
 import '../../styles/App.css';
 
 const ChatMessage = styled.div`
-    background-color: aliceblue;
+    background-color: white;
     padding: 10px;
     border-radius: 5px;
     display: flex;
-    justify-content: space-between;
-    align-items: center;
+    flex-direction: column;
+    justify-content: start;
+    align-items: start;
     opacity: 0;
     animation: fadeIn 1s ease-in-out forwards;
     height: 10%;
@@ -17,16 +18,18 @@ const ChatMessage = styled.div`
 const ChatMessageContent = styled.div`
     flex-grow: 1;
 `;
-const ChatMessageTimestamp = styled.div`
-    margin-left: 10px;
+const ChatMessageWriter = styled.div`
+    position: absolute;
+    right: 10px;
+    bottom: 10px;
     font-size: 0.8em;
     color: #888;
 `;
-const ChatMessages = ({ message, timestamp }) => {
+const ChatMessages = ({ message, writer }) => {
     return (
         <ChatMessage id='messageBubble'>
             <ChatMessageContent>{message}</ChatMessageContent>
-            <ChatMessageTimestamp>{timestamp}</ChatMessageTimestamp>
+            <ChatMessageWriter>{writer}</ChatMessageWriter>
         </ChatMessage>
     );
 };
