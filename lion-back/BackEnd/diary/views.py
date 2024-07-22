@@ -10,6 +10,7 @@ from .sentiment_analysis import sentimentAnalysis
 
 # Blog의 목록, detail 보여주기, 수정하기, 삭제하기 모두 가능
 class DiaryViewSet(viewsets.ModelViewSet):
+
     queryset = Diary.objects.all()
     serializer_class = DiarySerializer
 
@@ -31,19 +32,22 @@ class DiaryViewSet(viewsets.ModelViewSet):
         return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
     
 
-    # def update(self, request, *args, **kwargs): # 일기 수정 시에도 감정분석 결과 변동될 수 있도록 구현할 예정
+    # update 메서드 오버라이드
+    def update(self, request, *args, **kwargs):
 
-    #     serializer = self.get_serializer(data=request.data)
-    #     serializer.is_valid(raise_exception=True)
-    #     diary = serializer.save()
+        partial = kwargs.pop('partial', False) # 부분 업데이트 or 전체업데이트를 결정
+        instance = self.get_object() # url에 지정된 인스턴스 가져옴
+        serializer = self.get_serializer(instance, data=request.data, partial=partial)
+        serializer.is_valid(raise_exception=True)
+        diary = serializer.save()
         
-    #     # 감성 분석 수행 및 결과 저장
-    #     sentiment, confidence = sentimentAnalysis(diary.body)
+        # 감성 분석 수행 및 결과 저장
+        sentiment, confidence = sentimentAnalysis(diary.body)
+        diary.sentiment = sentiment
+        diary.confidence = confidence
+        diary.save()
+        
+        if getattr(instance, '_prefetched_objects_cache', None):
+            instance._prefetched_objects_cache = {}
 
-    #     diary.sentiment = sentiment
-    #     diary.confidence = confidence
-    #     diary.save()
-        
-    #     headers = self.get_success_headers(serializer.data)
-    #     return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
-        
+        return Response(serializer.data)
