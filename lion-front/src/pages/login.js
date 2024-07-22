@@ -2,7 +2,7 @@ import styled from "styled-components";
 import React, { useState } from 'react';
 import "../styles/App.css";
 import { loginApi } from "../api/auth";
-import { useAuth } from "../contexts/AuthContext";
+// import { useAuth } from "../contexts/AuthContext";
 import { useNavigate } from "react-router-dom";
 
 
@@ -29,7 +29,6 @@ const Article = styled.div`
     overflow: hidden;
 `;
 export default function Login() {
-    const { login } = useAuth();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const navigate = useNavigate();
@@ -38,7 +37,7 @@ export default function Login() {
     const handleLogin = async () => {
         try {
             const response = await loginApi(email, password);
-            login(response.access, response.refresh);
+        
             console.log(response);
         } catch (error) {
             console.error('Login failed', error);
@@ -55,6 +54,7 @@ export default function Login() {
                                 id="email"
                                 type="email"
                                 onChange={(e) => setEmail(e.target.value)}
+                                required
                             />
                         </div>
                         <div className="form-group">
@@ -63,7 +63,7 @@ export default function Login() {
                                 id="password"
                                 type="password"
                                 onChange={(e) => setPassword(e.target.value)}
-
+                                required
                             />
                         </div>
                         <div className="btn-group">
