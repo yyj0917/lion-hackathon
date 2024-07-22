@@ -93,7 +93,12 @@ body {
   font-size: 20px;
   font-weight: 600;
   font-style: normal;
-  color: rgb(91, 84, 84)
+  color: rgb(91, 84, 84);
+  cursor: pointer;
+  
+}
+.btn:hover {
+  background-color: rgb(245, 235, 235);
 }
 
 /* Article poem */

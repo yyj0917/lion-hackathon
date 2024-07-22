@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 // 인증 관련 API 호출을 담당하는 모듈입니다.
-const API_URL = 'http://localhost:8000/api/auth/';
+const API_URL = 'http://localhost:8000/auth/';
 // 로그인 API 호출
 export const loginApi = async (email, password) => {
     try {
