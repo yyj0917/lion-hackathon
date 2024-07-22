@@ -1,10 +1,11 @@
 from django.db import models
+# from ..accounts.models import User
 from django.conf import settings
 
 class Diary(models.Model):
     title = models.CharField(max_length=100)
-    # writer = models.CharField(max_length=30) # 추후 로그인된 User와 연동해서 기록 예정
     body = models.TextField()
+    # user = models.ForeignKey(User, null=True, blank=True, on_delete=models.CASCADE) # User 완성된 후 구현할 예정
     date = models.DateField()
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
