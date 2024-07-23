@@ -12,7 +12,7 @@ import jwt
 from django.http import HttpResponseRedirect
 from rest_framework.permissions import AllowAny
 from allauth.account.models import EmailConfirmation, EmailConfirmationHMAC
-from ..BackEnd import settings 
+from BackEnd import settings 
 
 class RegisterAPIView(APIView):
     def post(self, request):
