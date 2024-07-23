@@ -10,7 +10,7 @@ from dj_rest_auth.registration.views import VerifyEmailView
 router = DefaultRouter()
 
 urlpatterns =[
-    path('/register/', RegisterAPIView.as_view()),
+    path('register/', RegisterAPIView.as_view()),
     path('auth/login/', LogInAPIView.as_view()),
     path('auth/logout/', LogOutView.as_view()),
     path('auth/refresh/', TokenRefreshView.as_view()),
