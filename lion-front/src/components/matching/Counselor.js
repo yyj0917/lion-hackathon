@@ -1,8 +1,6 @@
 // Counselor.js
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
-import { WritePostApi } from '../../api/diary';
 import { WriteCounselorApi } from '../../api/matching';
 const Wrapper = styled.div`
     width: 100%;
@@ -96,7 +94,7 @@ const AlertBox = styled.div`
 function Counselor() {
     const [formWrite, setFormWrite] = useState(false);
     const [name, setName] = useState('');
-    const [age, setAge] = useState();
+    const [age, setAge] = useState(null);
     const [workIn, setWorkIn] = useState('');
     const [purpose, setPurpose] = useState('');
     const [openlink, setOpenlink] = useState('');
@@ -136,7 +134,7 @@ function Counselor() {
                         <p>2. 우리 서비스의 신청 페이지로 이동합니다.</p>
                         <p>3. 복사한 오픈채팅방 링크를 신청 폼에 붙여넣고 제출합니다.</p>
                     </AlertBox>
-                    <Btn onClick={() => setFormWrite(true)}>상담사 요청</Btn>
+                    <Btn onClick={() => setFormWrite(true)}>상담사 신청</Btn>
                 </>
             ) : (
                 <Wrapper>
@@ -149,7 +147,7 @@ function Counselor() {
                             onChange={(e) => setName(e.target.value)}
                             required/>
                         <input
-                            type='text'
+                            type='integer'
                             placeholder='나이'
                             value={age}
                             onChange={(e) => setAge(e.target.value)}

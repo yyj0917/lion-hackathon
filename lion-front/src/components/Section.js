@@ -1,7 +1,7 @@
 
 import styled from "styled-components";
 import ChatBanner from "./messages/ChatBanner";
-import Features from "./features/Features";
+import { Outlet } from "react-router-dom";
 
 const Wrapper = styled.div`
     /* border: 3px solid red; */
@@ -17,8 +17,7 @@ export default function Section() {
     return (
         <Wrapper>
             <ChatBanner/>
-            <Features/>
+            <Outlet/>
         </Wrapper>
-        
     )
 }
