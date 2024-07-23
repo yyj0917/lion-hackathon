@@ -87,7 +87,6 @@ export default function Banner() {
     const fetchMessages = async () => {
       try {
         const response = await fetchMessagesApi();
-        console.log(response);
         setMessages(response);
       } catch (error) {
         console.error('Error fetching diary entries:', error);
@@ -112,8 +111,8 @@ export default function Banner() {
             <BannerHeader>응원의 메세지</BannerHeader>
             <BannerMessages>
                 {currentMessages.map((msg, index) => (
-                        <div className="chat-wrapper">
-                            <ChatMessages key={index} content={msg.content} writer={msg.writer} />
+                        <div key={index}  className="chat-wrapper">
+                            <ChatMessages content={msg.content} writer={msg.writer} />
                         </div>
                     ))}   
             </BannerMessages>

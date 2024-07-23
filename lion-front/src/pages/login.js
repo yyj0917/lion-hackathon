@@ -34,11 +34,14 @@ export default function Login() {
     const navigate = useNavigate();
 
 
-    const handleLogin = async () => {
+    const handleLogin = async (event) => {
+        event.preventDefault();
         try {
             const response = await loginApi(email, password);
-        
+            localStorage.setItem('accessToken', response.token.access);
+            localStorage.setItem('refreshToken', response.token.refresh);
             console.log(response);
+            navigate('/');
         } catch (error) {
             console.error('Login failed', error);
         }

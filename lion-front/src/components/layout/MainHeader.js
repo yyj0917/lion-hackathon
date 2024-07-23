@@ -5,6 +5,8 @@ import SignUpBtn from "../button/SignUpBtn";
 import { useNavigate } from "react-router-dom";
 import redlogo from "../../assets/redlogo.png";
 import { useState } from "react";
+import { isAuthenticated } from "../../utils/auth";
+import { logoutApi } from "../../api/auth";
 const Wrapper = styled.header`
   display: flex;
   flex-direction: row;
@@ -70,14 +72,14 @@ const MyPageBtn = styled.button`
 
 export default function MainHeader() {
     const navigate = useNavigate();
-    const [ isAuthenticiated, setIsAuthenticated ] = useState(false);
 
     const handleClick = () => {
         navigate('/');
     };
-    // const handleLogout = () => {
-
-    // };
+    const handleLogout = async () => {
+      await logoutApi();
+      navigate('/');
+    };
     const handleMyPage = () => {
         navigate('/mypage');
     };
@@ -95,14 +97,14 @@ export default function MainHeader() {
             
             </div>
             <Auth>
-              {!isAuthenticiated ? (
+              {!isAuthenticated() ? (
                 <>
                   <LoginBtn/>
                   <SignUpBtn/>
                 </>
               ) : (
                 <>
-                  <LogoutBtn>로그아웃</LogoutBtn>
+                  <LogoutBtn onClick={handleLogout}>로그아웃</LogoutBtn>
                   <MyPageBtn onClick={handleMyPage}>마이페이지</MyPageBtn>
                 </>
               )}
