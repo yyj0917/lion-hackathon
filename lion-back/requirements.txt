@@ -7,3 +7,4 @@ sqlparse==0.5.1
 tzdata==2024.1
 django-cors-headers==4.4.0
 requests==2.32.3
+django-allauth==0.63.6
