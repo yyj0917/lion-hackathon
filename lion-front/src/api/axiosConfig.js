@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_URL = 'http://localhost:8000/';
+const API_URL = 'http://localhost:8000/user';
 
 const axiosInstance = axios.create({
   baseURL: API_URL,
@@ -38,7 +38,7 @@ axiosInstance.interceptors.response.use(
           window.location.href = '/login';
           return Promise.reject(error);
         }
-        const response = await axios.post(`${API_URL}auth/token/refresh/`, {
+        const response = await axios.post(`${API_URL}auth/refresh/`, {
           refresh: refreshToken,
         });
         localStorage.setItem('accessToken', response.data.access);
