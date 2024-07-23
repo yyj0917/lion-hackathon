@@ -7,9 +7,9 @@ from rest_framework.routers import DefaultRouter
 router = DefaultRouter()
 
 urlpatterns =[
-    path('register/', RegisterAPIView.as_view()),
-    path('auth/LogIn', LogInAPIView.as_view()),
-    path('auth/LogOut', LogOutView.as_view()),
+    path('/register/', RegisterAPIView.as_view()),
+    path('auth/login/', LogInAPIView.as_view()),
+    path('auth/logout/', LogOutView.as_view()),
     path('auth/refresh/', TokenRefreshView.as_view()),
     path("", include(router.urls))
  ]

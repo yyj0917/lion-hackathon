@@ -70,7 +70,7 @@ const MyPageBtn = styled.button`
 
 export default function MainHeader() {
     const navigate = useNavigate();
-    const [ isAuthenticiated, setIsAuthenticated ] = useState(false);
+    const [ isAuthenticiated, setIsAuthenticated ] = useState(true);
 
     const handleClick = () => {
         navigate('/');

@@ -87,7 +87,6 @@ export default function Banner() {
     const fetchMessages = async () => {
       try {
         const response = await fetchMessagesApi();
-        console.log(response);
         setMessages(response);
       } catch (error) {
         console.error('Error fetching diary entries:', error);
