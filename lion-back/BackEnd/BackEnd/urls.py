@@ -20,7 +20,11 @@ from django.views.generic import TemplateView
 from accounts.views import RegisterAPIView, LogInAPIView, LogOutView  # 필요한 뷰 임포트
 from rest_framework_simplejwt.views import TokenRefreshView
 
-
+def show_urls(urllist, depth=0):
+    for entry in urllist:
+        print("  " * depth, entry)
+        if hasattr(entry, 'url_patterns'):
+            show_urls(entry.url_patterns, depth + 1)
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('user/', include('accounts.urls')),
@@ -29,9 +33,11 @@ urlpatterns = [
     path('diary/', include('diary.urls')),
     path('', TemplateView.as_view(template_name='index.html')),
     
-    path('register/', RegisterAPIView.as_view(), name='register'),
-    path('auth/LogIn', LogInAPIView.as_view(), name='login'),
-    path('auth/LogOut', LogOutView.as_view(), name='logout'),
-    path('auth/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
+    # path('register/', RegisterAPIView.as_view(), name='register'),
+    # path('auth/LogIn', LogInAPIView.as_view(), name='login'),
+    # path('auth/LogOut', LogOutView.as_view(), name='logout'),
+    # path('auth/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
 
  ]
+show_urls(urlpatterns)
+

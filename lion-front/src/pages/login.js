@@ -34,11 +34,12 @@ export default function Login() {
     const navigate = useNavigate();
 
 
-    const handleLogin = async () => {
+    const handleLogin = async (event) => {
+        event.preventDefault();
         try {
             const response = await loginApi(email, password);
-        
             console.log(response);
+            navigate('/');
         } catch (error) {
             console.error('Login failed', error);
         }

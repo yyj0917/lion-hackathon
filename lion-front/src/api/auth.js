@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 // 인증 관련 API 호출을 담당하는 모듈입니다.
-const API_URL = 'http://localhost:8000/auth/';
+const API_URL = 'http://localhost:8000/user/auth/';
 // 로그인 API 호출
 export const loginApi = async (email, password) => {
     try {
@@ -25,13 +25,13 @@ export const registerApi = async (
 };
 // refreshToken을 이용한 토큰 재발급 API 호출
 export const refreshTokenApi = async (refreshToken) => {
-    const response = await axios.post(`${API_URL}token/refresh/`, { refresh: refreshToken });
+    const response = await axios.post(`${API_URL}refresh/`, { refresh: refreshToken });
     return response.data;
   };
 // 로그아웃 API 호출
 export const logoutApi = async () => {
     try {
-        const response = await axios.post('/api/logout');
+        const response = await axios.post('logout');
         return response.data;
     } catch (error) {
         throw new Error(error.response.data.message);
