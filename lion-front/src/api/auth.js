@@ -13,9 +13,11 @@ export const loginApi = async (email, password) => {
 };
 
 // 회원가입 API 호출
-export const registerApi = async (username, password, email) => {
+export const registerApi = async (
+    email, password, name, age, position, office, phoneNumber, nickname,
+) => {
     try {
-        const response = await axios.post(`${API_URL}register/`, { username, password, email });
+        const response = await axios.post(`${API_URL}register/`, { email, password, name, age, position, office, phoneNumber, nickname });
         return response.data;
     } catch (error) {
         throw new Error(error.response.data.message);

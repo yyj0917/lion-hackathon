@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import Counselor from './Counselor';
 import RecieveCounselor from './ReceiveCounselor';
 
-const Wrapper = styled.div`
+const MatchingWrapper = styled.div`
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -55,7 +55,7 @@ const Matching = () => {
       }, [location]);
     return (
         
-            <Wrapper>
+            <MatchingWrapper>
                 {!isCounselor && !isRecieveCounsel && (
                     <>
                         <Btn onClick={() => { navigate('/counselor'); setIsCounselor(true); setIsRecieveCounsel(false); }}>Counselor</Btn>
@@ -64,7 +64,7 @@ const Matching = () => {
                     )}
                 {isCounselor && <Outlet />}
                 {isRecieveCounsel && <Outlet/>}
-            </Wrapper>
+            </MatchingWrapper>
         );
     
 }

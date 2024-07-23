@@ -1,10 +1,10 @@
 // src/components/Tabs.js
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
-import Diary from '../diary/PublicDiary';
 import PublicDiary from '../diary/PublicDiary';
-import PrivateDiary from '../diary/PrivateDiary';
 import Matching from '../matching/Matching';
+import {useNavigate } from 'react-router-dom';
+
 
 const TabContainer = styled.div`
   display: flex;
@@ -13,7 +13,7 @@ const TabContainer = styled.div`
   overflow: hidden;
   position: relative;
   margin-top: 10px;
-  width: 80%;
+  width: 70%;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 
 `;
@@ -61,17 +61,29 @@ const ActiveTabIndicator = styled.div`
 
 const TabContent = styled.div`
   width: 80%;
-  height: 80%;
+  height: 85%;
   margin: auto;
   overflow: hidden;
   display: flex;
   flex-direction: column;
   position: relative;
 `;
-
-const Tabs = () => {
-  const [activeIndex, setActiveIndex] = React.useState(0);
-
+// const TabFilter = styled.div`
+//   padding: 20px;
+//   text-align: center;
+//   input {
+//     width: 80%;
+//     padding: 10px;
+//     font-size: 16px;
+//     border: 1px solid #ccc;
+//     border-radius: 20px;
+//     outline: none;
+//   }
+// `;
+const Tabs = ({writePost}) => {
+  const [activeIndex, setActiveIndex] = useState(0);
+  // const [searchTerm, setSearchTerm] = useState('');
+  const navigate = useNavigate();
   return (
     <>
       <TabContainer>
@@ -80,7 +92,10 @@ const Tabs = () => {
           id="tab1"
           name="tab"
           checked={activeIndex === 0}
-          onChange={() => setActiveIndex(0)}
+          onChange={() => {
+            setActiveIndex(0);
+            navigate('/');
+          }}
         />
         <TabLabel htmlFor="tab1">공유 일기</TabLabel>
         <ActiveTabIndicator style={{ left: `calc(${activeIndex * 100}% / 2)` }} />
@@ -90,12 +105,25 @@ const Tabs = () => {
           id="tab2"
           name="tab"
           checked={activeIndex === 1}
-          onChange={() => setActiveIndex(1)}
+          onChange={() => {
+            setActiveIndex(1);
+            navigate('/');
+          }}
         />
         <TabLabel htmlFor="tab2">동료 매칭</TabLabel>
       </TabContainer>
+      {/* <TabWrapper>
+        <TabFilter>
+          <input
+            type="text"
+            placeholder="검색어를 입력하세요"
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+          />
+        </TabFilter>
+      </TabWrapper> */}
       <TabContent>
-        {activeIndex === 0 && <PublicDiary/>}
+        {activeIndex === 0 && <PublicDiary writePost={writePost}/>}
         {activeIndex === 1 && <Matching/>}
       </TabContent>
     </>

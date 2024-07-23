@@ -4,7 +4,7 @@ import '../../styles/App.css';
 
 const ChatMessage = styled.div`
     background-color: white;
-    padding: 10px;
+    padding: 20px;
     border-radius: 5px;
     display: flex;
     flex-direction: column;
@@ -12,23 +12,32 @@ const ChatMessage = styled.div`
     align-items: start;
     opacity: 0;
     animation: fadeIn 1s ease-in-out forwards;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     height: 10%;
     width: 80%;
+    position: relative;
 `;
-const ChatMessageContent = styled.div`
+const ChatMessageContent = styled.p`
     flex-grow: 1;
+    margin: 0;
+    font-size: 18px;
+    text-align: center;
+    word-wrap: break-word;
+    @media (max-width: 300px) {
+        font-size: 16px;
+    }
 `;
-const ChatMessageWriter = styled.div`
+const ChatMessageWriter = styled.span`
     position: absolute;
     right: 10px;
     bottom: 10px;
     font-size: 0.8em;
     color: #888;
 `;
-const ChatMessages = ({ message, writer }) => {
+const ChatMessages = ({ content, writer }) => {
     return (
         <ChatMessage id='messageBubble'>
-            <ChatMessageContent>{message}</ChatMessageContent>
+            <ChatMessageContent>{content}</ChatMessageContent>
             <ChatMessageWriter>{writer}</ChatMessageWriter>
         </ChatMessage>
     );

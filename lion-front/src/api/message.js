@@ -2,7 +2,7 @@ import axios from 'axios';
 
 const API_URL = 'http://localhost:8000/';
 
-const fetchMessages = async () => {
+const fetchMessagesApi = async () => {
     try {
         const response = await axios.get(`${API_URL}message/`);
         return response.data;
@@ -12,4 +12,4 @@ const fetchMessages = async () => {
     }
 };
 
-export default fetchMessages;
+export default fetchMessagesApi;

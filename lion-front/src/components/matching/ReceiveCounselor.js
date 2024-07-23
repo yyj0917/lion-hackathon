@@ -15,7 +15,7 @@ const ListWrapper = styled.div`
     grid-template-columns: repeat(2, 1fr); /* 처음에 4개의 요소가 꽉 차게 */
     grid-auto-rows: minmax(150px, auto); /* 각 행의 높이 */    
     gap: 20px;
-    overflow-y: auto; /* 세로 스크롤 가능하게 설정 */
+    /* overflow-y: auto; 세로 스크롤 가능하게 설정 */
     a {
         position: relative;
         display: block;
@@ -64,9 +64,41 @@ const ListWrapper = styled.div`
             }   
         }
     }
+`;
+const ListFooter = styled.div`
     
-    
-    
+    display: flex;
+    box-sizing: border-box;
+    justify-content: center;
+    padding: 10px 0;
+    /* background-color: aliceblue; */
+    /* background: #ffffff; */
+    label {
+        margin: 0 5px;
+        color: black;
+        box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.1);
+        cursor: pointer;
+        border-radius: 20px;
+        width: 20px;
+        text-align: center;
+        height: auto;
+
+    }
+    .active {
+        background-color: #FF5A5A;
+        color: #fff;
+    }
+    label input {
+        display: none;
+
+        &:checked + span {
+            font-weight: bold;
+            text-decoration: underline;
+        }
+    }
+    label span {
+        padding: 5px;
+    }
 `;
 
 const RecieveCounselor = () => {
@@ -81,24 +113,51 @@ const RecieveCounselor = () => {
         { id: 8, name: '박민지', age: 26, workplace: '기아차', comment: '힘내세요!', link: 'https://open.kakao.com/o/gNkGj9Cd' },
     // 더 많은 오픈채팅방 데이터를 여기에 추가할 수 있습니다.
       ]);
+    const [currentPage, setCurrentPage] = useState(1);
+    const chatPerPage = 4;
+    const indexOfLastPost = currentPage * chatPerPage;
+    const indexOfFirstPost = indexOfLastPost - chatPerPage;
+    const currentRooms = openChatRooms.slice(indexOfFirstPost, indexOfLastPost);
+
+    // 페이지네이션 페이지 수 계산
+    const pageNumbers = [];
+    for (let i = 1; i <= Math.ceil(openChatRooms.length / chatPerPage); i++) {
+    pageNumbers.push(i);
+    }
     return (
-        <ListWrapper>
-            {openChatRooms.map(room => (
-                <Link key={room.id} to={room.link} className="chatroom-card" target="_blank" rel="">
-                    <div className="icon-container">
-                        <img src={kakao} alt='kakaologo'/>
-                        <span>openchat</span>
-                    </div>
-                    <h3>{room.name}</h3>
-                    <p>나이: {room.age}</p>
-                    <p>근무지: {room.workplace}</p>
-                    <p>한마디: {room.comment}</p>
-                    <div className='icon-profile'>
-                        <img src={profile} alt="profile"/>
-                    </div>
-                </Link>
-                ))}
-        </ListWrapper>
+        <>
+            <ListWrapper>
+                {currentRooms.map(room => (
+                    <Link key={room.id} to={room.link} className="chatroom-card" target="_blank" rel="">
+                        <div className="icon-container">
+                            <img src={kakao} alt='kakaologo' style={{
+                                borderRadius: '50%',
+                            }}/>
+                            <span>openchat</span>
+                        </div>
+                        <h3>{room.name}</h3>
+                        <p>나이: {room.age}</p>
+                        <p>근무지: {room.workplace}</p>
+                        <p>한마디: {room.comment}</p>
+                        <div className='icon-profile'>
+                            <img src={profile} alt="profile"/>
+                        </div>
+                    </Link>
+                    ))}
+            </ListWrapper>
+            <ListFooter>
+                {pageNumbers.map(number => (
+                                <label key={number} className={`${currentPage === number ? 'active' : ''}`}>
+                                    <input
+                                    type="checkbox"
+                                    checked={currentPage === number}
+                                    onChange={() => setCurrentPage(number)}
+                                    />
+                                    {number}
+                                </label>
+                        ))}
+            </ListFooter>
+        </>
     )
 }
 

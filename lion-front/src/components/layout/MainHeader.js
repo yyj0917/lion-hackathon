@@ -4,6 +4,7 @@ import LoginBtn from "../button/LoginBtn";
 import SignUpBtn from "../button/SignUpBtn";
 import { useNavigate } from "react-router-dom";
 import redlogo from "../../assets/redlogo.png";
+import { useState } from "react";
 const Wrapper = styled.header`
   display: flex;
   flex-direction: row;
@@ -16,7 +17,6 @@ const Wrapper = styled.header`
     height: 55px;
     cursor: pointer;
   }
-  z-index: 1;
 `;
 
 const Auth = styled.div`
@@ -29,10 +29,7 @@ const Auth = styled.div`
   color: #f44336;
   cursor: pointer;
 `;
-const Select = styled.div`
-  display: flex;
-  align-items: center;
-`;
+
 const LogoText = styled.h1`
   font-size: 24px;
   font-weight: 800;
@@ -42,13 +39,48 @@ const LogoText = styled.h1`
   text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2); /* 텍스트 그림자 효과 */
   cursor: pointer;
 `;
+const LogoutBtn = styled.button`
+    width: 120px;
+    height: 60px;
+    border-radius: 10px;
+    border: white;
+    background-color: white;
+    cursor: pointer;
+    &:hover {
+        background-color: rgb(255,0,0, 0.5);
+    }
+    text-align: center;
+    margin: 5px;
+    font-size: 17px;
+`;
+const MyPageBtn = styled.button`
+    width: 120px;
+    height: 60px;
+    border-radius: 10px;
+    border: white;
+    background-color: white;
+    cursor: pointer;
+    &:hover {
+        background-color: rgb(255,0,0, 0.5);
+    }
+    text-align: center;
+    margin: 5px;
+    font-size: 17px;
+`;
 
 export default function MainHeader() {
     const navigate = useNavigate();
+    const [ isAuthenticiated, setIsAuthenticated ] = useState(false);
 
     const handleClick = () => {
         navigate('/');
-    }
+    };
+    // const handleLogout = () => {
+
+    // };
+    const handleMyPage = () => {
+        navigate('/mypage');
+    };
     return (
         <Wrapper>
             <div style={{
@@ -63,8 +95,17 @@ export default function MainHeader() {
             
             </div>
             <Auth>
-              <LoginBtn/>
-              <SignUpBtn/>
+              {!isAuthenticiated ? (
+                <>
+                  <LoginBtn/>
+                  <SignUpBtn/>
+                </>
+              ) : (
+                <>
+                  <LogoutBtn>로그아웃</LogoutBtn>
+                  <MyPageBtn onClick={handleMyPage}>마이페이지</MyPageBtn>
+                </>
+              )}
             </Auth>
         </Wrapper>
     )

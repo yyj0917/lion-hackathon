@@ -1,14 +1,19 @@
-import { BarChart4, Laugh, Notebook, Sidebar, Square, SquarePen } from "lucide-react";
-import { useState } from "react";
+import { BarChart4, CircleUser, Laugh, Notebook, SquarePen } from "lucide-react";
 import styled from "styled-components";
-import WritePost from "./WritePost";
+import { Outlet, useNavigate } from "react-router-dom";
 
 
 const Wrapper = styled.div`
-    width: 100%;
-    height: 100%;
+
+    width: 70%;
+    margin-left: 5px;
+    /* height: 740px; */
+    border-radius: 20px;
     display: flex;
     align-items: center;
+    box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.1);
+    height: 100%;
+    position: relative;
 
 `;
 const Navbar = styled.div`
@@ -45,22 +50,19 @@ const Contents = styled.div`
     justify-content: center;
     align-items: center;
 `;
-export default function PrivateDiary() {
-    const [ featuresIdx, setFeaturesIdx ] = useState(1);
-    
+export default function MyPage() {
+    const navigate = useNavigate();
     return (
         <Wrapper>
             <Navbar>
-                <p onClick={() => setFeaturesIdx(1)}><Notebook/></p>
-                <p onClick={() => setFeaturesIdx(2)}><Laugh/></p>
-                <p onClick={() => setFeaturesIdx(3)}><BarChart4/></p>
-                <p onClick={() => setFeaturesIdx(4)}><SquarePen/></p>
+                <p onClick={() => navigate('/mypage')}><CircleUser/></p>
+                <p onClick={() => navigate('/mypage/diary')}><Notebook/></p>
+                <p onClick={() => navigate('/mypage/sentiment')}><Laugh/></p>
+                <p onClick={() => navigate('/mypage/sentimentResult')}><BarChart4/></p>
+                <p onClick={() => navigate('/mypage/writeDiary')}><SquarePen/></p>
             </Navbar>
             <Contents>
-                {featuresIdx === 1 && <h1>1</h1>}
-                {featuresIdx === 2 && <h1>감정분석</h1>}
-                {featuresIdx === 3 && <h1>감정분석 결과추이</h1>}
-                {featuresIdx === 4 && <WritePost/>}
+                <Outlet/>
             </Contents>
         </Wrapper>
     )

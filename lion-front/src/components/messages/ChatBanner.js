@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import styled from "styled-components";
 import ChatMessages from "./ChatMessages";
 import '../../styles/App.css';
-import fetchMessages from "../../api/message";
+import fetchMessagesApi from "../../api/message";
 
 const Wrapper = styled.div`
     /* padding: 10px; */
@@ -12,7 +12,7 @@ const Wrapper = styled.div`
     border-radius: 50px;
     overflow: hidden;
     box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.1);
-    border: 5px solid black;
+    border: 5px solid white;
     display: flex;
     flex-direction: column;
 
@@ -22,7 +22,7 @@ const BannerHeader = styled.div`
     font-size: 18px;
     font-weight: 700;
     height: 50px;
-    background-color: #0078ff;
+    background-color: #FF5A5A;
     color: white;
     display: flex;
     align-items: center;
@@ -45,57 +45,89 @@ const BannerMessages = styled.div`
     height: 100%;
 `;
 const BannerFooter = styled.div`
-    height: 50px;
     display: flex;
-    align-items: center;
     justify-content: center;
-    background: #ffffff;
-    border-bottom-left-radius: 36px;
-    border-bottom-right-radius: 36px;
-    input {
-        width: 80%;
-        padding: 10px;
-        border: 1px solid #ccc;
+    padding: 10px 0;
+    background-color: white;
+    /* background: #ffffff; */
+    label {
+        margin: 0 5px;
+        color: black;
+        cursor: pointer;
+        box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.1);
         border-radius: 20px;
-        outline: none;
+        width: 20px;
+        text-align: center;
+        height: auto;
+
     }
-`;
-const allMessages = [
-    { message: 'Message 1', writer: '익명' },
-    { message: 'Message 2', writer: '익명' },
-    { message: 'Message 3', writer: '서울시 동작구 준혁맘' },
-    { message: 'Message 4', writer: '영주시 초등학생' },
-];
-export default function Banner() {
-    const [visibleMessages, setVisibleMessages] = useState(allMessages.slice(0, 4));
-    // const [startIndex, setStartIndex] = useState(0);
-    // const fetchMsg = async () => {
-    //     try {
-    //         const response = await fetchMessages();
-    //         console.log('Diary entry Read:', response);
-    //         setVisibleMessages(response);
-    //       } catch (error) {
-    //         console.error('Error creating diary entry:', error);
-    //       }
-    //     }
-    // useEffect(() => {
-    //     fetchMsg();
-    // }, []);
+    .active {
+        background-color: #FF5A5A;
+        color: #fff;
+    }
+    label input {
+        display: none;
+        &:checked + span {
+            background-color: aliceblue;
+            font-weight: bold;
+            text-decoration: underline;
+        }
+    }
+    label span {
+        padding: 5px;
+    }
     
+`;
+
+export default function Banner() {
+    const [messages, setMessages] = useState([]);
+    const [currentPage, setCurrentPage] = useState(1);
+    const messagesPerPage = 4;
+
+    const fetchMessages = async () => {
+      try {
+        const response = await fetchMessagesApi();
+        console.log(response);
+        setMessages(response);
+      } catch (error) {
+        console.error('Error fetching diary entries:', error);
+      }
+    };
+    useEffect(() => {
+        fetchMessages();
+      }, []);
+    const indexOfLastPost = currentPage * messagesPerPage;
+    const indexOfFirstPost = indexOfLastPost - messagesPerPage;
+    const currentMessages = messages.slice(indexOfFirstPost, indexOfLastPost);
+
+    // 페이지네이션 페이지 수 계산
+    const pageNumbers = [];
+    for (let i = 1; i <= Math.ceil(messages.length / messagesPerPage); i++) {
+    pageNumbers.push(i);
+    }
     // 어떤 식으로 많은 메세지들을 보여줄지 생각. 
 
     return (
         <Wrapper>
             <BannerHeader>응원의 메세지</BannerHeader>
             <BannerMessages>
-                {visibleMessages.map((msg, index) => (
+                {currentMessages.map((msg, index) => (
                         <div className="chat-wrapper">
-                            <ChatMessages key={index} message={msg.message} writer={msg.writer} />
+                            <ChatMessages key={index} content={msg.content} writer={msg.writer} />
                         </div>
                     ))}   
             </BannerMessages>
             <BannerFooter>
-                <input type="text" placeholder="메시지를 입력하세요..."></input>
+                    {pageNumbers.map(number => (
+                        <label key={number} className={`${currentPage === number ? 'active' : ''}`}>
+                            <input
+                            type="checkbox"
+                            checked={currentPage === number}
+                            onChange={() => setCurrentPage(number)}
+                            />
+                            {number}
+                        </label>
+                ))}
             </BannerFooter>
         </Wrapper>
     );

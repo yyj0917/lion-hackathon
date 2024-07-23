@@ -47,30 +47,6 @@ export default function Login() {
     return (
         <Wrapper>
             <FormWrapper>
-                    <form className="loginForm" onSubmit={handleLogin}>
-                        <div className="form-group">
-                            <label htmlFor="email">Email</label>
-                            <input
-                                id="email"
-                                type="email"
-                                onChange={(e) => setEmail(e.target.value)}
-                                required
-                            />
-                        </div>
-                        <div className="form-group">
-                            <label htmlFor="password">Password</label>
-                            <input
-                                id="password"
-                                type="password"
-                                onChange={(e) => setPassword(e.target.value)}
-                                required
-                            />
-                        </div>
-                        <div className="btn-group">
-                            <button className="btn" type="submit">로그인</button>
-                            <button onClick={()=>{navigate('/signup')}} className="btn" >회원가입</button>
-                        </div>
-                    </form>
                     <Article className="poem-container">
                         <div className="poem-header">소방관의 기도</div>
                         <div className="poem-content">
@@ -96,6 +72,30 @@ export default function Login() {
                             제 아내와 아이들을 돌보아주소서.
                         </div>
                     </Article>
+                    <form className="loginForm" onSubmit={handleLogin}>
+                        <div className="form-group">
+                            <label htmlFor="email">Email</label>
+                            <input
+                                id="email"
+                                type="email"
+                                onChange={(e) => setEmail(e.target.value)}
+                                required
+                            />
+                        </div>
+                        <div className="form-group">
+                            <label htmlFor="password">Password</label>
+                            <input
+                                id="password"
+                                type="password"
+                                onChange={(e) => setPassword(e.target.value)}
+                                required
+                            />
+                        </div>
+                        <div className="btn-group">
+                            <button className="btn" type="submit">로그인</button>
+                            <button onClick={()=>{navigate('/signup')}} className="btn" >회원가입</button>
+                        </div>
+                    </form>
             </FormWrapper>
         </Wrapper>
     )
