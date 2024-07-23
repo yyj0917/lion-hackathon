@@ -181,3 +181,4 @@ class ConfirmEmailView(APIView):
         qs = qs.select_related("emaill_address_user")
         return qs
 
+

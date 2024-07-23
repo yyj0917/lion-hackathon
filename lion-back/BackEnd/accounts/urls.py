@@ -1,4 +1,3 @@
-
 from django.urls import path, include, re_path
 from .views import RegisterAPIView, LogInAPIView, LogOutView, ConfirmEmailView, VerifyTokenView
 
@@ -22,5 +21,5 @@ urlpatterns =[
     # 유저가 클릭한 이메일(=링크) 확인
     re_path(r'^account-confirm-email/(?P<key>[-:\w]+)/$', ConfirmEmailView.as_view(), name='account_confirm_email'),
     path('auth/verify/', VerifyTokenView.as_view()),
-    path("", include(router.urls)),
+    path("", include(router.urls))
  ]
