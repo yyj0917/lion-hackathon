@@ -9,6 +9,9 @@ from BackEnd.settings import SECRET_KEY
 from rest_framework.permissions import IsAuthenticated
 from .models import User
 import jwt
+from django.http import HttpResponseRedirect
+from rest_framework.permissions import AllowAny
+from allauth.account.models import EmailConfirmation, EmailConfirmationHMAC
 
 class RegisterAPIView(APIView):
     def post(self, request):
@@ -154,3 +157,40 @@ class UserViewSet(viewsets.ModelViewSet):
     permission_classes = [IsAuthenticated]
     queryset = User.objects.all()
     serializer_class = UserSerializer
+
+#이메일 인증
+class ConfirmEmailView(APIView):
+    permission_classes = [AllowAny]
+
+    def get(self, *args, **kwargs):
+        self.object = confirmation = self.get_object()
+        confirmation.confirm(self.request)
+        # A React Router Route will handle the failure scenario
+        return HttpResponseRedirect('/') #성공하면 홈으로
+    
+    def get_object(self, queryset=None):
+        key = self.kwargs['key']
+        email_confirmation = EmailConfirmationHMAC.from_key(key)
+        if not email_confirmation:
+            if queryset is None:
+                queryset = self.get_queryset()
+            try:
+                email_confirmation = queryset.get(key=key.lower())
+            except EmailConfirmation.DoesNotExist:
+                # A React Router Route will handle the failure scenario
+                return HttpResponseRedirect('/') #인증실패
+        return email_confirmation
+    
+    def get_queryset(self):
+        qs = EmailConfirmation.objects.all_valid()
+        qs = qs.select_related("emaill_address_user")
+        return qs
+    
+
+    
+    
+
+
+    
+
+
