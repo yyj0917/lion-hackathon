@@ -32,6 +32,12 @@ class UserManager(BaseUserManager):
 
 class User(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(max_length=30, null=False, blank=False, unique=True) #유니크를 사용해서 동일 이메일 사용 불가
+    name = models.CharField(max_length=10, null=False, blank=False)
+    age = models.IntegerField(null=False, blank=False) #age 대신 생년월일..?
+    position = models.CharField(max_length=30, null=False, blank=False)
+    office = models.CharField(max_length=50, null=False, blank=False)
+    phonenumber = models.CharField(max_length=20, null=False, blank=False)
+    username = models.CharField(max_length=50, null=False, blank=False)
     is_superuser = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
