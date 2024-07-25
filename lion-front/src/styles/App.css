@@ -216,3 +216,21 @@ input {
   border-radius: 5px;
   font-size: 1rem;
 }
+/* React calendar */
+.react-calendar {
+  width: 100%;
+  max-width: 900px;
+  background: white;
+  border: 1px solid #a0a096;
+  border-radius: 8px;
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+}
+
+.react-calendar__tile--now {
+  background: #ffff76 !important;
+}
+
+.react-calendar__tile--active {
+  background: #ffb3b3 !important;
+  color: white !important;
+}

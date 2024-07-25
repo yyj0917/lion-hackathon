@@ -4,8 +4,7 @@ import LoginBtn from "../button/LoginBtn";
 import SignUpBtn from "../button/SignUpBtn";
 import { useNavigate } from "react-router-dom";
 import redlogo from "../../assets/redlogo.png";
-import { useState } from "react";
-import { isAuthenticated } from "../../utils/auth";
+// import { isAuthenticated } from "../../utils/auth";
 import { logoutApi } from "../../api/auth";
 const Wrapper = styled.header`
   display: flex;
@@ -97,7 +96,7 @@ export default function MainHeader() {
             
             </div>
             <Auth>
-              {!isAuthenticated() ? (
+              {!true ? (
                 <>
                   <LoginBtn/>
                   <SignUpBtn/>

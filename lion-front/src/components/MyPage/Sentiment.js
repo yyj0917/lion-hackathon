@@ -1,9 +1,10 @@
 import React from 'react';
+import Calendar from 'react-calendar';
 
 const Sentiment = () => {
     return (
-        <h1>Sentiment</h1>
-    );
-}
+        <Calendar/>
+    )
+};
 
 export default Sentiment;
