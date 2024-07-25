@@ -1,4 +1,3 @@
-import axios from 'axios';
 import axiosInstance from './axiosConfig';
 
 // 인증 관련 API 호출을 담당하는 모듈입니다.

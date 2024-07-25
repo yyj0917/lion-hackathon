@@ -24,13 +24,14 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<SignUp />} />
           <Route path="/" element={<Main />}>
+            {/* 기본 페이지 - 공유일기 / 동료 매칭 - 라우팅으로 움직이기 */}
             <Route path="/" element={<Features />}>
-
               <Route path="/counselor" element={<Counselor />} />
               <Route path="/recieve-counsel" element={<RecieveCounselor />} />
             </Route>
+            {/* 마이 페이지 루트로 라우팅 */}
             <Route path="/mypage" element={<MyPage />}>
-              <Route path="" element={<Profile />} />
+              <Route path="" element={<PrivateDiary />} />
               <Route path="diary" element={<PrivateDiary />} />
               <Route path="sentiment" element={<Sentiment />} />
               <Route path="sentimentResult" element={<SentimentResult />} />

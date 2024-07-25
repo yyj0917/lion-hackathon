@@ -20,6 +20,8 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'build/static'),
+    os.path.join(BASE_DIR, 'public'),  # manifest.json 파일이 있는 디렉토리
+
 ]
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
@@ -31,6 +33,8 @@ SECRET_KEY = 'django-insecure-)hsihi+)jydua4g@!zni7)qq35sk+m7k!1%9q1e9bs_8p2m#pz
 DEBUG = True
 
 ALLOWED_HOSTS = []
+
+SECURE_COOKIE = True
 
 
 # Application definition

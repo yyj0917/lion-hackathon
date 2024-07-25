@@ -22,7 +22,15 @@ const ChatMessageContent = styled.p`
     margin: 0;
     font-size: 18px;
     text-align: center;
-    word-wrap: break-word;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    word-break: break-word;
+    white-space: normal;
+    font-size: 14px;
+    color: #444444;
     @media (max-width: 300px) {
         font-size: 16px;
     }

@@ -13,6 +13,7 @@ const axiosInstance = axios.create({
 // Request interceptor for adding the access token to requests
 axiosInstance.interceptors.request.use(
   async config => {
+    console.log(config);
     const accessToken = localStorage.getItem('accessToken');
     if (accessToken) {
       config.headers.Authorization = `Bearer ${accessToken}`;
@@ -42,7 +43,7 @@ axiosInstance.interceptors.response.use(
           refresh: refreshToken,
         });
         localStorage.setItem('accessToken', response.data.access);
-        axios.defaults.headers.common['Authorization'] = `Bearer ${response.data.access}`;
+        axiosInstance.defaults.headers.common['Authorization'] = `Bearer ${response.data.access}`;
         return axiosInstance(originalRequest);
       } catch (err) {
         console.error('Token refresh failed', err);

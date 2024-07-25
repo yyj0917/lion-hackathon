@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
-import Counselor from './Counselor';
-import RecieveCounselor from './ReceiveCounselor';
 
 const MatchingWrapper = styled.div`
     display: flex;

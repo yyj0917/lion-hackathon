@@ -35,7 +35,7 @@ const Contents = styled.div`
     justify-content: center;
     align-items: center;
     background-color: rgba(220, 220, 220, 0.3); /* 흐린 회색 배경색 */
-
+    position: relative;
 `;
 const ImgWrapper = styled.div`
     width: 100%;
@@ -44,10 +44,16 @@ const ImgWrapper = styled.div`
     display: flex;
     flex-direction: column;
     align-items: center;
+    position: relative;
     img {
         border-radius: 50%;
         width: 50%;
         height: 50%;
+    }
+    span {
+        position: absolute;
+        bottom: 50px;
+        right: 10px;
     }
     p {
         width: 100%;
@@ -103,14 +109,13 @@ export default function MyPage() {
             <Navbar>
                 <ImgWrapper>
                     <img src={profile} alt="profile"/>
+                    {/* <span><Flame strokeWidth={4} style={{color: "#f44336", display:"flex", marginTop:"10%"}} /></span> */}
                     <div className="profile-text">
                         
-                        <p><Flame strokeWidth={4} style={{color: "#f44336", display:"flex", marginTop:"10%"}} />윤영준(25) <br /> 경기도 구리시 소방청</p>
+                        <p>윤영준(25)/소방가이 <br /> 경기도 구리시 소방청 <br/> 010-6720-2807</p>
                     </div>
                 </ImgWrapper>
                 <IconWrapper>
-                    <p onClick={() => navigate('/mypage')}>
-                        <CircleUser/> <span>Profile</span></p>
                     <p onClick={() => navigate('/mypage/diary')}><Notebook/> Diary</p>
                     <p onClick={() => navigate('/mypage/sentiment')}><Laugh/> Feel</p>
                     <p onClick={() => navigate('/mypage/sentimentResult')}><BarChart4/> Analyze</p>

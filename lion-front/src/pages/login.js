@@ -41,6 +41,7 @@ export default function Login() {
             localStorage.setItem('accessToken', response.token.access);
             localStorage.setItem('refreshToken', response.token.refresh);
             console.log(response);
+            alert('로그인 성공');
             navigate('/');
         } catch (error) {
             console.error('Login failed', error);
