@@ -1,13 +1,15 @@
-from .models import Diary
+from .models import PublicDiary, PrivateDiary
 from rest_framework import serializers
 
-class DiarySerializer(serializers.ModelSerializer):
+class PublicDiarySerializer(serializers.ModelSerializer):
+    
     class Meta:
-        model = Diary
+        model = PublicDiary
         fields = '__all__'
 
+class PrivateDiarySerializer(serializers.ModelSerializer):
+    
+    class Meta:
+        model = PrivateDiary
+        fields = '__all__'
 
-# class DiarySerializerExceptSentiment(serializers.ModelSerializer):
-#     class Meta:
-#         model = Diary
-#         fields = ['title', 'body', 'date', 'created_at', 'updated_at']
