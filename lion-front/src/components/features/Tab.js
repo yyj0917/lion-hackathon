@@ -80,7 +80,7 @@ const TabContent = styled.div`
 //     outline: none;
 //   }
 // `;
-const Tabs = ({writePost}) => {
+const Tabs = ({writePost, setWritePost}) => {
   const [activeIndex, setActiveIndex] = useState(0);
   // const [searchTerm, setSearchTerm] = useState('');
   const navigate = useNavigate();
@@ -123,7 +123,7 @@ const Tabs = ({writePost}) => {
         </TabFilter>
       </TabWrapper> */}
       <TabContent>
-        {activeIndex === 0 && <PublicDiary writePost={writePost}/>}
+        {activeIndex === 0 && <PublicDiary writePost={writePost} setWritePost={setWritePost}/>}
         {activeIndex === 1 && <Matching/>}
       </TabContent>
     </>

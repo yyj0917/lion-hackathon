@@ -53,7 +53,7 @@ const FormPosts = styled.form`
         box-sizing: border-box;
     }
 `;
-const WritePost = ({ modal, setModal }) => {
+const WritePost = ({ writePost,setWritePost }) => {
     const [body, setBody] = useState('');
     const [title, setTitle] = useState('');
     const [date, setDate] = useState('');
@@ -68,8 +68,8 @@ const WritePost = ({ modal, setModal }) => {
             setTitle('');
             setBody('');
             setDate('');
+            setWritePost(!writePost);
             alert('제출이 완료되었습니다.');
-            setModal(!modal);
           } catch (error) {
             console.error('Error creating diary entry:', error);
           }

@@ -4,7 +4,7 @@ import LoginBtn from "../button/LoginBtn";
 import SignUpBtn from "../button/SignUpBtn";
 import { useNavigate } from "react-router-dom";
 import redlogo from "../../assets/redlogo.png";
-// import { isAuthenticated } from "../../utils/auth";
+import { isAuthenticated } from "../../utils/auth";
 import { logoutApi } from "../../api/auth";
 const Wrapper = styled.header`
   display: flex;
@@ -76,8 +76,13 @@ export default function MainHeader() {
         navigate('/');
     };
     const handleLogout = async () => {
-      await logoutApi();
-      navigate('/');
+      try {
+        await logoutApi();
+        alert('로그아웃 되었습니다.');
+        navigate('/');
+      } catch (error) {
+        console.error('Logout failed', error);
+      }
     };
     const handleMyPage = () => {
         navigate('/mypage');
@@ -96,7 +101,7 @@ export default function MainHeader() {
             
             </div>
             <Auth>
-              {!true ? (
+              {!isAuthenticated() ? (
                 <>
                   <LoginBtn/>
                   <SignUpBtn/>

@@ -22,6 +22,8 @@ const ModalContainer = styled.div`
   max-height: 400px;
   width: 100%;
   height: 100%;
+  overflow: auto;
+
 `;
 
 const ModalHeader = styled.div`
@@ -48,9 +50,29 @@ const CloseButton = styled.button`
 
 const ModalContent = styled.div`
   margin-bottom: 20px;
+  p {
+
+        display: -webkit-box;
+        -webkit-box-orient: vertical;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        word-break: break-word;
+        white-space: normal;
+        font-size: 14px;
+        color: #444444;
+  }
 `;
 
 const EditButton = styled.button`
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  margin-right: 10px;
+  cursor: pointer;
+`;
+const DeleteButton = styled.button`
   background-color: #007bff;
   color: white;
   border: none;
@@ -71,7 +93,11 @@ const DiaryModal = ({ diary, onClose }) => {
           <p>{diary.body}</p>
           <p>{diary.date}</p>
         </ModalContent>
-        <EditButton>수정하기</EditButton>
+        <div>
+            <EditButton>수정하기</EditButton>
+            <DeleteButton>삭제하기</DeleteButton>
+        </div>
+
       </ModalContainer>
     </ModalBackground>
   );

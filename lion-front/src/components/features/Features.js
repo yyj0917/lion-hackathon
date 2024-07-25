@@ -1,7 +1,7 @@
 import styled, { keyframes } from "styled-components";
 import Tab from "./Tab";
 import { AlignJustify, Pen, Search, Undo2 } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 const slideUp = keyframes`
   0% {
@@ -116,12 +116,8 @@ const WriteDiv = styled.div`
 export default function Features() {
     const [ isModal, setIsModal ] = useState(false);
     const [ writePost, setWritePost ] = useState(true);
-    // useEffect(() => {
-    //     if (isModal)
-    //     if (writePost) {
-    //         setWritePost(true);
-    //     }
-    // }, []);
+    useEffect(() => {
+    }, [writePost]);
     return (
         <Wrapper>
             <Modal>
@@ -137,7 +133,7 @@ export default function Features() {
                     </WriteDiv>
                 </FilterAndWrite>
             )}
-            <Tab writePost={writePost}/>
+            <Tab writePost={writePost} setWritePost={setWritePost}/>
             <Back>
                 <Undo2 style={{color: "#FF5A5A",}}/>
             </Back>
