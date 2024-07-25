@@ -35,19 +35,20 @@ export default function SignUp() {
     const [age, setAge] = useState(null); // integer
     const [position, setPosition] = useState('');
     const [office, setOffice] = useState('');
-    const [phoneNumber, setPhoneNumber] = useState(null); // integer
-    const [nickname, setNickname] = useState('');
+    const [phonenumber, setPhoneNumber] = useState(null); // integer
+    const [username, setUsername] = useState('');
 
     const navigate = useNavigate();
     // email, password, name, age, position, office, phoneNumber, nickname
 
-    const handleRegister = async () => {
+    const handleRegister = async (e) => {
+        e.preventDefault();
         try {
-            const response = await registerApi(email, password, name, age, position, office, phoneNumber, nickname,);
-        
+            const response = await registerApi(email, password, name, age, position, office, phonenumber, username,);
             console.log(response);
+            navigate('/login')
         } catch (error) {
-            console.error('Login failed', error);
+            console.error('Registration failed', error);
         }
     };
     
@@ -135,26 +136,26 @@ export default function SignUp() {
                             />
                         </div>
                         <div className="regiform-group">
-                            <label htmlFor="phoneNumber">PhoneNumber</label>
+                            <label htmlFor="phonenumber">PhoneNumber</label>
                             <input
-                                id="phoneNumber"
+                                id="phonenumber"
                                 type="integer"
                                 onChange={(e) => setPhoneNumber(e.target.value)}
                                 required
                             />
                         </div>
                         <div className="regiform-group">
-                            <label htmlFor="nickname">Nickname</label>
+                            <label htmlFor="username">Nickname</label>
                             <input
-                                id="nickname"
+                                id="username"
                                 type="text"
-                                onChange={(e) => setNickname(e.target.value)}
+                                onChange={(e) => setUsername(e.target.value)}
                                 required
                             />
                         </div>
                         <div className="btn-group">
                             <button className="btn" type="submit">로그인</button>
-                            <button onClick={()=>{navigate('/signup')}} className="btn" >회원가입</button>
+                            <button className="btn" type="submit" >회원가입</button>
                         </div>
                     </form>
             </FormWrapper>
