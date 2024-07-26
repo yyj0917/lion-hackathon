@@ -32,10 +32,10 @@ export default function SignUp() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [name, setName] = useState('');
-    const [age, setAge] = useState(null); // integer
+    const [age, setAge] = useState(0); // integer
     const [position, setPosition] = useState('');
     const [office, setOffice] = useState('');
-    const [phonenumber, setPhoneNumber] = useState(null); // integer
+    const [phonenumber, setPhoneNumber] = useState('');
     const [username, setUsername] = useState('');
 
     const navigate = useNavigate();
@@ -113,7 +113,7 @@ export default function SignUp() {
                             <input
                                 id="age"
                                 type="integer"
-                                onChange={(e) => setAge(e.target.value)}
+                                onChange={(e) => setAge(parseInt(e.target.value))}
                                 required
                             />
                         </div>
