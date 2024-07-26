@@ -1,6 +1,6 @@
 # 데이터 처리
-from .models import PublicDiary, PrivateDiary
-from .serializers import PublicDiarySerializer, PrivateDiarySerializer
+from .models import PublicDiary, PrivateDiary, Comment, Like
+from .serializers import PublicDiarySerializer, PrivateDiarySerializer, CommentSerializer #,LikeSerializer
 from rest_framework import viewsets
 
 from rest_framework.response import Response
@@ -9,12 +9,9 @@ from .sentiment_analysis import sentimentAnalysis
 
 # 감정분석 결과 반환
 from rest_framework.views import APIView
-from django.db.models import Avg
-from django.utils.dateparse import parse_date
-from django.db.models.functions import TruncDate
 
 
-# Blog의 목록, detail 보여주기, 수정하기, 삭제하기 모두 가능
+# Public Diary의 목록, detail 보여주기, 수정하기, 삭제하기
 class PublicDiaryViewSet(viewsets.ModelViewSet):
 
     queryset = PublicDiary.objects.all()
@@ -67,7 +64,7 @@ class PublicDiaryViewSet(viewsets.ModelViewSet):
 
         return Response(serializer.data)
     
-
+# Private Diary의 목록, detail 보여주기, 수정하기, 삭제하기
 class PrivateDiaryViewSet(viewsets.ModelViewSet):
 
     queryset = PrivateDiary.objects.all()
@@ -137,3 +134,61 @@ class DiarySentimentSummaryView(APIView):
             'public_diaries': list(public_diary_sentiment),
             'private_diaries': list(private_diary_sentiment)
         }, status=status.HTTP_200_OK)
+
+
+import logging
+logger = logging.getLogger(__name__)
+
+# Public Diary에 작성되어 있는 댓글 확인
+class CommentViewSet(viewsets.ModelViewSet):
+    queryset = Comment.objects.all()
+    serializer_class = CommentSerializer
+
+    # 특정 diary의 댓글 반환
+    # http://127.0.0.1:8000/diary/comments/?diary=1 형태의 query로 요청
+    def list(self, request, *args, **kwargs):
+
+        diary_id = request.query_params.get('diary', None)
+        if diary_id is not None:
+            comments = Comment.objects.filter(diary_id=diary_id)
+        else:
+            comments = Comment.objects.all()
+        
+        serializer = self.get_serializer(comments, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+
+    # def create(self, request, *args, **kwargs):
+    #     # 현재 로그인된 사용자 가져오기
+    #     request.data['user'] = request.user.id
+    #     return super().create(request, *args, **kwargs)
+
+
+# 좋아요는 user마다 1회씩 누를 수 있게 구현해야하므로 User 로그인 완성 후 개발 예정
+# class LikeViewSet(viewsets.ViewSet):
+
+#     def create(self, request, *args, **kwargs):
+#         diary_id = request.data.get('diary')
+#         # user = request.user
+#         if Like.objects.filter(diary_id=diary_id).exists(): # if Like.objects.filter(user=user, diary_id=diary_id).exists()
+#             return Response({'detail': 'Already liked'}, status=status.HTTP_400_BAD_REQUEST)
+#         like = Like(diary_id=diary_id) # like = Like(user=user, diary_id=diary_id)
+#         like.save()
+#         return Response({'status': 'liked'}, status=status.HTTP_201_CREATED)
+
+#     def destroy(self, request, *args, **kwargs):
+#         diary_id = request.data.get('diary')
+#         user = request.user
+#         like = Like.objects.filter(user=user, diary_id=diary_id)
+#         if like.exists():
+#             like.delete()
+#             return Response({'status': 'unliked'}, status=status.HTTP_204_NO_CONTENT)
+#         return Response({'detail': 'Like not found'}, status=status.HTTP_400_BAD_REQUEST)
+
+#     @action(detail=False, methods=['get'])
+#     def list(self, request):
+#         user = request.user
+#         likes = Like.objects.filter(user=user)
+#         serializer = LikeSerializer(likes, many=True)
+#         return Response(serializer.data)
