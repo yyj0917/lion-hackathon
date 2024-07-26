@@ -45,6 +45,7 @@ export default function Login() {
             navigate('/');
         } catch (error) {
             console.error('Login failed', error);
+            console.log('로그인 실패')
         }
     };
     
