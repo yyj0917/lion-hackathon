@@ -13,6 +13,9 @@ from django.http import HttpResponseRedirect
 from rest_framework.permissions import AllowAny
 from allauth.account.models import EmailConfirmation, EmailConfirmationHMAC
 from BackEnd import settings 
+from django.contrib.sites.shortcuts import get_current_site
+from django.urls import reverse
+from django.core.mail import send_mail
 
 class RegisterAPIView(APIView):
     def post(self, request):
@@ -24,6 +27,21 @@ class RegisterAPIView(APIView):
             token = TokenObtainPairSerializer.get_token(user)
             refresh_token = str(token)
             access_token = str(token.access_token)
+
+            # 이메일 인증 링크 생성
+            current_site = get_current_site(request)
+            mail_subject = 'Activate your account'
+            relative_link = reverse('account_confirm_email', kwargs={'key':access_token})
+            absurl = 'http://' + current_site.domain + relative_link
+            email_body = f"Hi {user.username},\nPlease use the link below to verify your email address\n{absurl}"
+            send_mail(
+                subject=mail_subject,
+                message=email_body,
+                from_email="s10106155@gmail.com",
+                recipient_list=[user.email],
+                fail_silently=False,
+            )
+
             res = Response(
                 {
                     "user": serializer.data,
@@ -41,7 +59,9 @@ class RegisterAPIView(APIView):
             res.set_cookie("refresh", refresh_token, httponly=True)
 
             return res
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        else:
+            print(serializer.errors)
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
 
 class LogInAPIView(APIView):
@@ -178,7 +198,7 @@ class ConfirmEmailView(APIView):
     
     def get_queryset(self):
         qs = EmailConfirmation.objects.all_valid()
-        qs = qs.select_related("emaill_address_user")
+        qs = qs.select_related("email_address__user")
         return qs
 
 

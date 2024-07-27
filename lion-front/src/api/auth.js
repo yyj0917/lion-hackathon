@@ -17,10 +17,14 @@ export const registerApi = async (
     email, password, name, age, position, office, phonenumber, username,
 ) => {
     try {
-        const response = await axiosInstance.post('http://localhost:8000/user/register/', { email, password, name, age, position, office, phonenumber, username });
+        const response = await axiosInstance.post(`${API_URL}register/`, { email, password, name, age, position, office, phonenumber, username });
         return response.data;
     } catch (error) {
-        throw new Error(error.response.data.message);
+        if (error.response){
+            throw new Error(error.response.data.message);
+        } else {
+            throw new Error("Network Error");
+        }
     }
 };
 // refreshToken을 이용한 토큰 재발급 API 호출

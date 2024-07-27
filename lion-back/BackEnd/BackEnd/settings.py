@@ -70,6 +70,7 @@ INSTALLED_APPS = [
 
     # diary
     'diary',
+
 ]
 
 AUTH_USER_MODEL = 'accounts.User' #장고에게 내가 만든 커스텀 모델이 회원이 될거라고 알림
