@@ -4,6 +4,9 @@ import styled from 'styled-components';
 import PublicDiary from '../diary/PublicDiary';
 import Matching from '../matching/Matching';
 import {useNavigate } from 'react-router-dom';
+import SharedDiary from '../diary/SharedDiary';
+import WritePost from '../diary/WritePost';
+import Posts from '../diary/Posts';
 
 
 const TabContainer = styled.div`
@@ -80,10 +83,25 @@ const TabContent = styled.div`
 //     outline: none;
 //   }
 // `;
-const Tabs = ({writePost, setWritePost}) => {
+const Tabs = ({writePost, setWritePost, isSharedDiary}) => {
   const [activeIndex, setActiveIndex] = useState(0);
+  const [isPosts, setIsPosts] = useState(true);
   // const [searchTerm, setSearchTerm] = useState('');
   const navigate = useNavigate();
+  let componentToRender = <></>;
+
+  if (activeIndex === 0) {
+    if (writePost) {
+      componentToRender = <WritePost writePost={writePost} setWritePost={setWritePost} />;
+    } else if (!isSharedDiary) {
+      componentToRender = <Posts />;
+    } else {
+      componentToRender = <SharedDiary />;
+    }
+  } else {
+    // 여기에 activeIndex !== 0 일 때 렌더링할 컴포넌트를 지정하세요.
+    componentToRender = <Matching/>;
+  }
   return (
     <>
       <TabContainer>
@@ -112,19 +130,8 @@ const Tabs = ({writePost, setWritePost}) => {
         />
         <TabLabel htmlFor="tab2">동료 매칭</TabLabel>
       </TabContainer>
-      {/* <TabWrapper>
-        <TabFilter>
-          <input
-            type="text"
-            placeholder="검색어를 입력하세요"
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-          />
-        </TabFilter>
-      </TabWrapper> */}
       <TabContent>
-        {activeIndex === 0 && <PublicDiary writePost={writePost} setWritePost={setWritePost}/>}
-        {activeIndex === 1 && <Matching/>}
+        {componentToRender}
       </TabContent>
     </>
   );

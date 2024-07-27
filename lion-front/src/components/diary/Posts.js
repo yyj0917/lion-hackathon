@@ -89,15 +89,15 @@ const Desc = styled.div`
         font-size: 14px;
     }
     p {
+        margin-bottom: 4px;
+        max-height: 100px;
+        line-height: 20px;
         display: -webkit-box;
         -webkit-box-orient: vertical;
         -webkit-line-clamp: 2;
         text-overflow: ellipsis;
         overflow: hidden;
         word-break: break-word;
-        margin-bottom: 4px;
-        max-height: 100px;
-        line-height: 20px;
         white-space: normal;
         font-size: 14px;
         color: #444444;
@@ -171,7 +171,7 @@ export default function Posts() {
     }, []);
     const indexOfLastPost = currentPage * postsPerPage;
     const indexOfFirstPost = indexOfLastPost - postsPerPage;
-    const currentPosts = posts.slice(indexOfFirstPost, indexOfLastPost);
+    const currentPosts = Array.isArray(posts) ? posts.slice(indexOfFirstPost, indexOfLastPost) : [];
 
     // 페이지네이션 페이지 수 계산
     const pageNumbers = [];

@@ -104,6 +104,9 @@ const IconWrapper = styled.div`
 `;
 export default function MyPage() {
     const navigate = useNavigate();
+
+    // 여기서 토큰검증 및 유저정보를 가져오는 로직을 한번 해야함 -> 그렇게 받은 유저 정보들을
+    // 각 컴포넌트에 넘겨줘서 사용할 수 있게 하는 거 짜야 함. 
     return (
         <Wrapper>
             <Navbar>
