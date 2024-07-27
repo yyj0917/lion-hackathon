@@ -21,15 +21,13 @@ class ClientViewSet(viewsets.ModelViewSet):
 
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
+        
         client = serializer.save()
 
-        adviser_count = Adviser.objects.aggregate(count=Count('id'))['count']
+        adviser_count = Adviser.objects.count()
         
         if adviser_count > 0:
-            random_index = random.randint(1, adviser_count)
-            matched_adviser = Adviser.objects.filter(id=random_index)
-        
-            client = self.get_object()
+            matched_adviser = random.choice(Adviser.objects.all())
             client.matched_adviser = matched_adviser
             client.save()
 
