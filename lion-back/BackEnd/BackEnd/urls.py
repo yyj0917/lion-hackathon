@@ -26,12 +26,11 @@ def show_urls(urllist, depth=0):
         if hasattr(entry, 'url_patterns'):
             show_urls(entry.url_patterns, depth + 1)
 urlpatterns = [
-    path('', admin.site.urls),
+    path('admin/', admin.site.urls),
     path('user/', include('accounts.urls')),
     path('posts/', include('posts.urls')),
     path('message/', include('message.urls')),
     path('diary/', include('diary.urls')),
-
  ]
 show_urls(urlpatterns)
 

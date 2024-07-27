@@ -9,8 +9,9 @@ class PublicDiary(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     sentiment = models.TextField(blank=True) # 감정분석 결과
-    confidence = models.FloatField(blank=True, default=-1) # 감정에 대한 신뢰도
-
+    positive = models.FloatField(blank=True, default=-1) # positive confidence
+    negative = models.FloatField(blank=True, default=-1) # negative confidence
+    neutral = models.FloatField(blank=True, default=-1) # neutral confidence
 
 
 class PrivateDiary(models.Model):
@@ -21,7 +22,9 @@ class PrivateDiary(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     sentiment = models.TextField(blank=True) # 감정분석 결과
-    confidence = models.FloatField(blank=True, default=-1) # 감정에 대한 신뢰도
+    positive = models.FloatField(blank=True, default=-1) # positive confidence
+    negative = models.FloatField(blank=True, default=-1) # negative confidence
+    neutral = models.FloatField(blank=True, default=-1) # neutral confidence
 
 
 class Comment(models.Model) :
