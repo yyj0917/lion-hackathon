@@ -16,13 +16,13 @@ const Btn = styled.button`
     font-size: 17px;
 `;
 
-export default function LoginBtn() {
+export default function SignINUPBtn() {
     const navigate = useNavigate();
 
     const handleClick = () => {
         navigate('/login');
     }
     return (
-        <Btn onClick={handleClick}>로그인</Btn>
+        <Btn onClick={handleClick}>로그인/회원가입</Btn>
     );
 }

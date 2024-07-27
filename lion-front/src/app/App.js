@@ -1,7 +1,7 @@
 import '../styles/App.css';
 import { BrowserRouter as Router, Route, Routes, BrowserRouter } from 'react-router-dom';
 import Login from "../pages/login";
-import SignUp from "../pages/signup";
+// import SignUp from "../pages/signup";
 import Main from '../pages/main';
 import Layout from '../components/layout/Layout';
 import RecieveCounselor from '../components/matching/ReceiveCounselor';
@@ -23,7 +23,7 @@ function App() {
       <Layout>
         <Routes>
           <Route path="/login" element={<Login />} />
-          <Route path="/signup" element={<SignUp />} />
+          {/* <Route path="/signup" element={<SignUp />} /> */}
           <Route path="/user/account-confirm-email/:key" element={<ConfirmEmail/>}/> {/*이메일 확인 라우트 추가*/}
           <Route path="/" element={<Main />}>
             {/* 기본 페이지 - 공유일기 / 동료 매칭 - 라우팅으로 움직이기 */}

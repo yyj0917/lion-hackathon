@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 import redlogo from "../../assets/redlogo.png";
 import { isAuthenticated } from "../../utils/auth";
 import { logoutApi } from "../../api/auth";
+import SignINUPBtn from "../button/LoginBtn";
 const Wrapper = styled.header`
   display: flex;
   flex-direction: row;
@@ -101,10 +102,9 @@ export default function MainHeader() {
             
             </div>
             <Auth>
-              {!isAuthenticated() ? (
+              {(true) ? (
                 <>
-                  <LoginBtn/>
-                  <SignUpBtn/>
+                  <SignINUPBtn/>
                 </>
               ) : (
                 <>
