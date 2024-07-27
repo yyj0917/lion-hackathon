@@ -26,7 +26,7 @@ def sentimentAnalysis(content) :
     if(rescode == 200):
 
         sentiment = result['document']['sentiment']
-        confidence = result['document']['confidence'][sentiment]
+        confidence = result['document']['confidence']
 
         return sentiment, confidence
     

@@ -35,7 +35,9 @@ class PublicDiaryViewSet(viewsets.ModelViewSet):
         sentiment, confidence = sentimentAnalysis(diary.body)
 
         diary.sentiment = sentiment
-        diary.confidence = confidence
+        diary.positive = confidence['positive']
+        diary.negative = confidence['negative']
+        diary.neutral = confidence['neutral']
         diary.save()
         
         headers = self.get_success_headers(serializer.data)
@@ -56,7 +58,9 @@ class PublicDiaryViewSet(viewsets.ModelViewSet):
         # 감성 분석 수행 및 결과 저장
         sentiment, confidence = sentimentAnalysis(diary.body)
         diary.sentiment = sentiment
-        diary.confidence = confidence
+        diary.positive = confidence['positive']
+        diary.negative = confidence['negative']
+        diary.neutral = confidence['neutral']
         diary.save()
         
         if getattr(instance, '_prefetched_objects_cache', None):
@@ -88,7 +92,9 @@ class PrivateDiaryViewSet(viewsets.ModelViewSet):
         sentiment, confidence = sentimentAnalysis(diary.body)
 
         diary.sentiment = sentiment
-        diary.confidence = confidence
+        diary.positive = confidence['positive']
+        diary.negative = confidence['negative']
+        diary.neutral = confidence['neutral']
         diary.save()
         
         headers = self.get_success_headers(serializer.data)
@@ -109,7 +115,9 @@ class PrivateDiaryViewSet(viewsets.ModelViewSet):
         # 감성 분석 수행 및 결과 저장
         sentiment, confidence = sentimentAnalysis(diary.body)
         diary.sentiment = sentiment
-        diary.confidence = confidence
+        diary.positive = confidence['positive']
+        diary.negative = confidence['negative']
+        diary.neutral = confidence['neutral']
         diary.save()
         
         if getattr(instance, '_prefetched_objects_cache', None):
@@ -123,15 +131,13 @@ class DiarySentimentSummaryView(APIView):
 
     def get(self, request, *args, **kwargs):
 
-
         # PublicDiary와 PrivateDiary의 날짜별 감정 분석 결과 집계
-        public_diary_sentiment = PublicDiary.objects.all().annotate().values('date', 'sentiment', 'confidence')
-
-        private_diary_sentiment = PrivateDiary.objects.all().annotate().values('date', 'sentiment', 'confidence')
+        public_diary_sentiment = PublicDiary.objects.all().annotate().values('date', 'sentiment', 'positive', 'negative', 'neutral')
+        private_diary_sentiment = PrivateDiary.objects.all().annotate().values('date', 'sentiment', 'positive', 'negative', 'neutral')
 
         # 감정 분석 결과를 집계하여 반환
         return Response({
-            'public_diaries': list(public_diary_sentiment),
+            'public_diaries' : list(public_diary_sentiment),
             'private_diaries': list(private_diary_sentiment)
         }, status=status.HTTP_200_OK)
 
