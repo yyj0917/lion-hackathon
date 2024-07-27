@@ -26,17 +26,11 @@ def show_urls(urllist, depth=0):
         if hasattr(entry, 'url_patterns'):
             show_urls(entry.url_patterns, depth + 1)
 urlpatterns = [
-    path('admin/', admin.site.urls),
+    path('', admin.site.urls),
     path('user/', include('accounts.urls')),
     path('posts/', include('posts.urls')),
     path('message/', include('message.urls')),
     path('diary/', include('diary.urls')),
-    path('', TemplateView.as_view(template_name='index.html')),
-    
-    # path('register/', RegisterAPIView.as_view(), name='register'),
-    # path('auth/LogIn', LogInAPIView.as_view(), name='login'),
-    # path('auth/LogOut', LogOutView.as_view(), name='logout'),
-    # path('auth/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
 
  ]
 show_urls(urlpatterns)
