@@ -97,7 +97,7 @@ export default function Banner() {
       }, []);
     const indexOfLastPost = currentPage * messagesPerPage;
     const indexOfFirstPost = indexOfLastPost - messagesPerPage;
-    const currentMessages = messages.slice(indexOfFirstPost, indexOfLastPost);
+    const currentMessages = Array.isArray(messages) ? messages.slice(indexOfFirstPost, indexOfLastPost) : [];
 
     // 페이지네이션 페이지 수 계산
     const pageNumbers = [];

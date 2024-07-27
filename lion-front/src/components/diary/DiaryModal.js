@@ -1,5 +1,5 @@
 // DiaryModal.js
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 
 const ModalBackground = styled.div`
@@ -82,6 +82,28 @@ const DeleteButton = styled.button`
 `;
 
 const DiaryModal = ({ diary, onClose }) => {
+  const [likes, setLikes] = useState(diary.likes || 0);
+  const [comments, setComments] = useState(diary.comments || []);
+  const [newComment, setNewComment] = useState('');
+
+  const handleLike = async () => {
+    try {
+      // await axios.post(`/api/diaries/${diary.id}/like`);
+      setLikes(likes + 1);
+    } catch (error) {
+      console.error('Failed to like diary:', error);
+    }
+  };
+  // const handleComment = async () => {
+  //   if (!newComment.trim()) return;
+  //   try {
+  //     const response = await axios.post(`/api/diaries/${diary.id}/comments`, { comment: newComment });
+  //     setComments([...comments, response.data]);
+  //     setNewComment('');
+  //   } catch (error) {
+  //     console.error('Failed to add comment:', error);
+  //   }
+  // };
   return (
     <ModalBackground onClick={onClose}>
       <ModalContainer onClick={(e) => e.stopPropagation()}>
