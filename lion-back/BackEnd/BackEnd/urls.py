@@ -35,5 +35,5 @@ urlpatterns = [
     path('matching/', include('match.urls')),
  ]
 
-show_urls(urlpatterns)
+# show_urls(urlpatterns)
 
