@@ -66,3 +66,17 @@ export const UserInfoTokenVerify = async () => {
     }
 };
 
+export const getUserInfo = async () => {
+    try {
+        const accessToken = localStorage.getItem('accessToken');
+        const response = await axiosInstance.get(`${API_URL}user/`, {
+            headers: {
+                'Authorization': 'Bearer ${accessToken}'
+            }
+        });
+        return response.data;
+    } catch (error) {
+        throw new Error(error.response?.data?.message || "Network Error");
+    }
+};
+

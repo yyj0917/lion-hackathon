@@ -84,7 +84,15 @@ class LogInAPIView(APIView):
         else:
             return Response(status=status.HTTP_400_BAD_REQUEST) #존재하지 않는 유저잆니다. 회원가입하세요!!
 
-    
+class UserDetailView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        user = request.user
+        serializers = UserSerializer(user)
+        return Response(serializers.data)
+
+
 class LogOutView(APIView):
     permission_classes = [IsAuthenticated]
 
