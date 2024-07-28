@@ -25,12 +25,15 @@ def show_urls(urllist, depth=0):
         print("  " * depth, entry)
         if hasattr(entry, 'url_patterns'):
             show_urls(entry.url_patterns, depth + 1)
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('user/', include('accounts.urls')),
     path('posts/', include('posts.urls')),
     path('message/', include('message.urls')),
     path('diary/', include('diary.urls')),
+    path('matching/', include('match.urls')),
  ]
+
 show_urls(urlpatterns)
 

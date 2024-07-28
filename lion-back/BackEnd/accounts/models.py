@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
+import uuid
 
 #serializer를 통해 받은 데이터로 모델이 생성됨
 
@@ -31,6 +32,7 @@ class UserManager(BaseUserManager):
         return superuser
 
 class User(AbstractBaseUser, PermissionsMixin):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     email = models.EmailField(max_length=30, null=False, blank=False, unique=True) #유니크를 사용해서 동일 이메일 사용 불가
     name = models.CharField(max_length=10, null=False, blank=False)
     age = models.IntegerField(blank=True, default=0) #age 대신 생년월일..?
