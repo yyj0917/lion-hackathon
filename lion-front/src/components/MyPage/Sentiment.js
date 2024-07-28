@@ -36,18 +36,7 @@ const Sentiment = () => {
     };
     fetchDiaryEntries();
   }, []);
-  // const handleDateClick = (value) => {
-  //   const emotion = prompt('Enter your emotion (happy, neutral, sad):');
-  //   if (emotionIcons[emotion]) {
-  //     setEmotions({
-  //       ...emotions,
-  //       [value.toDateString()]: emotion,
-  //     });
-  //   } else {
-  //     alert('Invalid emotion. Please enter "happy", "neutral", or "sad".');
-  //   }
-  // };
-  // 날짜 선택
+  
   const handleDateClick = (value) => {
     setSelectedDate(value);
   };
