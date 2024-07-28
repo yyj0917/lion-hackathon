@@ -6,6 +6,10 @@ const API_URL = 'http://localhost:8000/user/auth/';
 export const loginApi = async (email, password) => {
     try {
         const response = await axiosInstance.post(`${API_URL}login/`, { email, password });
+        if (response.data.token) {
+            localStorage.setItem('accessToken', response.data.token.access);
+            localStorage.setItem('refreshToken', response.data.token.refresh);
+        }
         return response.data;
     } catch (error) {
         throw new Error(error.response.data.message);
@@ -29,8 +33,15 @@ export const registerApi = async (
 };
 // refreshToken을 이용한 토큰 재발급 API 호출
 export const refreshTokenApi = async (refreshToken) => {
-    const response = await axiosInstance.post(`${API_URL}refresh/`, { refresh: refreshToken });
-    return response.data;
+    try {
+        const response = await axiosInstance.post(`${API_URL}refresh/`, { refresh: refreshToken });
+        if (response.data.access) {
+            localStorage.setItem('accessToken', response.data.access)
+        }
+        return response.data;
+    } catch (error) {
+        throw new Error(error.response?.data?.message || "Network Error");
+    }
   };
 // 로그아웃 API 호출
 export const logoutApi = async () => {
@@ -47,6 +58,11 @@ export const logoutApi = async () => {
 
 // user 정보, 토큰 검증하기
 export const UserInfoTokenVerify = async () => {
-    const response = await axiosInstance.get(`${API_URL}verify/`);
-    return response.data;
-  };
+    try {
+        const response = await axiosInstance.get(`${API_URL}verify/`);
+        return response.data;
+    } catch (error) {
+        throw new Error(error.response?.data?.message || "Network Error");
+    }
+};
+
