@@ -10,9 +10,7 @@ class UserManager(BaseUserManager):
     def create_user(self, email, password, **kwargs):
         if not email:
             raise ValueError('must have user email') #email이 유효하지 않으면 에러 발생
-        user = self.model(
-            email = email
-        )
+        user = self.model(email = email, **kwargs)
         user.set_password(password)
         user.save(using=self._db) #db에 저장
         return user
