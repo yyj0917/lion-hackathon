@@ -16,6 +16,8 @@ from django.contrib.sites.shortcuts import get_current_site
 
 
 class RegisterAPIView(APIView):
+    permission_classes = [AllowAny]
+
     def post(self, request):
         serializer = UserSerializer(data=request.data)
         if serializer.is_valid():
@@ -49,6 +51,7 @@ class RegisterAPIView(APIView):
     
 
 class LogInAPIView(APIView):
+    permission_classes = [AllowAny]
 
     # 로그인
     def post(self, request):
@@ -79,41 +82,11 @@ class LogInAPIView(APIView):
             res.set_cookie(key="refresh", value=refresh_token, httponly=True, secure=settings.SECURE_COOKIE, samesite='Lax')
             return res
         else:
-            return Response(status=status.HTTP_400_BAD_REQUEST)
+            return Response(status=status.HTTP_400_BAD_REQUEST) #존재하지 않는 유저잆니다. 회원가입하세요!!
 
     
 class LogOutView(APIView):
-    # 유저 정보 확인
-    def get(self, request):
-        try:
-            # access token을 decode 해서 유저 id 추출 => 유저 식별
-            access = request.COOKIES['access']
-            payload = jwt.decode(access, SECRET_KEY, algorithms=['HS256'])
-            pk = payload.get('user_id')
-            user = get_object_or_404(User, pk=pk)
-            serializer = UserSerializer(instance=user)
-            return Response(serializer.data, status=status.HTTP_200_OK)
-
-        except(jwt.exceptions.ExpiredSignatureError):
-            # 토큰 만료 시 토큰 갱신
-            data = {'refresh': request.COOKIES.get('refresh', None)}
-            serializer = TokenRefreshSerializer(data=data)
-            if serializer.is_valid(raise_exception=True):
-                access = serializer.data.get('access', None)
-                refresh = serializer.data.get('refresh', None)
-                payload = jwt.decode(access, SECRET_KEY, algorithms=['HS256'])
-                pk = payload.get('user_id')
-                user = get_object_or_404(User, pk=pk)
-                serializer = UserSerializer(instance=user)
-                res = Response(serializer.data, status=status.HTTP_200_OK)
-                res.set_cookie('access', access)
-                res.set_cookie('refresh', refresh)
-                return res
-            raise jwt.exceptions.InvalidTokenError
-
-        except(jwt.exceptions.InvalidTokenError):
-            # 사용 불가능한 토큰일 때
-            return Response(status=status.HTTP_400_BAD_REQUEST)
+    permission_classes = [IsAuthenticated]
 
     # 로그아웃
     def post(self, request):
@@ -133,12 +106,9 @@ class UserViewSet(viewsets.ModelViewSet):
     serializer_class = UserSerializer
 
 class VerifyTokenView(APIView):
-
     permission_classes = [IsAuthenticated]
-    
     # 유저 토큰 검증
     def get(self, request):
-
         # access 토큰 유효할 경우
         try :
             access = request.COOKIES['access']
