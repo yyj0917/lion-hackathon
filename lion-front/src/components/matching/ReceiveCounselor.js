@@ -5,7 +5,12 @@ import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import kakao from '../../assets/kakaotalk.jpg';
 import profile from '../../assets/firefighterProfile.png';
+import CategorySidebar from './CategorySideBar';
 
+const Wrapper = styled.div`
+    display: flex;
+    width: 100%;
+`;
 const ListWrapper = styled.div`
     box-sizing: border-box;
     width: 100%;
@@ -100,64 +105,80 @@ const ListFooter = styled.div`
         padding: 5px;
     }
 `;
+const CardList = styled.div`
+    display: flex;
+    flex-direction: column;
+    width: 80%;
 
+`;
 const RecieveCounselor = () => {
+    const [selectedCategories, setSelectedCategories] = useState(['전체']);
     const [openChatRooms, setOpenChatRooms] = useState([
-        { id: 1, name: '홍길동', age: 30, workplace: '서울시청', comment: '항상 응원합니다!', link: 'https://open.kakao.com/o/sdEKmaEg' },
-        { id: 2, name: '김철수', age: 28, workplace: '부산지검', comment: '힘내세요!', link: 'https://open.kakao.com/o/gFkGj9Cd' },
-        { id: 3, name: '이영희', age: 35, workplace: '삼성전자', comment: '할 수 있습니다!', link: 'https://open.kakao.com/o/gTkGj9Cd' },
-        { id: 4, name: '박지수', age: 27, workplace: '네이버', comment: '당신을 응원합니다!', link: 'https://open.kakao.com/o/gHkGj9Cd' },
-        { id: 5, name: '김영미', age: 32, workplace: 'LG전자', comment: '잘하고 있어요!', link: 'https://open.kakao.com/o/gQkGj9Cd' },
-        { id: 6, name: '최민호', age: 29, workplace: '카카오', comment: '응원합니다!', link: 'https://open.kakao.com/o/gPkGj9Cd' },
-        { id: 7, name: '장철수', age: 33, workplace: '현대차', comment: '화이팅!', link: 'https://open.kakao.com/o/gOkGj9Cd' },
-        { id: 8, name: '박민지', age: 26, workplace: '기아차', comment: '힘내세요!', link: 'https://open.kakao.com/o/gNkGj9Cd' },
+        { id: 1, name: '홍길동', age: 30, workplace: '서울시청', comment: '항상 응원합니다!', link: 'https://open.kakao.com/o/sdEKmaEg', category: '정신건강' },
+        { id: 2, name: '김철수', age: 28, workplace: '부산지검', comment: '힘내세요!', link: 'https://open.kakao.com/o/gFkGj9Cd', category: '직업적 스트레스' },
+        { id: 3, name: '이영희', age: 35, workplace: '삼성전자', comment: '할 수 있습니다!', link: 'https://open.kakao.com/o/gTkGj9Cd', category: '직업적 스트레스' },
+        { id: 4, name: '박지수', age: 27, workplace: '네이버', comment: '당신을 응원합니다!', link: 'https://open.kakao.com/o/gHkGj9Cd', category: '정신건강' },
+        { id: 5, name: '김영미', age: 32, workplace: 'LG전자', comment: '잘하고 있어요!', link: 'https://open.kakao.com/o/gQkGj9Cd', category: '대인관계' },
+        { id: 6, name: '최민호', age: 29, workplace: '카카오', comment: '응원합니다!', link: 'https://open.kakao.com/o/gPkGj9Cd', category: '신체건강' },
+        { id: 7, name: '장철수', age: 33, workplace: '현대차', comment: '화이팅!', link: 'https://open.kakao.com/o/gOkGj9Cd', category: '신체건강' },
+        { id: 8, name: '박민지', age: 26, workplace: '기아차', comment: '힘내세요!', link: 'https://open.kakao.com/o/gNkGj9Cd', category: '기타' },
     // 더 많은 오픈채팅방 데이터를 여기에 추가할 수 있습니다.
       ]);
+    const handleCategoryChange = (e) => {
+        const { value } = e.target;
+        setSelectedCategories([value]);
+  };
+    const filteredRooms = selectedCategories.includes('전체')
+        ? openChatRooms
+        : openChatRooms.filter(room => selectedCategories.includes(room.category));
     const [currentPage, setCurrentPage] = useState(1);
     const chatPerPage = 4;
     const indexOfLastPost = currentPage * chatPerPage;
     const indexOfFirstPost = indexOfLastPost - chatPerPage;
-    const currentRooms = openChatRooms.slice(indexOfFirstPost, indexOfLastPost);
+    const currentRooms = filteredRooms.slice(indexOfFirstPost, indexOfLastPost);
 
     // 페이지네이션 페이지 수 계산
     const pageNumbers = [];
-    for (let i = 1; i <= Math.ceil(openChatRooms.length / chatPerPage); i++) {
+    for (let i = 1; i <= Math.ceil(filteredRooms.length / chatPerPage); i++) {
     pageNumbers.push(i);
     }
     return (
-        <>
-            <ListWrapper>
-                {currentRooms.map(room => (
-                    <Link key={room.id} to={room.link} className="chatroom-card" target="_blank" rel="">
-                        <div className="icon-container">
-                            <img src={kakao} alt='kakaologo' style={{
-                                borderRadius: '50%',
-                            }}/>
-                            <span>openchat</span>
-                        </div>
-                        <h3>{room.name}</h3>
-                        <p>나이: {room.age}</p>
-                        <p>근무지: {room.workplace}</p>
-                        <p>한마디: {room.comment}</p>
-                        <div className='icon-profile'>
-                            <img src={profile} alt="profile"/>
-                        </div>
-                    </Link>
-                    ))}
-            </ListWrapper>
-            <ListFooter>
-                {pageNumbers.map(number => (
-                                <label key={number} className={`${currentPage === number ? 'active' : ''}`}>
-                                    <input
-                                    type="checkbox"
-                                    checked={currentPage === number}
-                                    onChange={() => setCurrentPage(number)}
-                                    />
-                                    {number}
-                                </label>
+        <Wrapper>
+            <CategorySidebar selectedCategories={selectedCategories} onCategoryChange={handleCategoryChange} />
+            <CardList>
+                <ListWrapper>
+                    {currentRooms.map(room => (
+                        <Link key={room.id} to={room.link} className="chatroom-card" target="_blank" rel="">
+                            <div className="icon-container">
+                                <img src={kakao} alt='kakaologo' style={{
+                                    borderRadius: '50%',
+                                }}/>
+                                <span>openchat</span>
+                            </div>
+                            <h3>{room.name}</h3>
+                            <p>나이: {room.age}</p>
+                            <p>근무지: {room.workplace}</p>
+                            <p>한마디: {room.comment}</p>
+                            <div className='icon-profile'>
+                                <img src={profile} alt="profile"/>
+                            </div>
+                        </Link>
                         ))}
-            </ListFooter>
-        </>
+                </ListWrapper>
+                <ListFooter>
+                    {pageNumbers.map(number => (
+                                    <label key={number} className={`${currentPage === number ? 'active' : ''}`}>
+                                        <input
+                                        type="checkbox"
+                                        checked={currentPage === number}
+                                        onChange={() => setCurrentPage(number)}
+                                        />
+                                        {number}
+                                    </label>
+                            ))}
+                </ListFooter>
+            </CardList>
+        </Wrapper>
     )
 }
 

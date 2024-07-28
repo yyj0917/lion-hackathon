@@ -44,3 +44,9 @@ export const logoutApi = async () => {
         throw new Error(error.response.data.message);
     }
 };
+
+// user 정보, 토큰 검증하기
+export const UserInfoTokenVerify = async () => {
+    const response = await axiosInstance.get(`${API_URL}verify/`);
+    return response.data;
+  };

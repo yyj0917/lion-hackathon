@@ -11,16 +11,17 @@ const MatchingWrapper = styled.div`
     gap: 20px;
 `;
 const Btn = styled.button`
-    width: 80%;
-    height: 20%;
+    width: 20%;
+    height: 100%;
     background-color: #FFE6E6;
     border: 1px solid #f5f5f5;
-    border-radius: 50px;
-    margin: 10px;
+    border-radius: 10px;
     font-size: 15px;
     font-weight: bold;
     color: #000;
     cursor: pointer;
+    font-family: "Sunflower", sans-serif;
+
     &:hover {
         background-color: #FF5A5A;
     }
@@ -35,19 +36,46 @@ const IntroText = styled.div`
     display: flex;
     flex-direction: column;
     border-radius: 20px;
-    box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.1);
-    width: 70%;
+    width: 100%;
     margin-left: 5px;
-
-`;
-const BtnWrapper = styled.div`
-    display: flex;
-    flex-direction: column;
-    width: 30%;
-    border-radius: 20px;
-    box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.1);
     margin-right: 5px;
+    gap: 20px;
+    font-family: "Sunflower", sans-serif;
+    div {
+      width: 100%;
+      height: 80%;
+    }
+    h2 {
+      font-size: 24px;
+      font-weight: bold;
+      margin: 20px 0 10px 0;
+      color: #333;
+    }
+    p {
+      font-size: 16px;
+      font-weight: normal;
+      margin: 10px 0 20px 0;
+      color: #666;
+      line-height: 1.6;
+    }
+    span {
+      display: flex;
+      width: 100%;
+      height: 20%;
+      justify-content: end;
+    }
 `;
+const Box = styled.div`
+      display: flex;
+      flex-direction: column;
+      width: 100%;
+      height: 45%;
+      border-radius: 20px;
+      box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.1);
+      box-sizing: border-box;
+      padding: 20px;
+`;
+
 const Matching = () => {
     const [isCounselor, setIsCounselor] = useState(false);
     const [isRecieveCounsel, setIsRecieveCounsel] = useState(false);
@@ -80,15 +108,25 @@ const Matching = () => {
                 {!isCounselor && !isRecieveCounsel && (
                     <TextWrapper>
                         <IntroText>
-                          <h2>상담사로 지원</h2>
-                          <p>어떻게어떻게 하세요</p>
-                          <h2>상담받는 사람으로 지원</h2>
-                          <p>어떻게 어떻게 하세요</p>
+                          <Box>
+                            <div>
+                              <h2>Gate Keeper가 되는 방법</h2>
+                              <p>어떻게어떻게 하세요</p>
+                            </div>
+                            <span>
+                              <Btn onClick={() => { navigate('/matching/counselor'); setIsCounselor(true); setIsRecieveCounsel(false); }}>지원하기</Btn>
+                            </span>
+                          </Box>
+                          <Box>
+                            <div>
+                              <h2>Gate Keeper와 얘기하기</h2>
+                              <p>어떻게 어떻게 하세요</p>
+                            </div>
+                            <span>
+                              <Btn onClick={() => { navigate('/matching/recieve-counsel'); setIsCounselor(false); setIsRecieveCounsel(true); }}>요청하기</Btn>
+                            </span>
+                          </Box>
                         </IntroText>
-                        <BtnWrapper>
-                            <Btn onClick={() => { navigate('/matching/counselor'); setIsCounselor(true); setIsRecieveCounsel(false); }}>Counselor</Btn>
-                            <Btn onClick={() => { navigate('/matching/recieve-counsel'); setIsCounselor(false); setIsRecieveCounsel(true); }}>Receive Counsel</Btn>
-                          </BtnWrapper>
                     </TextWrapper>
                     )}
                 {isCounselor && <Outlet />}

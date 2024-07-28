@@ -133,6 +133,8 @@ MIDDLEWARE = [
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",  # React 앱의 주소
 ]
+# cookie 허용하기 위해 추가
+# CORS_ALLOW_CREDENTIALS = True
 
 ROOT_URLCONF = 'BackEnd.urls'
 
