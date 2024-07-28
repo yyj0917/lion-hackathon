@@ -33,5 +33,12 @@ class ClientViewSet(viewsets.ModelViewSet):
             client.matched_adviser = matched_adviser
             client.save()
 
+        else:
+            matched_adviser = None
+
         headers = self.get_success_headers(serializer.data)
-        return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
+        response_data = serializer.data
+        if matched_adviser:
+            response_data['matched_adviser'] = AdviserSerializer(matched_adviser).data
+
+        return Response(response_data, status=status.HTTP_201_CREATED, headers=headers)

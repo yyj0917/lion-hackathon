@@ -12,11 +12,6 @@ client_list = ClientViewSet.as_view({
     'post' : 'create'
 })
 
-client_detail = ClientViewSet.as_view({
-    'get' : 'retrieve',
-    'put' : 'update',
-    'delete' : 'destroy'
-})
 
 urlpatterns = [
     path('adviser/', adviser_list),
