@@ -41,7 +41,7 @@ const FormPosts = styled.form`
     button {
         padding: 10px;
         font-size: 16px;
-        background-color: #4285f4;
+        background-color: #FF5A5A;
         color: white;
         border: none;
         cursor: pointer;

@@ -1,4 +1,4 @@
-import { BookIcon } from 'lucide-react';
+import { BookHeart, BookIcon } from 'lucide-react';
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { fetchPrivateDiaryEntry } from '../../api/privateDiary';
@@ -34,12 +34,12 @@ const Select = styled.select`
 const DiaryWrapper = styled.div`
     box-sizing: border-box;
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    grid-template-columns: repeat(2, minmax(150px, 1fr));
     grid-template-rows: repeat(2, auto); /* 두 줄로 고정 */
     gap: 16px;
     padding: 20px;
     width: 100%;
-    height: 80%;
+    height: 90%;
     margin: auto;
     
 
@@ -49,7 +49,6 @@ const Book = styled.div`
     border-radius: 8px;
     padding: 16px;
     display: flex;
-    flex-direction: column;
     align-items: center;
     transition: transform 0.2s ease-in-out;
     cursor: pointer;
@@ -60,11 +59,15 @@ const Book = styled.div`
         transform: scale(1.05);
     }
 `;
-const BookInfo = styled.div`
-    position: relative;
-    z-index: 1;
-    margin-top: 8px;
+const BookIconWrapper = styled.div`
 
+    /* opacity: 0.1; 아이콘 투명도 설정 */
+    /* font-size: 50%; */
+    width: 40%;
+`;
+const BookInfo = styled.div`
+    margin-top: 8px;
+    width: 60%;
     p {
         margin: 0;
         font-size: 12px;
@@ -75,7 +78,7 @@ const BookInfo = styled.div`
         font-size: 16px;
         color: #333;
     }
-`;
+    `;
 const Wrapper = styled.div`
     width: 100%;
     display: flex;
@@ -84,26 +87,55 @@ const Wrapper = styled.div`
     height: 100%;
     position: relative;
 `;
-const BookIconWrapper = styled.div`
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    /* opacity: 0.1; 아이콘 투명도 설정 */
-    font-size: 100px;
-`;
 const DiaryContainer = styled.div`
     width: 100%;
     height: 80%; /* 원하는 높이로 설정 */
     box-sizing: border-box;
     overflow: auto;
 `;
+const DiaryFooter = styled.div`
+    
+    display: flex;
+    box-sizing: border-box;
+    justify-content: center;
+    padding: 10px 0;
+    /* background-color: aliceblue; */
+    /* background: #ffffff; */
+    label {
+        margin: 0 5px;
+        color: black;
+        box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.1);
+        cursor: pointer;
+        border-radius: 20px;
+        width: 20px;
+        text-align: center;
+        height: auto;
+
+    }
+    .active {
+        background-color: #FF5A5A;
+        color: #fff;
+    }
+    label input {
+        display: none;
+
+        &:checked + span {
+            font-weight: bold;
+            text-decoration: underline;
+        }
+    }
+    label span {
+        padding: 5px;
+    }
+`;
 const PrivateDiary = () => {
     const [selectedDate, setSelectedDate] = useState('');
+    const [privateDiary, setPrivateDiary] = useState([]);
+    const [currentPage, setCurrentPage] = useState(1);
+    const diaryPerPage = 4;
     const handleDateChange = (event) => {
         setSelectedDate(event.target.value);
       };
-    const [privateDiary, setPrivateDiary] = useState([]);
     const fetchPrivateDiary = async () => {
         try {
             const response = await fetchPrivateDiaryEntry();
@@ -116,11 +148,22 @@ const PrivateDiary = () => {
     useEffect(() => {
         fetchPrivateDiary();
     }, [privateDiary]);
+
     const filteredBooks = selectedDate
         ? books.filter((book) => book.date === selectedDate)
         : books;
     
     const uniqueDates = [...new Set(books.map((book) => book.date))];
+
+    const indexOfLastPost = currentPage * diaryPerPage;
+    const indexOfFirstPost = indexOfLastPost - diaryPerPage;
+    const currentDiary = Array.isArray(books) ? filteredBooks.slice(indexOfFirstPost, indexOfLastPost) : [];
+
+    // 페이지네이션 페이지 수 계산
+    const pageNumbers = [];
+    for (let i = 1; i <= Math.ceil(filteredBooks.length / diaryPerPage); i++) {
+        pageNumbers.push(i);
+    }
     return (
         <Wrapper>
             <FilterWrapper>
@@ -134,10 +177,10 @@ const PrivateDiary = () => {
             </FilterWrapper>
             <DiaryContainer>
                 <DiaryWrapper>
-                    {filteredBooks.map((book, index) => (
+                    {currentDiary.map((book, index) => (
                         <Book key={index}>
                             <BookIconWrapper>
-                                <BookIcon size={100}/>
+                                <BookHeart size={100} style={{color: '#FF5A5A'}}/>
                             </BookIconWrapper>
                             <BookInfo>
                                 <p>{book.date}</p>
@@ -147,6 +190,18 @@ const PrivateDiary = () => {
                     ))}
                 </DiaryWrapper>
             </DiaryContainer>
+            <DiaryFooter>
+                {pageNumbers.map(number => (
+                            <label key={number} className={`${currentPage === number ? 'active' : ''}`}>
+                                <input
+                                type="checkbox"
+                                checked={currentPage === number}
+                                onChange={() => setCurrentPage(number)}
+                                />
+                                {number}
+                            </label>
+                    ))}
+            </DiaryFooter>
         </Wrapper>
     );
 }

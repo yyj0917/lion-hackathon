@@ -90,33 +90,64 @@ const AlertBox = styled.div`
         margin-bottom: 5px;
     }
 `;
+const CheckBoxGroup = styled.div`
+    margin-bottom: 20px;
+    display: flex;
+    justify-content: space-between;
+    label {
+        display: block;
+        margin-right: 5px;
+        cursor: pointer;
+        span {
+            display: inline-block;
+        }
+    }
+`;
+
+const CheckBoxInput = styled.input.attrs({ type: 'checkbox' })`
+    margin-right: 10px;
+
+    &:checked + span {
+        /* background-color: #007BFF; */
+        color: #007BFF;
+        border-radius: 4px;
+        /* padding: 2px 6px; */
+    }
+`;
 
 function Counselor() {
     const [formWrite, setFormWrite] = useState(false);
     const [name, setName] = useState('');
     const [age, setAge] = useState(null);
     const [workIn, setWorkIn] = useState('');
-    const [purpose, setPurpose] = useState('');
     const [openlink, setOpenlink] = useState('');
     const [giveTalk, setGiveTalk] = useState('');
+    const [categories, setCategories] = useState([]);
 
 
 
     const handleSubmit = async (event) => {
         event.preventDefault();
         try {
-            const response = await WriteCounselorApi(name, age, workIn, purpose, openlink, giveTalk);
+            const response = await WriteCounselorApi(name, age, workIn, openlink, giveTalk);
             console.log('Diary entry created:', response.data);
             setName('');
             setAge();
             setWorkIn('');
-            setPurpose('');
             setOpenlink('');
             setGiveTalk('');
             alert('제출이 완료되었습니다.');
           } catch (error) {
             console.error('Error creating diary entry:', error);
           }
+    };
+    const handleCategoryChange = (e) => {
+        const { value, checked } = e.target;
+        if (checked) {
+            setCategories([...categories, value]);
+        } else {
+            setCategories(categories.filter((category) => category !== value));
+        }
     };
     return (
         <>
@@ -139,7 +170,6 @@ function Counselor() {
             ) : (
                 <Wrapper>
                     <FormPosts onSubmit={handleSubmit}>
-                        
                         <input
                             type='text'
                             placeholder='이름'
@@ -160,12 +190,6 @@ function Counselor() {
                             required/>
                         <input
                             type='text'
-                            placeholder='상담사 지원 목적'
-                            value={purpose}
-                            onChange={(e) => setPurpose(e.target.value)}
-                            required/>
-                        <input
-                            type='text'
                             placeholder='오픈채팅방 링크'
                             value={openlink}
                             onChange={(e) => setOpenlink(e.target.value)}
@@ -176,6 +200,49 @@ function Counselor() {
                             value={giveTalk}
                             onChange={(e) => setGiveTalk(e.target.value)}
                             required/>
+                        <CheckBoxGroup>
+                                <label>
+                                    <CheckBoxInput
+                                        type="checkbox"
+                                        value="정신건강"
+                                        onChange={handleCategoryChange}
+                                    />
+                                    <span>정신건강</span>
+                                </label>
+                                <label>
+                                    <CheckBoxInput
+                                        type="checkbox"
+                                        value="직업적 스트레스"
+                                        onChange={handleCategoryChange}
+                                    />
+                                    <span>직업적 스트레스</span>
+                                    
+                                </label>
+                                <label>
+                                    <CheckBoxInput
+                                        type="checkbox"
+                                        value="신체건강"
+                                        onChange={handleCategoryChange}
+                                    />
+                                    <span>신체건강</span>
+                                </label>
+                                <label>
+                                    <CheckBoxInput
+                                        type="checkbox"
+                                        value="대인관계"
+                                        onChange={handleCategoryChange}
+                                    />
+                                    <span>대인관계</span>
+                                </label>
+                                <label>
+                                    <CheckBoxInput
+                                        type="checkbox"
+                                        value="기타"
+                                        onChange={handleCategoryChange}
+                                    />
+                                    <span>기타</span>
+                                </label>
+                        </CheckBoxGroup>
                         <button type="submit">Submit</button>
                     </FormPosts>
                 </Wrapper>

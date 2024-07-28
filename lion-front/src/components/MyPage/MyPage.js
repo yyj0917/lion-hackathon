@@ -2,6 +2,8 @@ import { BarChart4, CircleUser, Flame, Laugh, Notebook, SquarePen } from "lucide
 import styled from "styled-components";
 import { Outlet, useNavigate } from "react-router-dom";
 import profile from "../../assets/profileimages.png";
+import { useEffect, useState } from "react";
+import { UserInfoTokenVerify } from "../../api/auth";
 
 const Wrapper = styled.div`
 
@@ -34,7 +36,9 @@ const Contents = styled.div`
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: rgba(220, 220, 220, 0.3); /* 흐린 회색 배경색 */
+    /* background-color: rgba(220, 220, 220, 0.3); 흐린 회색 배경색 */
+    background: rgb(233,233,233);
+    background: radial-gradient(circle, rgba(233,233,233,1) 0%, rgba(245,241,241,1) 79%, rgba(252,69,69,1) 100%);
     position: relative;
 `;
 const ImgWrapper = styled.div`
@@ -103,8 +107,21 @@ const IconWrapper = styled.div`
     }
 `;
 export default function MyPage() {
+    const [user, setUser] = useState({});
     const navigate = useNavigate();
 
+    const fetchUserInfo = async () => {
+        try {
+            const response = await UserInfoTokenVerify();
+            console.log(response);
+        } catch (error) {
+            console.log('Error message', error);
+        }
+        
+    }
+    useEffect(() => {
+        fetchUserInfo();
+    }, []);
     // 여기서 토큰검증 및 유저정보를 가져오는 로직을 한번 해야함 -> 그렇게 받은 유저 정보들을
     // 각 컴포넌트에 넘겨줘서 사용할 수 있게 하는 거 짜야 함. 
     return (

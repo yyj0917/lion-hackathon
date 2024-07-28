@@ -61,11 +61,13 @@ const Sentiment = () => {
     }
     return null;
   };
+  // font-family: 'Courier New', Courier, monospace;
+
   const selectedEntry = entries[selectedDate?.toDateString()];
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '10px'}}>
-      <h2 style={{fontFamily: 'Lato'}}>My Emotion Calendar</h2>
+      <h2 style={{fontFamily: 'Courier New'}}>My Emotion Calendar</h2>
       <Calendar
         onClickDay={handleDateClick}
         value={date}
