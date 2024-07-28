@@ -75,7 +75,8 @@ export default function SignUpComponent() {
             const response = await registerApi(email, password, name, age, position, office, phonenumber, username,);
             console.log(response);
             setMessage('회원가입 성공! 이메일을 확인하여 계정을 활성화하세요.')
-            console.log(message)
+            alert(message);
+            navigate('/login');
         } catch (error) {
             console.error('Registration failed', error);
             setMessage('회원가입 실패. 다시 시도하세요.')
@@ -89,14 +90,14 @@ export default function SignUpComponent() {
                     <h1>Create Account</h1>
                     <span>use your email for registration</span>
                     <input
-                        id="email"
+                        id="signup-email"
                         type="email"
                         placeholder="Email"
                         onChange={(e) => setEmail(e.target.value)}
                         required
                     />
                     <input
-                        id="password"
+                        id="signup-password"
                         type="password"
                         placeholder="Password"
                         onChange={(e) => setPassword(e.target.value)}

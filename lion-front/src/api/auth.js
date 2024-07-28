@@ -38,6 +38,7 @@ export const logoutApi = async () => {
         const response = await axiosInstance.post(`${API_URL}logout/`);
         localStorage.removeItem('accessToken');
         localStorage.removeItem('refreshToken');
+        console.log(response);
         return response.data;
     } catch (error) {
         throw new Error(error.response.data.message);

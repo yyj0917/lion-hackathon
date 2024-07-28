@@ -1,5 +1,6 @@
 export const isAuthenticated = () => {
     const accessToken = localStorage.getItem('accessToken');
+    console.log(accessToken);
     return !!accessToken; // accessToken이 존재하면 true, 없으면 false 반환
   };
 // export const isAuthenticated = () => {

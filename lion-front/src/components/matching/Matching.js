@@ -25,6 +25,29 @@ const Btn = styled.button`
         background-color: #FF5A5A;
     }
 `;
+const TextWrapper = styled.div`
+    display: flex;
+    width: 100%;
+    height: 90%;
+    gap: 10px;
+    `;
+const IntroText = styled.div`
+    display: flex;
+    flex-direction: column;
+    border-radius: 20px;
+    box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.1);
+    width: 70%;
+    margin-left: 5px;
+
+`;
+const BtnWrapper = styled.div`
+    display: flex;
+    flex-direction: column;
+    width: 30%;
+    border-radius: 20px;
+    box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.1);
+    margin-right: 5px;
+`;
 const Matching = () => {
     const [isCounselor, setIsCounselor] = useState(false);
     const [isRecieveCounsel, setIsRecieveCounsel] = useState(false);
@@ -55,10 +78,18 @@ const Matching = () => {
         
             <MatchingWrapper>
                 {!isCounselor && !isRecieveCounsel && (
-                    <>
-                        <Btn onClick={() => { navigate('/counselor'); setIsCounselor(true); setIsRecieveCounsel(false); }}>Counselor</Btn>
-                        <Btn onClick={() => { navigate('/recieve-counsel'); setIsCounselor(false); setIsRecieveCounsel(true); }}>Receive Counsel</Btn>
-                    </>
+                    <TextWrapper>
+                        <IntroText>
+                          <h2>상담사로 지원</h2>
+                          <p>어떻게어떻게 하세요</p>
+                          <h2>상담받는 사람으로 지원</h2>
+                          <p>어떻게 어떻게 하세요</p>
+                        </IntroText>
+                        <BtnWrapper>
+                            <Btn onClick={() => { navigate('/matching/counselor'); setIsCounselor(true); setIsRecieveCounsel(false); }}>Counselor</Btn>
+                            <Btn onClick={() => { navigate('/matching/recieve-counsel'); setIsCounselor(false); setIsRecieveCounsel(true); }}>Receive Counsel</Btn>
+                          </BtnWrapper>
+                    </TextWrapper>
                     )}
                 {isCounselor && <Outlet />}
                 {isRecieveCounsel && <Outlet/>}
