@@ -13,6 +13,7 @@ import PrivateDiary from '../components/MyPage/PrivateDiary';
 import WritePost from '../components/diary/WritePost';
 import Features from '../components/features/Features';
 import Profile from '../components/MyPage/Profile';
+import Matching from '../components/matching/Matching';
 
 
 
@@ -26,8 +27,9 @@ function App() {
           <Route path="/" element={<Main />}>
             {/* 기본 페이지 - 공유일기 / 동료 매칭 - 라우팅으로 움직이기 */}
             <Route path="/" element={<Features />}>
-              <Route path="/counselor" element={<Counselor />} />
-              <Route path="/recieve-counsel" element={<RecieveCounselor />} />
+              <Route path="/matching" element={<Matching />} />
+              <Route path="/matching/counselor" element={<Counselor />} />
+              <Route path="/matching/recieve-counsel" element={<RecieveCounselor />} />
             </Route>
             {/* 마이 페이지 루트로 라우팅 */}
             <Route path="/mypage" element={<MyPage />}>

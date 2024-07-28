@@ -96,22 +96,6 @@ const Wrapper = styled.div`
     }
 `;
 
-const FormWrapper = styled.div`
-    width: 1200px;
-    margin: 0 auto;
-    display: flex;
-    justify-content: space-between;
-`;
-const Article = styled.div`
-    position: relative; 
-    padding: 20px;
-    margin: 5px;
-    flex-grow: 15;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-    border-radius: 8px;
-    background-color: rgba(249, 249, 249, 0.2); /* 배경색 투명도 설정 */
-    overflow: hidden;
-`;
 const FormContainer = styled.div`
     position: absolute;
     top: 0;
@@ -205,7 +189,11 @@ const Container = styled.div`
     border-radius: 10px;
     position: relative;
     overflow: hidden;
-    width: 768px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+    /* width: 768px; */
     max-width: 100%;
     min-height: 480px;
 
@@ -270,16 +258,16 @@ export default function Login() {
                     </FormLogin> 
                 </FormContainer>
                 <OverlayContainer className="overlay-container">
-                    <div class="overlay">
-                        <div class="overlay-panel overlay-left">
+                    <div className="overlay">
+                        <div className="overlay-panel overlay-left">
                             <h1>Welcome Back!</h1>
                             <p>To keep connected with us please login with your personal info</p>
-                            <button class="ghost" onClick={handleSignInClick} id="signIn">Sign In</button>
+                            <button className="ghost" onClick={handleSignInClick} id="signIn">Sign In</button>
                         </div>
-                        <div class="overlay-panel overlay-right">
+                        <div className="overlay-panel overlay-right">
                             <h1>Hello, Friend!</h1>
                             <p>Enter your personal details and start journey with us</p>
-                            <button class="ghost" onClick={handleSignUpClick} id="signUp">Sign Up</button>
+                            <button className="ghost" onClick={handleSignUpClick} id="signUp">Sign Up</button>
                         </div>
                     </div>
                 </OverlayContainer>

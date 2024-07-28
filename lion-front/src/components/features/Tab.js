@@ -125,7 +125,7 @@ const Tabs = ({writePost, setWritePost, isSharedDiary}) => {
           checked={activeIndex === 1}
           onChange={() => {
             setActiveIndex(1);
-            navigate('/');
+            navigate('/matching');
           }}
         />
         <TabLabel htmlFor="tab2">동료 매칭</TabLabel>

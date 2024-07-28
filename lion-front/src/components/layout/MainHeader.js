@@ -102,7 +102,7 @@ export default function MainHeader() {
             
             </div>
             <Auth>
-              {(false) ? (
+              {(!isAuthenticated()) ? (
                 <>
                   <SignINUPBtn/>
                 </>
