@@ -14,6 +14,9 @@ import WritePost from '../components/diary/WritePost';
 import Features from '../components/features/Features';
 import Profile from '../components/MyPage/Profile';
 import Matching from '../components/matching/Matching';
+import DiaryModal from '../components/diary/DiaryModal';
+import Posts from '../components/diary/Posts';
+import SharedDiary from '../components/diary/SharedDiary';
 
 
 
@@ -27,6 +30,10 @@ function App() {
           <Route path="/" element={<Main />}>
             {/* 기본 페이지 - 공유일기 / 동료 매칭 - 라우팅으로 움직이기 */}
             <Route path="/" element={<Features />}>
+              <Route path="/" element={<Posts />} />
+              <Route path="/publicDiary/writeDiary" element={<WritePost />} />
+              <Route path="/publicDiary/sharedDiary" element={<SharedDiary />} />
+              <Route path="/publicDiary/:id" element={<DiaryModal />} />
               <Route path="/matching" element={<Matching />} />
               <Route path="/matching/counselor" element={<Counselor />} />
               <Route path="/matching/recieve-counsel" element={<RecieveCounselor />} />
