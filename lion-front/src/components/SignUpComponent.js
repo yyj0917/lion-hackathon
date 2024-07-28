@@ -2,32 +2,8 @@ import styled from "styled-components";
 import React, { useState } from 'react';
 import "../styles/App.css";
 import { registerApi } from "../api/auth";
-// import { useAuth } from "../contexts/AuthContext";
 import { useNavigate } from "react-router-dom";
 
-
-// const Wrapper = styled.div`
-//     display: flex;
-//     height: calc(100vh - 100px - 40px);
-//     padding: 20px 0;
-// `;
-
-// const FormWrapper = styled.div`
-//     width: 1200px;
-//     margin: 0 auto;
-//     display: flex;
-//     justify-content: space-between;
-// `;
-// const Article = styled.div`
-//     position: relative; 
-//     padding: 20px;
-//     margin: 5px;
-//     flex-grow: 15;
-//     box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-//     border-radius: 8px;
-//     background-color: rgba(249, 249, 249, 0.2); /* 배경색 투명도 설정 */
-//     overflow: hidden;
-// `;
 const FormSighUp = styled.form`
     font-family: 'Montserrat', sans-serif;
     background-color: #FFFFFF;
@@ -115,79 +91,60 @@ export default function SignUpComponent() {
                     <input
                         id="email"
                         type="email"
+                        placeholder="Email"
                         onChange={(e) => setEmail(e.target.value)}
                         required
                     />
                     <input
                         id="password"
                         type="password"
+                        placeholder="Password"
                         onChange={(e) => setPassword(e.target.value)}
                         required
                     />
                     <input
                         id="name"
                         type="text"
+                        placeholder="Name"
                         onChange={(e) => setName(e.target.value)}
                         required
                     />
                     <input
                         id="age"
                         type="integer"
+                        placeholder="Age"
                         onChange={(e) => setAge(parseInt(e.target.value))}
                         required
                     />
                     <input
                         id="position"
                         type="text"
+                        placeholder="Position"
                         onChange={(e) => setPosition(e.target.value)}
                         required
                     />
                     <input
                         id="office"
                         type="text"
+                        placeholder="Office"
                         onChange={(e) => setOffice(e.target.value)}
                         required
                     />
                     <input
                         id="phonenumber"
-                        type="integer"
+                        type="text"
+                        placeholder="PhoneNumber"
                         onChange={(e) => setPhoneNumber(e.target.value)}
                         required
                     />
                     <input
                         id="username"
                         type="text"
+                        placeholder="Username"
                         onChange={(e) => setUsername(e.target.value)}
                         required
                     />
                     <button className="btn" type="submit" >SIGN UP</button>
-                        {/* <div className="regiform-group">
-                            <label htmlFor="email">Email</label>
-                        </div>
-                        <div className="regiform-group">
-                            <label htmlFor="password">Password</label>
-                        </div>
-                        <div className="regiform-group">
-                            <label htmlFor="name">Name</label>
-                        </div>
-                        <div className="regiform-group">
-                            <label htmlFor="age">Age</label>
-                        </div>
-                        <div className="regiform-group">
-                            <label htmlFor="position">Position</label>
-                        </div>
-                        <div className="regiform-group">
-                            <label htmlFor="office">Office</label>
-                        </div>
-                        <div className="regiform-group">
-                            <label htmlFor="phonenumber">PhoneNumber</label>
-                        </div>
-                        <div className="regiform-group">
-                            <label htmlFor="username">Nickname</label>
-                        </div>
-                        <div className="btn-group">
-                            <button className="btn" type="submit">로그인</button>
-                        </div> */}
                     </FormSighUp>
         </>
         // <Wrapper>

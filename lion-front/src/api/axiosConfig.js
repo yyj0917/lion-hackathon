@@ -13,7 +13,6 @@ const axiosInstance = axios.create({
 // Request interceptor for adding the access token to requests
 axiosInstance.interceptors.request.use(
   async config => {
-    console.log(config);
     const accessToken = localStorage.getItem('accessToken');
     if (accessToken) {
       config.headers.Authorization = `Bearer ${accessToken}`;

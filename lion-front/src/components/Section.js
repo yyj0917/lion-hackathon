@@ -5,7 +5,8 @@ import { Outlet } from "react-router-dom";
 
 const Wrapper = styled.div`
     /* border: 3px solid red; */
-    width: 1200px;
+    max-width: 1200px;
+    width: 100%;
     margin: 0 auto;
     display: flex;
     justify-content: space-between;

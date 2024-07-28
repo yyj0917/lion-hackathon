@@ -200,6 +200,16 @@ const OverlayContainer = styled.div`
 
 
 `;
+const Container = styled.div`
+    background-color: #fff;
+    border-radius: 10px;
+    position: relative;
+    overflow: hidden;
+    width: 768px;
+    max-width: 100%;
+    min-height: 480px;
+
+`;
 export default function Login() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -231,47 +241,50 @@ export default function Login() {
     };
     
     return (
-        <Wrapper className={isRightPanelActive ? 'right-panel-active' : ''}>
-            <FormContainer className="sign-up-container">
-                <SignUp/>
-            </FormContainer>
-            <FormContainer className="sign-in-container">
-                <FormLogin onSubmit={handleLogin}>
-                    <h1>Sign in</h1>
-                    <span>or use your account</span>
-                    <input
-                        id="email"
-                        type="email"
-                        placeholder="Email"
-                        onChange={(e) => setEmail(e.target.value)}
-                        required
-                    />
-                    <input
-                        id="password"
-                        type="password"
-                        placeholder="Password"
-                        onChange={(e) => setPassword(e.target.value)}
-                        required
-                    />
-                    <Link href="#">Forgot your password?</Link>
-                    <button className="btn" type="submit">로그인</button>
-                </FormLogin> 
-            </FormContainer>
-            <OverlayContainer className="overlay-container">
-                <div class="overlay">
-                    <div class="overlay-panel overlay-left">
-                        <h1>Welcome Back!</h1>
-                        <p>To keep connected with us please login with your personal info</p>
-                        <button class="ghost" onClick={handleSignInClick} id="signIn">Sign In</button>
+        <Container>
+
+            <Wrapper className={isRightPanelActive ? 'right-panel-active' : ''}>
+                <FormContainer className="sign-up-container">
+                    <SignUp/>
+                </FormContainer>
+                <FormContainer className="sign-in-container">
+                    <FormLogin onSubmit={handleLogin}>
+                        <h1>Sign in</h1>
+                        <span>or use your account</span>
+                        <input
+                            id="email"
+                            type="email"
+                            placeholder="Email"
+                            onChange={(e) => setEmail(e.target.value)}
+                            required
+                        />
+                        <input
+                            id="password"
+                            type="password"
+                            placeholder="Password"
+                            onChange={(e) => setPassword(e.target.value)}
+                            required
+                        />
+                        <Link href="#">Forgot your password?</Link>
+                        <button className="btn" type="submit">로그인</button>
+                    </FormLogin> 
+                </FormContainer>
+                <OverlayContainer className="overlay-container">
+                    <div class="overlay">
+                        <div class="overlay-panel overlay-left">
+                            <h1>Welcome Back!</h1>
+                            <p>To keep connected with us please login with your personal info</p>
+                            <button class="ghost" onClick={handleSignInClick} id="signIn">Sign In</button>
+                        </div>
+                        <div class="overlay-panel overlay-right">
+                            <h1>Hello, Friend!</h1>
+                            <p>Enter your personal details and start journey with us</p>
+                            <button class="ghost" onClick={handleSignUpClick} id="signUp">Sign Up</button>
+                        </div>
                     </div>
-                    <div class="overlay-panel overlay-right">
-                        <h1>Hello, Friend!</h1>
-                        <p>Enter your personal details and start journey with us</p>
-                        <button class="ghost" onClick={handleSignUpClick} id="signUp">Sign Up</button>
-                    </div>
-                </div>
-            </OverlayContainer>
-        </Wrapper>
+                </OverlayContainer>
+            </Wrapper>
+        </Container>
     )
 }
 {/* <Article className="poem-container">

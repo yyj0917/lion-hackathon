@@ -3,6 +3,7 @@ import Tab from "./Tab";
 import { AlignJustify, NotebookTabs, Pen, Search, Undo2 } from "lucide-react";
 import { useEffect, useState } from "react";
 import Tooltip from "../../utils/Tooltip";
+import { useNavigate } from "react-router-dom";
 
 const slideUp = keyframes`
   0% {
@@ -115,6 +116,7 @@ const ModalBtn = styled.div`
 //     }
 // `;
 export default function Features() {
+    const navigate = useNavigate();
     const [ isModal, setIsModal ] = useState(false);
     const [isSharedDiary, setIsSharedDiary] = useState(false);
     const [ writePost, setWritePost ] = useState(true);
