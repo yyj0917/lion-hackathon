@@ -26,6 +26,7 @@ const Navbar = styled.div`
     align-items: center;
     gap: 20px;
     padding: 20px 0;
+    border-right: 1px solid #f7f7f7;
     
 `;
 const Contents = styled.div`
@@ -37,8 +38,7 @@ const Contents = styled.div`
     justify-content: center;
     align-items: center;
     /* background-color: rgba(220, 220, 220, 0.3); 흐린 회색 배경색 */
-    background: rgb(233,233,233);
-    background: radial-gradient(circle, rgba(233,233,233,1) 0%, rgba(245,241,241,1) 79%, rgba(252,69,69,1) 100%);
+    
     position: relative;
 `;
 const ImgWrapper = styled.div`
@@ -141,7 +141,7 @@ export default function MyPage() {
                     <p onClick={() => navigate('/mypage/sentimentResult')}><BarChart4/> Analyze</p>
                     <p onClick={() => navigate('/mypage/writeDiary')}><SquarePen/> Write</p>
                 </IconWrapper>
-                </Navbar>
+            </Navbar>
             <Contents>
                 <Outlet/>
             </Contents>

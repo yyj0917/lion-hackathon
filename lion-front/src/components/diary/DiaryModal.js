@@ -1,28 +1,33 @@
 // DiaryModal.js
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
+import { HandMetal, HeartHandshake, PartyPopper, Siren, ThumbsUp } from "lucide-react";
+import { useNavigate, useParams } from 'react-router-dom';
+import { ReadPersonalPostApi, ReadPostsApi } from '../../api/diary';
 
 const ModalBackground = styled.div`
-  position: fixed;
-  top: 0;
-  left: 0;
+  
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
   display: flex;
   justify-content: center;
   align-items: center;
-`;
+  /* overflow: auto; */
+  `;
 
 const ModalContainer = styled.div`
-  background-color: white;
+  box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.1);
   padding: 20px;
-  border-radius: 10px;
-  max-width: 500px;
-  max-height: 400px;
+  border-radius: 20px;
+  max-width: 600px;
+  max-height: 500px;
   width: 100%;
   height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
   overflow: auto;
+  box-sizing: border-box;
 
 `;
 
@@ -31,25 +36,28 @@ const ModalHeader = styled.div`
   justify-content: space-between;
   align-items: center;
   margin-bottom: 20px;
+  span {
+    display: flex;
+    gap: 5px;
+    align-items: center;
+    justify-content: center;
+    border-radius: 10px;
+    background-color: #FF5A5A;
+    color: white;
+    font-weight: 700;
+    padding: 5px;
+    cursor: pointer;  
+  }
 `;
 
 const ModalTitle = styled.h2`
   margin: 0;
 `;
 
-const CloseButton = styled.button`
-  background-color: #FF5A5A;
-  border: none;
-  color: white;
-  font-size: 1.5rem;
-  cursor: pointer;
-  border-radius: 50%;
-  width: 30px;
-  height: 30px;
-`;
 
 const ModalContent = styled.div`
   margin-bottom: 20px;
+  overflow: auto;
   p {
 
         display: -webkit-box;
@@ -60,6 +68,14 @@ const ModalContent = styled.div`
         white-space: normal;
         font-size: 14px;
         color: #444444;
+  }
+  .username {
+    text-align: end;
+    font-size: 14px;
+    font-weight: 700;
+    color: #5a5a5a;
+    font-family: 'Nunito', Courier, monospace;
+    
   }
 `;
 
@@ -80,46 +96,77 @@ const DeleteButton = styled.button`
   border-radius: 5px;
   cursor: pointer;
 `;
-
-const DiaryModal = ({ diary, onClose }) => {
-  const [likes, setLikes] = useState(diary.likes || 0);
-  const [comments, setComments] = useState(diary.comments || []);
-  const [newComment, setNewComment] = useState('');
-
-  const handleLike = async () => {
-    try {
-      // await axios.post(`/api/diaries/${diary.id}/like`);
-      setLikes(likes + 1);
-    } catch (error) {
-      console.error('Failed to like diary:', error);
+const ModalFooter = styled.div`
+  display: flex;
+  justify-content: space-between;
+`;
+const IconSpan = styled.div`
+    display: inline-flex;
+    line-height: 18px;
+    font-size: 12px;
+    /* justify-content: space-between; */
+    gap: 10px;
+    width: 50%;
+    span {  
+      box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.1);
+      border-radius: 20px;
+      width: 100%;
+      font-size: 16px;
+      display: flex;
+      gap: 5px;
+      align-items: center;
+      /* color: #FF5A5A; */
+      justify-content: center;
+      cursor: pointer;
     }
-  };
-  // const handleComment = async () => {
-  //   if (!newComment.trim()) return;
-  //   try {
-  //     const response = await axios.post(`/api/diaries/${diary.id}/comments`, { comment: newComment });
-  //     setComments([...comments, response.data]);
-  //     setNewComment('');
-  //   } catch (error) {
-  //     console.error('Failed to add comment:', error);
-  //   }
-  // };
+`;
+
+const DiaryModal = () => {
+  const { id } = useParams();
+  const navigate = useNavigate();
+  const [diary, setDiary] = useState({});
+  const fetchDiary = async () => {
+    try {
+        const response = await ReadPersonalPostApi(id);
+        console.log(response);
+        setDiary(response);
+      } catch (error) {
+        console.error('Error creating diary entry:', error);
+      }
+    }
+useEffect(() => {
+    fetchDiary();
+}, [id]);
+
   return (
-    <ModalBackground onClick={onClose}>
+    <ModalBackground >
       <ModalContainer onClick={(e) => e.stopPropagation()}>
         <ModalHeader>
           <ModalTitle>{diary.title}</ModalTitle>
-          <CloseButton onClick={onClose}>&times;</CloseButton>
+          <div style={{display: 'flex', gap: '10px'}}>
+            <span>
+              <Siren size={24} style={{color: 'white'}}/>
+              신고하기
+            </span>
+          </div>
+
         </ModalHeader>
         <ModalContent>
           <p>{diary.body}</p>
-          <p>{diary.date}</p>
+          <p className='username'>닉네임/{diary.date}</p>
         </ModalContent>
-        <div>
-            <EditButton>수정하기</EditButton>
-            <DeleteButton>삭제하기</DeleteButton>
-        </div>
-
+        <ModalFooter>
+          <IconSpan>
+              <span><ThumbsUp size={16} style={{color: '#0064FF'}}/> 0</span>
+              <span><PartyPopper size={16} style={{color: '#008C8C'}}/> 2</span>
+              <span><HandMetal size={16} style={{color: '#FF8200'}}/> 0</span>
+              <span><HeartHandshake size={16} style={{color: '#FF5A5A'}}/> 0</span>
+          </IconSpan>
+          <div>
+              <EditButton>수정하기</EditButton>
+              <DeleteButton>삭제하기</DeleteButton>
+          </div>
+        </ModalFooter>
       </ModalContainer>
     </ModalBackground>
   );

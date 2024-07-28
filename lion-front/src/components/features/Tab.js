@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import PublicDiary from '../diary/PublicDiary';
 import Matching from '../matching/Matching';
-import {useNavigate } from 'react-router-dom';
+import {Outlet, useNavigate } from 'react-router-dom';
 import SharedDiary from '../diary/SharedDiary';
 import WritePost from '../diary/WritePost';
 import Posts from '../diary/Posts';
@@ -70,6 +70,7 @@ const TabContent = styled.div`
   display: flex;
   flex-direction: column;
   position: relative;
+  /* background-color: aliceblue; */
 `;
 // const TabFilter = styled.div`
 //   padding: 20px;
@@ -83,25 +84,11 @@ const TabContent = styled.div`
 //     outline: none;
 //   }
 // `;
-const Tabs = ({writePost, setWritePost, isSharedDiary}) => {
+const Tabs = () => {
   const [activeIndex, setActiveIndex] = useState(0);
-  const [isPosts, setIsPosts] = useState(true);
   // const [searchTerm, setSearchTerm] = useState('');
   const navigate = useNavigate();
-  let componentToRender = <></>;
 
-  if (activeIndex === 0) {
-    if (writePost) {
-      componentToRender = <WritePost writePost={writePost} setWritePost={setWritePost} />;
-    } else if (!isSharedDiary) {
-      componentToRender = <Posts />;
-    } else {
-      componentToRender = <SharedDiary />;
-    }
-  } else {
-    // 여기에 activeIndex !== 0 일 때 렌더링할 컴포넌트를 지정하세요.
-    componentToRender = <Matching/>;
-  }
   return (
     <>
       <TabContainer>
@@ -114,6 +101,7 @@ const Tabs = ({writePost, setWritePost, isSharedDiary}) => {
             setActiveIndex(0);
             navigate('/');
           }}
+          // onClick={navigate('/')}
         />
         <TabLabel htmlFor="tab1">공유 일기</TabLabel>
         <ActiveTabIndicator style={{ left: `calc(${activeIndex * 100}% / 2)` }} />
@@ -131,7 +119,7 @@ const Tabs = ({writePost, setWritePost, isSharedDiary}) => {
         <TabLabel htmlFor="tab2">동료 매칭</TabLabel>
       </TabContainer>
       <TabContent>
-        {componentToRender}
+        <Outlet/>
       </TabContent>
     </>
   );

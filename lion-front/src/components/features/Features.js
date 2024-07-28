@@ -118,23 +118,9 @@ const ModalBtn = styled.div`
 export default function Features() {
     const navigate = useNavigate();
     const [ isModal, setIsModal ] = useState(false);
-    const [isSharedDiary, setIsSharedDiary] = useState(false);
-    const [ writePost, setWritePost ] = useState(true);
     const [tooltip, setTooltip] = useState(null);
 
-    useEffect(() => {
-        setIsModal(false);
-        setIsSharedDiary(false);
-        setWritePost(false);
-    }, []);
-    const handleWritePost = () => {
-        setWritePost(true);
-        setIsSharedDiary(false);
-    }
-    const handleSharedDiary = () => {
-        setWritePost(false);
-        setIsSharedDiary(true);
-    }
+    
     const showTooltip = (text) => setTooltip(text);
     const hideTooltip = () => setTooltip(null);
 
@@ -155,7 +141,7 @@ export default function Features() {
                     </ModalBtn>
                     <ModalBtn 
                         delay={200} 
-                        onClick={handleWritePost}
+                        onClick={navigate('/publicDiary/writeDiary')}
                         onMouseEnter={() => showTooltip("일기 작성")}
                         onMouseLeave={hideTooltip}
                             >
@@ -164,7 +150,7 @@ export default function Features() {
                     </ModalBtn>
                     <ModalBtn 
                         delay={300}
-                        onClick={handleSharedDiary}
+                        onClick={navigate('/publicDiary/sharedDiary')}
                         onMouseEnter={() => showTooltip("내가 쓴 공유 일기")}
                         onMouseLeave={hideTooltip}
                         >
@@ -173,10 +159,7 @@ export default function Features() {
                     </ModalBtn>
                 </FilterAndWrite>
             )}
-            <Tab 
-                writePost={writePost} 
-                setWritePost={setWritePost}
-                isSharedDiary={isSharedDiary}/>
+            <Tab/>
             <Back>
                 <Undo2 style={{color: "#FF5A5A",}}/>
             </Back>

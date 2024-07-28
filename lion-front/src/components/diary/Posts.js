@@ -1,39 +1,11 @@
 
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { ReadPostsApi } from "../../api/diary";
 import DiaryModal from "./DiaryModal";
+import { HandMetal, HeartHandshake, PartyPopper, ThumbsUp } from "lucide-react";
 
-// const Diary = () => {
-//     const [diaryEntries, setDiaryEntries] = useState([]);
-
-//     const handleEntrySubmit = (event) => {
-//         event.preventDefault();
-//         // Get the value of the input field or textarea
-//         const entry = event.target.elements.entry.value;
-//         // Update the diary entries state with the new entry
-//         setDiaryEntries([...diaryEntries, entry]);
-//         // Clear the input field or textarea
-//         event.target.elements.entry.value = '';
-//     };
-
-//     return (
-//         <div>
-//             <h1>Diary Board</h1>
-//             <ul>
-//                 {diaryEntries.map((entry, index) => (
-//                     <li key={index}>{entry}</li>
-//                 ))}
-//             </ul>
-//             <form onSubmit={handleEntrySubmit}>
-//                 <textarea name="entry" rows="4" cols="50" placeholder="Write your diary entry"></textarea>
-//                 <br />
-//                 <button type="submit">Submit</button>
-//             </form>
-//         </div>
-//     );
-// };
 
 // export default Diary;
 const PostWrapper = styled.div`
@@ -94,7 +66,7 @@ const Desc = styled.div`
         line-height: 20px;
         display: -webkit-box;
         -webkit-box-orient: vertical;
-        -webkit-line-clamp: 2;
+        -webkit-line-clamp: 4;
         text-overflow: ellipsis;
         overflow: hidden;
         word-break: break-word;
@@ -106,8 +78,27 @@ const Desc = styled.div`
         display: inline-flex;
         line-height: 18px;
         font-size: 12px;
+        justify-content: space-between;
         gap: 10px;
+        
     }
+`;
+const IconSpan = styled.div`
+    display: inline-flex;
+    line-height: 18px;
+    font-size: 12px;
+    /* justify-content: space-between; */
+    gap: 10px;
+    span {  
+        font-size: 16px;
+        display: flex;
+        gap: 5px;
+        align-items: center;
+    }
+`;
+const DateSpan = styled.div`
+    text-align: center;
+    border-bottom: 1px solid #dcdcdc;
 `;
 const PostFooter = styled.div`
     
@@ -147,9 +138,10 @@ const PostFooter = styled.div`
 
 export default function Posts() {
     const [posts, setPosts] = useState([]);
-    const [currentPage, setCurrentPage] = useState(1);
     const [selectedDiary, setSelectedDiary] = useState(null);
+    const [currentPage, setCurrentPage] = useState(1);
     const postsPerPage = 4;
+    const navigate = useNavigate();
     // Post list 전부 가져오기
     const handleDiaryClick = (diary) => {
         setSelectedDiary(diary);
@@ -183,25 +175,33 @@ export default function Posts() {
         <>
             <PostWrapper>
                 {currentPosts.map(post => (
-                    <Post key={post.id}  className="diary-card" onClick={
-                        () => handleDiaryClick(post)}>
-                        <Link>
+                    <Post key={post.id}  className="diary-card">
+                        <Link to={`/publicDiary/${post.id}`}>
                             <Desc>
                                 <div>
-                                    <h2>{post.title}</h2>
+                                    <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
+                                        <h2>{post.title}</h2>
+                                        <h2>닉네임</h2>
+                                    </div>
                                     <p>{post.body}</p>
                                 </div>
                                 <div className="info">
-                                    <span>❤️ {post.likes}</span>
-                                    <span>💬 {post.comments}</span>
-                                    <span>{post.date}</span>
+                                    <IconSpan>
+                                        <span><ThumbsUp size={16} style={{color: '#0064FF'}}/> 0</span>
+                                        <span><PartyPopper size={16} style={{color: '#008C8C'}}/> 2</span>
+                                        <span><HandMetal size={16} style={{color: '#FF8200'}}/> 0</span>
+                                        <span><HeartHandshake size={16} style={{color: '#FF5A5A'}}/> 0</span>
+                                    </IconSpan>
+                                    <DateSpan>
+                                        <span>{post.date}</span>
+                                    </DateSpan>
                                 </div>
                             </Desc>
                         </Link>
                     </Post>
                 ))}   
             </PostWrapper>
-            {selectedDiary && <DiaryModal diary={selectedDiary} onClose={closeModal} />}
+            {/* {selectedDiary && <DiaryModal diary={selectedDiary} onClose={closeModal} />} */}
             <PostFooter>
                 {pageNumbers.map(number => (
                             <label key={number} className={`${currentPage === number ? 'active' : ''}`}>
