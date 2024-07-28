@@ -1,6 +1,7 @@
 import { BookIcon } from 'lucide-react';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
+import { fetchPrivateDiaryEntry } from '../../api/privateDiary';
 
 const books = [
     { date: '2024-07-25', title: '일기 1' },
@@ -35,16 +36,16 @@ const DiaryWrapper = styled.div`
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
     grid-template-rows: repeat(2, auto); /* 두 줄로 고정 */
-
     gap: 16px;
     padding: 20px;
     width: 100%;
+    height: 80%;
     margin: auto;
+    
 
 `;
 const Book = styled.div`
     background-color: #fff;
-    border: 1px solid #ddd;
     border-radius: 8px;
     padding: 16px;
     display: flex;
@@ -53,12 +54,17 @@ const Book = styled.div`
     transition: transform 0.2s ease-in-out;
     cursor: pointer;
     text-align: center;
+    position: relative;
+
     &:hover {
         transform: scale(1.05);
     }
 `;
 const BookInfo = styled.div`
+    position: relative;
+    z-index: 1;
     margin-top: 8px;
+
     p {
         margin: 0;
         font-size: 12px;
@@ -68,7 +74,7 @@ const BookInfo = styled.div`
         margin: 4px 0 0;
         font-size: 16px;
         color: #333;
-        }
+    }
 `;
 const Wrapper = styled.div`
     width: 100%;
@@ -77,6 +83,14 @@ const Wrapper = styled.div`
     align-items: center;
     height: 100%;
     position: relative;
+`;
+const BookIconWrapper = styled.div`
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    /* opacity: 0.1; 아이콘 투명도 설정 */
+    font-size: 100px;
 `;
 const DiaryContainer = styled.div`
     width: 100%;
@@ -89,12 +103,24 @@ const PrivateDiary = () => {
     const handleDateChange = (event) => {
         setSelectedDate(event.target.value);
       };
-    
-      const filteredBooks = selectedDate
+    const [privateDiary, setPrivateDiary] = useState([]);
+    const fetchPrivateDiary = async () => {
+        try {
+            const response = await fetchPrivateDiaryEntry();
+            setPrivateDiary(response.data);
+            console.log('일기 조회 성공', response);
+        } catch (error) {
+            console.error('일기 조회 오류', error);
+        }
+    }
+    useEffect(() => {
+        fetchPrivateDiary();
+    }, [privateDiary]);
+    const filteredBooks = selectedDate
         ? books.filter((book) => book.date === selectedDate)
         : books;
     
-      const uniqueDates = [...new Set(books.map((book) => book.date))];
+    const uniqueDates = [...new Set(books.map((book) => book.date))];
     return (
         <Wrapper>
             <FilterWrapper>
@@ -107,11 +133,12 @@ const PrivateDiary = () => {
                 </Select>
             </FilterWrapper>
             <DiaryContainer>
-
                 <DiaryWrapper>
                     {filteredBooks.map((book, index) => (
                         <Book key={index}>
-                            <BookIcon size={48}/>
+                            <BookIconWrapper>
+                                <BookIcon size={100}/>
+                            </BookIconWrapper>
                             <BookInfo>
                                 <p>{book.date}</p>
                                 <h3>{book.title}</h3>

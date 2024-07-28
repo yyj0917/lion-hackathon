@@ -98,12 +98,12 @@ export default function Banner() {
     const indexOfLastPost = currentPage * messagesPerPage;
     const indexOfFirstPost = indexOfLastPost - messagesPerPage;
     const currentMessages = Array.isArray(messages) ? messages.slice(indexOfFirstPost, indexOfLastPost) : [];
-
     // 페이지네이션 페이지 수 계산
     const pageNumbers = [];
     for (let i = 1; i <= Math.ceil(messages.length / messagesPerPage); i++) {
-    pageNumbers.push(i);
+        pageNumbers.push(i);
     }
+
     // 어떤 식으로 많은 메세지들을 보여줄지 생각. 
 
     return (

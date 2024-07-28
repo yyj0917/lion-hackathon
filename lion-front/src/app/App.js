@@ -24,7 +24,7 @@ function App() {
         <Routes>
           <Route path="/login" element={<Login />} />
           {/* <Route path="/signup" element={<SignUp />} /> */}
-          <Route path="/user/account-confirm-email/:key" element={<ConfirmEmail/>}/> {/*이메일 확인 라우트 추가*/}
+          {/* <Route path="/user/account-confirm-email/:key" element={<ConfirmEmail/>}/> 이메일 확인 라우트 추가 */}
           <Route path="/" element={<Main />}>
             {/* 기본 페이지 - 공유일기 / 동료 매칭 - 라우팅으로 움직이기 */}
             <Route path="/" element={<Features />}>
