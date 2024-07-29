@@ -29,9 +29,21 @@ export const WritePrivateDiaryApi = async (title, body, date) => {
       body,
       date,
     });
-    return response;
+    return response.data;
   } catch (error) {
     throw new Error(error.response.data.message);
   }
 };
-// Sentiment
+// PrivateDiary Update Diary - PUT
+export const UpdatePrivateDiaryApi = async (diary_id, title, body, date) => {
+  try {
+    const response = await axiosInstance.put(`${API_URL}/${diary_id}`, {
+      title,
+      body,
+      date,
+    });
+    return response.data;
+  } catch (error) {
+    throw new Error(error.response.data.message);
+  }
+};

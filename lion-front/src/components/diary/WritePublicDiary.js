@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import { WritePostApi } from "../../api/diary";
+import { useNavigate } from "react-router-dom";
 
 const Wrapper = styled.div`
   width: 100%;
@@ -53,7 +54,8 @@ const FormPosts = styled.form`
     box-sizing: border-box;
   }
 `;
-const WritePublicDiary = ({ writePost, setWritePost }) => {
+const WritePublicDiary = () => {
+  const navigate = useNavigate();
   const [body, setBody] = useState("");
   const [title, setTitle] = useState("");
   const [date, setDate] = useState("");
@@ -66,8 +68,8 @@ const WritePublicDiary = ({ writePost, setWritePost }) => {
       setTitle("");
       setBody("");
       setDate("");
-      setWritePost(!writePost);
       alert("제출이 완료되었습니다.");
+      navigate('/');
     } catch (error) {
       console.error("Error creating diary entry:", error);
     }

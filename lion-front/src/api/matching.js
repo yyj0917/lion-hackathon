@@ -10,6 +10,7 @@ export const WriteCounselorApi = async (
   purpose,
   openlink,
   giveTalk,
+  categories,
 ) => {
   try {
     const response = await axios.post(`${API_URL}matching/`, {
@@ -19,6 +20,7 @@ export const WriteCounselorApi = async (
       purpose,
       openlink,
       giveTalk,
+      categories,
     });
     return response.data;
   } catch (error) {
