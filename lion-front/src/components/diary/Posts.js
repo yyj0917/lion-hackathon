@@ -5,9 +5,21 @@ import styled from "styled-components";
 import { ReadPostsApi } from "../../api/diary";
 import DiaryModal from "./DiaryModal";
 import { HandMetal, HeartHandshake, PartyPopper, ThumbsUp } from "lucide-react";
+import { isAuthenticated } from "../../utils/auth";
 
 
 // export default Diary;
+const Wrapper = styled.div`
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    /* background-color: aliceblue; */
+    /* gap: 20px; */
+
+`;
 const PostWrapper = styled.div`
     flex: 1;
     height: 100%;
@@ -21,10 +33,10 @@ const PostWrapper = styled.div`
     gap: 20px;
     overflow-y: auto;
     box-sizing: border-box;
-    padding: 20px;
     @media (max-width: 600px) {
     grid-template-columns: 1fr; /* 화면이 좁아지면 1열 */
     }
+    padding-bottom: 1px;
 
 `;
 const Post = styled.div`
@@ -36,11 +48,13 @@ const Post = styled.div`
     margin-bottom: -1px;
     box-sizing: border-box;
     border-radius: 20px;
+    border: 1px solid #ddd;
 
-    box-shadow: 0px 0px 5px 0px rgba(0,0,0,0.1);
+    /* box-shadow: 0px 0px 5px 0px rgba(0,0,0,0.1); */
 
     background-color: #fff;
     border-width: 1px 0;
+    
     a {
         color: #666;
         text-decoration: none;
@@ -143,12 +157,13 @@ export default function Posts() {
     const postsPerPage = 4;
     const navigate = useNavigate();
     // Post list 전부 가져오기
-    const handleDiaryClick = (diary) => {
-        setSelectedDiary(diary);
-      };
-    
-    const closeModal = () => {
-        setSelectedDiary(null);
+    const handleDiaryClick = (postId) => {
+        if (isAuthenticated()) {
+            navigate(`/publicDiary/${postId}`);
+        } else {
+            alert('로그인 되지 않았습니다. 로그인 후 다시 시도해주세요.');
+            navigate('/login'); // 로그인 페이지로 리디렉트
+        }
     };
     const fetchPosts = async () => {
         try {
@@ -172,7 +187,7 @@ export default function Posts() {
     }
 
     return (
-        <>
+        <Wrapper>
             <PostWrapper>
                 {currentPosts.map(post => (
                     <Post key={post.id}  className="diary-card">
@@ -214,7 +229,7 @@ export default function Posts() {
                             </label>
                     ))}
             </PostFooter>
-        </>
+        </Wrapper>
 
     );
 }

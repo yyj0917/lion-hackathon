@@ -1,11 +1,11 @@
 // src/components/Tabs.js
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import PublicDiary from '../diary/PublicDiary';
 import Matching from '../matching/Matching';
-import {Outlet, useNavigate } from 'react-router-dom';
+import {Outlet, useLocation, useNavigate } from 'react-router-dom';
 import SharedDiary from '../diary/SharedDiary';
-import WritePost from '../diary/WritePost';
+import WritePost from '../diary/WritePublicDiary';
 import Posts from '../diary/Posts';
 
 
@@ -18,7 +18,6 @@ const TabContainer = styled.div`
   margin-top: 10px;
   width: 70%;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-
 `;
 
 const RadioInput = styled.input`
@@ -86,8 +85,17 @@ const TabContent = styled.div`
 // `;
 const Tabs = () => {
   const [activeIndex, setActiveIndex] = useState(0);
-  // const [searchTerm, setSearchTerm] = useState('');
   const navigate = useNavigate();
+  const location = useLocation();
+
+  useEffect(() => {
+    if (location.pathname === '/') {
+      setActiveIndex(0);
+    } else if (location.pathname === '/matching') {
+      setActiveIndex(1);
+    }
+
+  }, [location]);
 
   return (
     <>

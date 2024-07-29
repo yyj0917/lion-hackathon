@@ -1,6 +1,6 @@
 import styled, { keyframes } from "styled-components";
 import Tab from "./Tab";
-import { AlignJustify, NotebookTabs, Pen, Search, Undo2 } from "lucide-react";
+import { AlignJustify, House, NotebookTabs, Pen, Search, Undo2 } from "lucide-react";
 import { useEffect, useState } from "react";
 import Tooltip from "../../utils/Tooltip";
 import { useNavigate } from "react-router-dom";
@@ -46,7 +46,7 @@ const Back = styled.div`
         background-color: #f7f7f7;
     }
 `;
-const Modal = styled.div`
+const HomeRedirect = styled.div`
     position: absolute;
     top: 10px;
     left: 10px;
@@ -123,13 +123,12 @@ export default function Features() {
     
     const showTooltip = (text) => setTooltip(text);
     const hideTooltip = () => setTooltip(null);
-
     return (
         <Wrapper>
-            <Modal>
-                <AlignJustify  onClick={()=>setIsModal(!isModal)} style={{color: "#FF5A5A",}}/>
-            </Modal>
-            {(isModal) && (
+            <HomeRedirect>
+                <House  onClick={()=>navigate('/')} style={{color: "#FF5A5A",}}/>
+            </HomeRedirect>
+            {/* {(isModal) && (
                 <FilterAndWrite>
                     <ModalBtn 
                         delay={100}
@@ -158,9 +157,9 @@ export default function Features() {
                         {tooltip === "내가 쓴 공유 일기" && <Tooltip text="내가 쓴 공유 일기" />}
                     </ModalBtn>
                 </FilterAndWrite>
-            )}
+            )} */}
             <Tab/>
-            <Back>
+            <Back onClick={() => navigate(-1)}>
                 <Undo2 style={{color: "#FF5A5A",}}/>
             </Back>
 

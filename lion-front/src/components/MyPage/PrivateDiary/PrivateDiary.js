@@ -1,17 +1,18 @@
-import { BookHeart, BookIcon } from 'lucide-react';
+import { BookHeart, BookIcon, BookOpen } from 'lucide-react';
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import { fetchPrivateDiaryEntry } from '../../api/privateDiary';
+import { fetchPrivateDiaryEntry } from '../../../api/privateDiary';
+import { useNavigate } from 'react-router-dom';
 
 const books = [
-    { date: '2024-07-25', title: '일기 1' },
-    { date: '2024-07-24', title: '일기 2' },
-    { date: '2024-07-24', title: '일기 3' },
-    { date: '2024-07-24', title: '일기 4' },
-    { date: '2024-07-24', title: '일기 5' },
-    { date: '2024-07-24', title: '일기 6' },
-    { date: '2024-07-24', title: '일기 7' },
-    { date: '2024-07-24', title: '일기 8' },
+    { date: '2024-07-25', title: '일기 제목 1' },
+    { date: '2024-07-24', title: '일기 제목 2' },
+    { date: '2024-07-24', title: '일기 제목 3' },
+    { date: '2024-07-24', title: '일기 제목 4' },
+    { date: '2024-07-24', title: '일기 제목 5' },
+    { date: '2024-07-24', title: '일기 제목 6' },
+    { date: '2024-07-24', title: '일기 제목 7' },
+    { date: '2024-07-24', title: '일기 제목 8' },
 
     // 더 많은 책 데이터를 추가
   ];
@@ -51,6 +52,7 @@ const Book = styled.div`
     display: flex;
     align-items: center;
     transition: transform 0.2s ease-in-out;
+    box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.1);
     cursor: pointer;
     text-align: center;
     position: relative;
@@ -68,6 +70,11 @@ const BookIconWrapper = styled.div`
 const BookInfo = styled.div`
     margin-top: 8px;
     width: 60%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 20px;
     p {
         margin: 0;
         font-size: 12px;
@@ -129,6 +136,7 @@ const DiaryFooter = styled.div`
     }
 `;
 const PrivateDiary = () => {
+    const navigate = useNavigate();
     const [selectedDate, setSelectedDate] = useState('');
     const [privateDiary, setPrivateDiary] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
@@ -136,11 +144,13 @@ const PrivateDiary = () => {
     const handleDateChange = (event) => {
         setSelectedDate(event.target.value);
       };
+      const handleDiaryClick = (id) => {
+        navigate(`/mypage/privateDiary/${id}`);
+      };
     const fetchPrivateDiary = async () => {
         try {
             const response = await fetchPrivateDiaryEntry();
-            setPrivateDiary(response.data);
-            console.log('일기 조회 성공', response);
+            setPrivateDiary(response);
         } catch (error) {
             console.error('일기 조회 오류', error);
         }
@@ -149,21 +159,24 @@ const PrivateDiary = () => {
         fetchPrivateDiary();
     }, [privateDiary]);
 
-    const filteredBooks = selectedDate
-        ? books.filter((book) => book.date === selectedDate)
-        : books;
+    const filteredDiary = selectedDate
+        ? privateDiary.filter((diary) => diary.date === selectedDate)
+        : privateDiary;
     
-    const uniqueDates = [...new Set(books.map((book) => book.date))];
+    // 필터 칸에 들어갈 날짜
+    const uniqueDates = [...new Set(privateDiary.map((diary) => diary.date))];
 
+    // 칸 마다 몇 개의 diary가 들어갈지
     const indexOfLastPost = currentPage * diaryPerPage;
     const indexOfFirstPost = indexOfLastPost - diaryPerPage;
-    const currentDiary = Array.isArray(books) ? filteredBooks.slice(indexOfFirstPost, indexOfLastPost) : [];
+    const currentDiary = Array.isArray(privateDiary) ? filteredDiary.slice(indexOfFirstPost, indexOfLastPost) : [];
 
     // 페이지네이션 페이지 수 계산
     const pageNumbers = [];
-    for (let i = 1; i <= Math.ceil(filteredBooks.length / diaryPerPage); i++) {
+    for (let i = 1; i <= Math.ceil(filteredDiary.length / diaryPerPage); i++) {
         pageNumbers.push(i);
     }
+    console.log(pageNumbers)
     return (
         <Wrapper>
             <FilterWrapper>
@@ -177,14 +190,14 @@ const PrivateDiary = () => {
             </FilterWrapper>
             <DiaryContainer>
                 <DiaryWrapper>
-                    {currentDiary.map((book, index) => (
-                        <Book key={index}>
+                    {currentDiary.map((diary, index) => (
+                        <Book key={index} onClick={()=>handleDiaryClick(diary.id)}>
                             <BookIconWrapper>
-                                <BookHeart size={100} style={{color: '#FF5A5A'}}/>
+                                <BookOpen size={100} />
                             </BookIconWrapper>
                             <BookInfo>
-                                <p>{book.date}</p>
-                                <h3>{book.title}</h3>
+                                <p>{diary.date}</p>
+                                <h3>{diary.title}</h3>
                             </BookInfo>
                         </Book>
                     ))}
