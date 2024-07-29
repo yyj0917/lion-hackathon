@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { Outlet, useNavigate } from "react-router-dom";
 import profile from "../../assets/profileimages.png";
 import { useEffect, useState } from "react";
-import { UserInfoTokenVerify } from "../../api/auth";
+import { UserInfoTokenVerify, getUserInfo } from "../../api/auth";
 
 const Wrapper = styled.div`
 
@@ -93,8 +93,8 @@ const IconWrapper = styled.div`
         font-style: normal;
         font-size: 25px;
         width: 100px;
-        height: 10px;
-        border-radius: 50%;
+        height: 20px;
+        border-radius: 20px;
         display: flex;
         align-items: center;
         justify-content: start;
@@ -112,8 +112,9 @@ export default function MyPage() {
 
     const fetchUserInfo = async () => {
         try {
-            const response = await UserInfoTokenVerify();
+            const response = await getUserInfo();
             console.log(response);
+            setUser(response);
         } catch (error) {
             console.log('Error message', error);
         }
@@ -132,14 +133,14 @@ export default function MyPage() {
                     {/* <span><Flame strokeWidth={4} style={{color: "#f44336", display:"flex", marginTop:"10%"}} /></span> */}
                     <div className="profile-text">
                         
-                        <p>윤영준(25)/소방가이 <br /> 경기도 구리시 소방청 <br/> 010-6720-2807</p>
+                        <p>{user.name}({user.age})/{user.username} <br /> {user.office} <br/> {user.phonenumber}</p>
                     </div>
                 </ImgWrapper>
                 <IconWrapper>
-                    <p onClick={() => navigate('/mypage/diary')}><Notebook/> Diary</p>
+                    <p onClick={() => navigate('/mypage/privateDiary')}><Notebook/> Diary</p>
                     <p onClick={() => navigate('/mypage/sentiment')}><Laugh/> Feel</p>
                     <p onClick={() => navigate('/mypage/sentimentResult')}><BarChart4/> Analyze</p>
-                    <p onClick={() => navigate('/mypage/writeDiary')}><SquarePen/> Write</p>
+                    <p onClick={() => navigate('/mypage/writePrivateDiary')}><SquarePen/> Write</p>
                 </IconWrapper>
             </Navbar>
             <Contents>

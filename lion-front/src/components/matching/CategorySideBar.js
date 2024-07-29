@@ -1,46 +1,14 @@
 import React from 'react';
 import styled from 'styled-components';
 
-// const Wrapper = styled.div`
-//   display: flex;
-// `;
-
-// const SideBar = styled.div`
-//   width: 200px;
-//   padding: 20px;
-//   border-right: 1px solid #ccc;
-//   display: flex;
-//   flex-direction: column;
-// `;
-
-// const CategoryButton = styled.label`
-//   display: flex;
-//   align-items: center;
-//   padding: 10px 20px;
-//   margin-bottom: 10px;
-//   border-radius: 4px;
-//   background-color: ${props => (props.checked ? '#007BFF' : '#fff')};
-//   color: ${props => (props.checked ? '#fff' : '#000')};
-//   cursor: pointer;
-//   border: 1px solid #ccc;
-//   box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-
-//   &:hover {
-//     background-color: ${props => (props.checked ? '#0056b3' : '#f0f0f0')};
-//   }
-
-//   input {
-//     display: none;
-//   }
-
-//   img {
-//     margin-right: 10px;
-//   }
-// `;
-
 const SideBar = styled.div`
   width: 20%;
   padding: 20px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  border-right: 1px solid #ccc;
 `;
 
 const CategoryButton = styled.label`

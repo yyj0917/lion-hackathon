@@ -21,5 +21,18 @@ export const fetchPrivateDiaryOne = async ( diary_id ) => {
         throw new Error(error.response.data.message);
     }
 };
+// PrivateDiary Write Diary - POST
+export const WritePrivateDiaryApi = async (title, body, date) => {
+    try {
+        const response = await axiosInstance.post(`${API_URL}/`, {
+            title,
+            body,
+            date,
+        });
+        return response;
+    } catch (error) {
+        throw new Error(error.response.data.message);
+    }
+};
 // Sentiment
 

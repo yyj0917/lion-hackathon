@@ -53,7 +53,7 @@ const FormPosts = styled.form`
         box-sizing: border-box;
     }
 `;
-const WritePost = ({ writePost,setWritePost }) => {
+const WritePublicDiary = ({ writePost,setWritePost }) => {
     const [body, setBody] = useState('');
     const [title, setTitle] = useState('');
     const [date, setDate] = useState('');
@@ -101,4 +101,4 @@ const WritePost = ({ writePost,setWritePost }) => {
     );
 };
 
-export default WritePost;
+export default WritePublicDiary;

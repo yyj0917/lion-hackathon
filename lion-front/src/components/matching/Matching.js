@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
+import { isAuthenticated } from '../../utils/auth';
 
 const MatchingWrapper = styled.div`
     display: flex;
@@ -31,6 +32,8 @@ const TextWrapper = styled.div`
     width: 100%;
     height: 90%;
     gap: 10px;
+    padding: 20px;
+
     `;
 const IntroText = styled.div`
     display: flex;
@@ -82,26 +85,28 @@ const Matching = () => {
     const navigate = useNavigate();
     const location = useLocation();
 
-    useEffect(() => {
-        // 뒤로가기 버튼을 누를 때 실행될 코드
-        const handlePopState = () => {
-          setIsCounselor(false);
+    const handleCounselorClick = () => {
+      if (isAuthenticated()) {
+          setIsCounselor(true);
           setIsRecieveCounsel(false);
-        };
-    
-        window.addEventListener('popstate', handlePopState);
-    
-        return () => {
-          window.removeEventListener('popstate', handlePopState);
-        };
-      }, []);
-    
-      useEffect(() => {
-        if (location.pathname === '/') {
-          setIsCounselor(false);
-          setIsRecieveCounsel(false);
+          navigate('/matching/counselor');
+      } else {
+          alert('로그인 후 다시 시도해주세요.');
+          navigate('/login'); // 로그인 페이지로 리디렉트
+      }
+    };
+
+    const handleRecieveCounselClick = () => {
+        if (isAuthenticated()) {
+            setIsCounselor(false);
+            setIsRecieveCounsel(true);
+            navigate('/matching/recieve-counsel');
+        } else {
+            alert('로그인 후 다시 시도해주세요.');
+            navigate('/login'); // 로그인 페이지로 리디렉트
         }
-      }, [location]);
+    };
+
     return (
         
             <MatchingWrapper>
@@ -114,7 +119,7 @@ const Matching = () => {
                               <p>어떻게어떻게 하세요</p>
                             </div>
                             <span>
-                              <Btn onClick={() => { navigate('/matching/counselor'); setIsCounselor(true); setIsRecieveCounsel(false); }}>지원하기</Btn>
+                              <Btn onClick={handleCounselorClick}>지원하기</Btn>
                             </span>
                           </Box>
                           <Box>
@@ -123,7 +128,7 @@ const Matching = () => {
                               <p>어떻게 어떻게 하세요</p>
                             </div>
                             <span>
-                              <Btn onClick={() => { navigate('/matching/recieve-counsel'); setIsCounselor(false); setIsRecieveCounsel(true); }}>요청하기</Btn>
+                              <Btn onClick={handleRecieveCounselClick}>요청하기</Btn>
                             </span>
                           </Box>
                         </IntroText>

@@ -8,7 +8,10 @@ import CategorySidebar from './CategorySideBar';
 
 const Wrapper = styled.div`
     display: flex;
+    align-items: center;
+    justify-content: center;
     width: 100%;
+    height: 100%;
 `;
 const ListWrapper = styled.div`
     box-sizing: border-box;
@@ -108,6 +111,7 @@ const CardList = styled.div`
     display: flex;
     flex-direction: column;
     width: 80%;
+    height: 100%;
 
 `;
 const RecieveCounselor = () => {
