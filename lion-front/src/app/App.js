@@ -1,26 +1,29 @@
-import '../styles/App.css';
-import { BrowserRouter as Router, Route, Routes, BrowserRouter } from 'react-router-dom';
+import "../styles/App.css";
+import {
+  BrowserRouter as Router,
+  Route,
+  Routes,
+  BrowserRouter,
+} from "react-router-dom";
 import Login from "../pages/login";
 // import SignUp from "../pages/signup";
-import Main from '../pages/main';
-import Layout from '../components/layout/Layout';
-import RecieveCounselor from '../components/matching/ReceiveCounselor';
-import Counselor from '../components/matching/Counselor';
-import MyPage from '../components/MyPage/MyPage';
-import SentimentResult from '../components/MyPage/SentimentResult';
-import Sentiment from '../components/MyPage/Sentiment';
-import PrivateDiary from '../components/MyPage/PrivateDiary/PrivateDiary';
-import WritePost from '../components/diary/WritePublicDiary';
-import Features from '../components/features/Features';
-import Matching from '../components/matching/Matching';
-import DiaryModal from '../components/diary/DiaryModal';
-import Posts from '../components/diary/Posts';
-import SharedDiary from '../components/diary/SharedDiary';
-import DiaryDetail from '../components/MyPage/PrivateDiary/DiaryDetail';
-import WritePublicDiary from '../components/diary/WritePublicDiary';
-import WritePrivateDiary from '../components/MyPage/PrivateDiary/WritePrivateDiary';
-
-
+import Main from "../pages/main";
+import Layout from "../components/layout/Layout";
+import RecieveCounselor from "../components/matching/ReceiveCounselor";
+import Counselor from "../components/matching/Counselor";
+import MyPage from "../components/MyPage/MyPage";
+import SentimentResult from "../components/MyPage/SentimentResult";
+import Sentiment from "../components/MyPage/Sentiment";
+import PrivateDiary from "../components/MyPage/PrivateDiary/PrivateDiary";
+import WritePost from "../components/diary/WritePublicDiary";
+import Features from "../components/features/Features";
+import Matching from "../components/matching/Matching";
+import DiaryModal from "../components/diary/DiaryModal";
+import Posts from "../components/diary/Posts";
+import SharedDiary from "../components/diary/SharedDiary";
+import DiaryDetail from "../components/MyPage/PrivateDiary/DiaryDetail";
+import WritePublicDiary from "../components/diary/WritePublicDiary";
+import WritePrivateDiary from "../components/MyPage/PrivateDiary/WritePrivateDiary";
 
 function App() {
   return (
@@ -33,12 +36,21 @@ function App() {
             {/* 기본 페이지 - 공유일기 / 동료 매칭 - 라우팅으로 움직이기 */}
             <Route path="/" element={<Features />}>
               <Route path="/" element={<Posts />} />
-              <Route path="/publicDiary/writePublicDiary" element={<WritePublicDiary />} />
-              <Route path="/publicDiary/sharedDiary" element={<SharedDiary />} />
+              <Route
+                path="/publicDiary/writePublicDiary"
+                element={<WritePublicDiary />}
+              />
+              <Route
+                path="/publicDiary/sharedDiary"
+                element={<SharedDiary />}
+              />
               <Route path="/publicDiary/:id" element={<DiaryModal />} />
               <Route path="/matching" element={<Matching />} />
               <Route path="/matching/counselor" element={<Counselor />} />
-              <Route path="/matching/recieve-counsel" element={<RecieveCounselor />} />
+              <Route
+                path="/matching/recieve-counsel"
+                element={<RecieveCounselor />}
+              />
             </Route>
             {/* 마이 페이지 루트로 라우팅 */}
             <Route path="/mypage" element={<MyPage />}>

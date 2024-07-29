@@ -1,19 +1,29 @@
 @keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
 @keyframes slideUp {
-  0% { transform: translateY(0); }
-  100% { transform: translateY(-100%); }
+  0% {
+    transform: translateY(0);
+  }
+  100% {
+    transform: translateY(-100%);
+  }
 }
-@import url('https://fonts.googleapis.com/css?family=Montserrat:400,800');
+@import url("https://fonts.googleapis.com/css?family=Montserrat:400,800");
 @keyframes show {
-  0%, 49.99% {
+  0%,
+  49.99% {
     opacity: 0;
     z-index: 1;
   }
-  
-  50%, 100% {
+
+  50%,
+  100% {
     opacity: 1;
     z-index: 5;
   }
@@ -37,8 +47,8 @@ body {
 }
 #messageBubble {
   position: relative;
-	background: white;
-	border-radius: .4em;
+  background: white;
+  border-radius: 0.4em;
   margin-left: 10px;
   height: 50px;
 }
@@ -80,7 +90,6 @@ body {
 }
 
 .form-group input {
-  
   width: 300px;
   height: 30px;
   padding: 10px;
@@ -114,17 +123,17 @@ body {
 
 /* Article poem */
 .poem-container::before {
-  content: '';
-  background-image: url('../assets/backgroundFire.png'); /* 이미지 경로를 알맞게 설정 */
+  content: "";
+  background-image: url("../assets/backgroundFire.png"); /* 이미지 경로를 알맞게 설정 */
   background-size: cover;
   background-position: center;
   opacity: 0.3; /* 투명도 설정 */
-  z-index: -1; /* 텍스트보다 뒤에 오도록 설정 */position: absolute;
+  z-index: -1; /* 텍스트보다 뒤에 오도록 설정 */
+  position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  
 }
 .poem-header {
   font-size: 36px;
@@ -174,15 +183,15 @@ input {
 }
 .tabset > label {
   position: relative;
-    float: left;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 33.33%;
-    height: 50px;
-    cursor: pointer;
-    z-index: 2;
-    transition: 0.15s ease-in;
+  float: left;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 33.33%;
+  height: 50px;
+  cursor: pointer;
+  z-index: 2;
+  transition: 0.15s ease-in;
 }
 .movingBar {
   position: absolute;

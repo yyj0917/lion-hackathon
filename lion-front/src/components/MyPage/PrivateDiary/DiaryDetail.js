@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
-import { fetchPrivateDiaryOne } from '../../../api/privateDiary';
-import styled from 'styled-components';
-import { Undo2 } from 'lucide-react';
+import React, { useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import { fetchPrivateDiaryOne } from "../../../api/privateDiary";
+import styled from "styled-components";
+import { Undo2 } from "lucide-react";
 
 // const D = styled.div`
 //   width: 80%;
@@ -18,13 +18,13 @@ const Wrapper = styled.div`
   height: 100%;
   display: flex;
   flex-direction: column;
-    justify-content: center;
+  justify-content: center;
 `;
 const Title = styled.h2`
-    margin: 0;
+  margin: 0;
 `;
 const DiaryContainer = styled.div`
-  box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.1);
+  box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.1);
   padding: 20px;
   border-radius: 20px;
   max-width: 600px;
@@ -48,14 +48,14 @@ const DiaryHeader = styled.div`
     align-items: center;
     justify-content: center;
     border-radius: 10px;
-    border: 1px solid #FF5A5A;
+    border: 1px solid #ff5a5a;
     font-weight: 700;
     padding: 5px;
-    color: #FF5A5A;
-    cursor: pointer;  
+    color: #ff5a5a;
+    cursor: pointer;
     &:hover {
-        background-color: #FF5A5A;
-        color: white;
+      background-color: #ff5a5a;
+      color: white;
     }
   }
 `;
@@ -64,28 +64,26 @@ const DiaryContent = styled.div`
   margin-bottom: 20px;
   overflow: auto;
   p {
-
-        display: -webkit-box;
-        -webkit-box-orient: vertical;
-        text-overflow: ellipsis;
-        overflow: hidden;
-        word-break: break-word;
-        white-space: normal;
-        font-size: 14px;
-        color: #444444;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    word-break: break-word;
+    white-space: normal;
+    font-size: 14px;
+    color: #444444;
   }
   .username {
     text-align: end;
     font-size: 14px;
     font-weight: 700;
     color: #5a5a5a;
-    font-family: 'Nunito', Courier, monospace;
-    
+    font-family: "Nunito", Courier, monospace;
   }
 `;
 const DiaryFooter = styled.div`
-    display: flex;
-    justify-content: end;
+  display: flex;
+  justify-content: end;
 `;
 const EditButton = styled.button`
   background-color: #007bff;
@@ -116,7 +114,7 @@ const DiaryDetail = () => {
         const response = await fetchPrivateDiaryOne(id);
         setDiary(response);
       } catch (error) {
-        console.error('Error fetching diary:', error);
+        console.error("Error fetching diary:", error);
       }
     };
 
@@ -129,24 +127,22 @@ const DiaryDetail = () => {
 
   return (
     <>
-
-        <Wrapper>
-            <DiaryContainer>
-                <DiaryHeader>
-                    <Title>{diary.title}</Title>
-                    <Undo2 className='back' onClick={() => navigate(-1)}/>
-                </DiaryHeader>
-                <DiaryContent>
-                    <p>{diary.body}</p>
-                    <p className='username'>닉네임/{diary.date}</p>
-
-                </DiaryContent>
-                <DiaryFooter>
-                    <EditButton>수정하기</EditButton>
-                    <DeleteButton>삭제하기</DeleteButton>
-                </DiaryFooter>
-            </DiaryContainer>
-        </Wrapper>
+      <Wrapper>
+        <DiaryContainer>
+          <DiaryHeader>
+            <Title>{diary.title}</Title>
+            <Undo2 className="back" onClick={() => navigate(-1)} />
+          </DiaryHeader>
+          <DiaryContent>
+            <p>{diary.body}</p>
+            <p className="username">닉네임/{diary.date}</p>
+          </DiaryContent>
+          <DiaryFooter>
+            <EditButton>수정하기</EditButton>
+            <DeleteButton>삭제하기</DeleteButton>
+          </DiaryFooter>
+        </DiaryContainer>
+      </Wrapper>
     </>
   );
 };
