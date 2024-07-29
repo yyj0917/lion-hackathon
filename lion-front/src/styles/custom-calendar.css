@@ -2,7 +2,12 @@
   width: 90%; /* 캘린더 크기 조정 */
   max-width: 800px; /* 반응형 디자인을 위한 최대 크기 */
   font-family: "Nunito", sans-serif; /* 캘린더 폰트 설정 */
+  font-weight: 800;
   height: 80%;
+  border-left: 1px solid #f0f0f0; 
+  border-right: 1px solid #f0f0f0; 
+
+
 }
 
 .custom-calendar .react-calendar__tile {
@@ -11,17 +16,17 @@
   align-items: center;
   justify-content: center;
   flex-direction: column;
+  border-radius: 8px;
 }
 
 .custom-calendar .react-calendar__tile--now {
-  background: #f0f0f0; /* 현재 날짜 강조 */
+  /* background: #f0f0f0; 현재 날짜 강조 */
   border-radius: 8px;
 }
-
+/* 
 .custom-calendar .react-calendar__tile--active {
   background: #3f51b5; /* 선택된 날짜 강조 */
-  color: white;
-  border-radius: 8px;
+  /* color: #d9534f;
 }
 
 .custom-calendar .react-calendar__tile:enabled:hover {
@@ -36,4 +41,4 @@
 .custom-calendar .react-calendar__tile--hasActive:hover {
   background: #3f51b5;
   color: white;
-}
+} */ 

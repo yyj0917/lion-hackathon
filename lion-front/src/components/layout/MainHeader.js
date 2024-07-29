@@ -80,6 +80,7 @@ export default function MainHeader() {
     try {
       await logoutApi();
       alert("로그아웃 되었습니다.");
+      setTimeout(1000);
       navigate("/");
     } catch (error) {
       console.error("Logout failed", error);

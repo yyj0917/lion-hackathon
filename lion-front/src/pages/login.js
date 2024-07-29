@@ -214,6 +214,7 @@ export default function Login() {
       localStorage.setItem("refreshToken", response.token.refresh);
       console.log(response);
       alert("로그인 성공");
+      setTimeout(1000);
       navigate("/");
     } catch (error) {
       console.error("Login failed", error);

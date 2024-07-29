@@ -10,7 +10,7 @@ import {
 } from "lucide-react";
 import { useEffect, useState } from "react";
 import Tooltip from "../../utils/Tooltip";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 const slideUp = keyframes`
   0% {
@@ -79,28 +79,32 @@ const FilterAndWrite = styled.div`
     opacity 0.5s,
     visibility 0.5s;
   width: 40px;
-  height: 130px;
-  left: 10px;
-  top: 60px;
-  box-shadow: 0 0px 5px rgba(0, 0, 0, 0.1);
+  height: 250px;
+  right: 20px;
+  bottom: 10px;
+  justify-content: center;
+
+  /* box-shadow: 0 0px 5px rgba(0, 0, 0, 0.1); */
   border-radius: 20px;
 `;
 const ModalBtn = styled.div`
   opacity: 0;
-  transform: translateY(20px);
+  /* transform: translateY(20px); */
   animation: ${({ delay }) => delay}ms ${slideUp} forwards;
 
-  width: 40px;
-  height: 40px;
-  box-shadow: 0 0px 5px rgba(0, 0, 0, 0.1);
+  width: 50px;
+  height: 50px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #f44336;
+  background-color: #FF5A5A;
+  color: white;
   cursor: pointer;
+  transition: transform 0.3s ease;
   &:hover {
-    background-color: #f7f7f7;
+    transform: scale(1.5);
   }
 `;
 // const WriteDiv = styled.div`
@@ -125,6 +129,7 @@ export default function Features() {
   const navigate = useNavigate();
   const [isModal, setIsModal] = useState(false);
   const [tooltip, setTooltip] = useState(null);
+  const location = useLocation();
 
   const showTooltip = (text) => setTooltip(text);
   const hideTooltip = () => setTooltip(null);
@@ -133,36 +138,36 @@ export default function Features() {
       <HomeRedirect>
         <House onClick={() => navigate("/")} style={{ color: "#FF5A5A" }} />
       </HomeRedirect>
-      {/* {(isModal) && (
-                <FilterAndWrite>
-                    <ModalBtn 
-                        delay={100}
-                        onMouseEnter={() => showTooltip("검색")}
-                        onMouseLeave={hideTooltip}
-                        >
-                        <Search style={{color: "#FF5A5A",}}/>
-                        {tooltip === "검색" && <Tooltip text="검색" />}
-                    </ModalBtn>
-                    <ModalBtn 
-                        delay={200} 
-                        onClick={navigate('/publicDiary/writeDiary')}
-                        onMouseEnter={() => showTooltip("일기 작성")}
-                        onMouseLeave={hideTooltip}
-                            >
-                        <Pen style={{color: "#FF5A5A",}}/>
-                        {tooltip === "일기 작성" && <Tooltip text="일기 작성" />}
-                    </ModalBtn>
-                    <ModalBtn 
-                        delay={300}
-                        onClick={navigate('/publicDiary/sharedDiary')}
-                        onMouseEnter={() => showTooltip("내가 쓴 공유 일기")}
-                        onMouseLeave={hideTooltip}
-                        >
-                        <NotebookTabs style={{color: "#FF5A5A",}}/>
-                        {tooltip === "내가 쓴 공유 일기" && <Tooltip text="내가 쓴 공유 일기" />}
-                    </ModalBtn>
-                </FilterAndWrite>
-            )} */}
+      {(location.pathname !== '/matching') && (
+        <FilterAndWrite>
+            <ModalBtn 
+                delay={100}
+                onMouseEnter={() => showTooltip("검색")}
+                onMouseLeave={hideTooltip}
+                >
+                <Search/>
+                {tooltip === "검색" && <Tooltip text="검색" />}
+            </ModalBtn>
+            <ModalBtn 
+                delay={200} 
+                onClick={()=>navigate('/publicDiary/writePublicDiary')}
+                onMouseEnter={() => showTooltip("일기 작성")}
+                onMouseLeave={hideTooltip}
+                    >
+                <Pen/>
+                {tooltip === "일기 작성" && <Tooltip text="일기 작성" />}
+            </ModalBtn>
+            <ModalBtn 
+                delay={300}
+                onClick={()=>navigate('/publicDiary/sharedDiary')}
+                onMouseEnter={() => showTooltip("내가 쓴 공유 일기")}
+                onMouseLeave={hideTooltip}
+                >
+                <NotebookTabs />
+                {tooltip === "내가 쓴 공유 일기" && <Tooltip text="내가 쓴 공유 일기" />}
+            </ModalBtn>
+        </FilterAndWrite>
+            )}
       <Tab />
       <Back onClick={() => navigate(-1)}>
         <Undo2 style={{ color: "#FF5A5A" }} />

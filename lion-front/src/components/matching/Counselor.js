@@ -4,7 +4,7 @@ import styled from "styled-components";
 import { WriteCounselorApi } from "../../api/matching";
 const Wrapper = styled.div`
   width: 100%;
-  height: 80%;
+  height: 100%;
   overflow: hidden;
   display: flex;
   flex-direction: column;
@@ -17,6 +17,8 @@ const FormPosts = styled.form`
   height: 100%;
   padding: 20px;
   box-sizing: border-box;
+  /* align-items: center; */
+  justify-content: center;
 
   input,
   textarea {
@@ -133,6 +135,7 @@ function Counselor() {
         workIn,
         openlink,
         giveTalk,
+        categories,
       );
       console.log("Diary entry created:", response.data);
       setName("");
@@ -155,7 +158,7 @@ function Counselor() {
   };
   return (
     <>
-      {!formWrite ? (
+      {(false) ? (
         <>
           <AlertBox>
             <h2>오픈채팅방 만드는 법</h2>

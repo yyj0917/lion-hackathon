@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from "react";
 import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
-import { Smile, Meh, Frown, Book } from "lucide-react"; // 감정 아이콘
+import { Smile, Meh, Frown, Book, Laugh } from "lucide-react"; // 감정 아이콘
 import { fetchPrivateDiaryEntry } from "../../api/privateDiary";
 import "../../styles/custom-calendar.css"; // 추가적인 스타일링을 위한 CSS
 import { useNavigate } from "react-router-dom";
 
 const emotionIcons = {
-  positive: <Smile style={{ color: "#f44336" }} />,
+  positive: <Laugh style={{ color: "#f44336" }} />,
   neutral: <Meh style={{ color: "#f44336" }} />,
   negative: <Frown style={{ color: "#f44336" }} />,
 };
@@ -73,10 +73,9 @@ const Sentiment = () => {
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
-        gap: "10px",
       }}
     >
-      <h2 style={{ fontFamily: "Courier New" }}>My Emotion Calendar</h2>
+      {/* <h2 style={{ fontFamily: "Courier New" }}>My Emotion Calendar</h2> */}
       <Calendar
         onClickDay={handleDateClick}
         value={date}

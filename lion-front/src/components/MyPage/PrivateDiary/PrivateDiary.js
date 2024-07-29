@@ -48,6 +48,7 @@ const Book = styled.div`
   border-radius: 8px;
   padding: 16px;
   display: flex;
+  flex-direction: column;
   align-items: center;
   transition: transform 0.2s ease-in-out;
   box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.1);
@@ -71,7 +72,7 @@ const BookInfo = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
-  gap: 20px;
+  gap: 5px;
   p {
     margin: 0;
     font-size: 12px;
@@ -136,6 +137,7 @@ const PrivateDiary = () => {
   const [privateDiary, setPrivateDiary] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const diaryPerPage = 4;
+
   const handleDateChange = (event) => {
     setSelectedDate(event.target.value);
   };
@@ -173,7 +175,6 @@ const PrivateDiary = () => {
   for (let i = 1; i <= Math.ceil(filteredDiary.length / diaryPerPage); i++) {
     pageNumbers.push(i);
   }
-  console.log(pageNumbers);
   return (
     <Wrapper>
       <FilterWrapper>
@@ -195,13 +196,13 @@ const PrivateDiary = () => {
         <DiaryWrapper>
           {currentDiary.map((diary, index) => (
             <Book key={index} onClick={() => handleDiaryClick(diary.id)}>
-              <BookIconWrapper>
-                <BookOpen size={100} />
-              </BookIconWrapper>
               <BookInfo>
                 <p>{diary.date}</p>
                 <h3>{diary.title}</h3>
               </BookInfo>
+              <BookIconWrapper>
+                <BookOpen size={100} strokeWidth={1} />
+              </BookIconWrapper>
             </Book>
           ))}
         </DiaryWrapper>
