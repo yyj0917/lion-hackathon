@@ -32,3 +32,6 @@ Back-end  : 변호영, 이석원, 정세진, 김지민
 7/23 변호영 BE diary model 수정
 
 7/27 변호영 BE diary 댓글 기능 구현
+
+7/29 윤영준 FE user info, private api connect
+
