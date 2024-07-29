@@ -5,13 +5,25 @@ from django.db.models import Count
 from django.shortcuts import redirect
 import random
 
-from .models import Adviser, Client
-from .serializers import AdviserSerializer, ClientSerializer
+from .models import Advisor, Client
+from .serializers import AdvisorSerializer, ClientSerializer
 
 
-class AdviserViewSet(viewsets.ModelViewSet):
-    queryset = Adviser.objects.all()
-    serializer_class = AdviserSerializer
+class AdvisorViewSet(viewsets.ModelViewSet):
+    queryset = Advisor.objects.all()
+    serializer_class = AdvisorSerializer
+
+    def retrieve(self, request, *args, **kwargs):
+        instance = self.get_object()
+        serializer = self.get_serializer(instance)
+        response_data = serializer.data
+
+        # 매칭된 클라이언트들 가져오기
+        matched_clients = instance.matched_clients.all()
+        client_serializer = ClientSerializer(matched_clients, many=True)
+        response_data['matched_clients'] = client_serializer.data
+
+        return Response(response_data)
 
 class ClientViewSet(viewsets.ModelViewSet):
     queryset = Client.objects.all()
@@ -24,19 +36,19 @@ class ClientViewSet(viewsets.ModelViewSet):
         
         client = serializer.save()
 
-        adviser_count = Adviser.objects.count()
+        advisor_count = Advisor.objects.count()
         
-        if adviser_count > 0:
-            matched_adviser = random.choice(Adviser.objects.all())
-            client.matched_adviser = matched_adviser
+        if advisor_count > 0:
+            matched_advisor = random.choice(Advisor.objects.all())
+            client.matched_advisor = matched_advisor
             client.save()
 
         else:
-            matched_adviser = None
+            matched_advisor = None
 
         headers = self.get_success_headers(serializer.data)
         response_data = serializer.data
-        if matched_adviser:
-            response_data['matched_adviser'] = AdviserSerializer(matched_adviser).data
+        if matched_advisor:
+            response_data['matched_advisor'] = AdvisorSerializer(matched_advisor).data
 
         return Response(response_data, status=status.HTTP_201_CREATED, headers=headers)

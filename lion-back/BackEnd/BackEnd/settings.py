@@ -70,6 +70,7 @@ INSTALLED_APPS = [
 
     # 동료매칭
     'match',
+    'multiselectfield',
 
 ]
 
