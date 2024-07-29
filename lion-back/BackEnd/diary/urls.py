@@ -33,26 +33,28 @@ private_diary_detail = PrivateDiaryViewSet.as_view(
     }
 )
 
-comments_list = CommentViewSet.as_view({
-    'get' : 'list',
-    'post' : 'create'
-})
+# reaction_list = ReactionViewSet.as_view(
+#     {
+#         'get' : 'list',
+#         'post' : 'create'
+#     }
+# )
+
+# reaction_detail = ReactionViewSet.as_view(
+#     {
+#         'get' : 'retrieve',
+#         'put' : 'update',
+#         'delete' : 'destroy'
+#     }
+# )
 
 
-
-comment_detail = CommentViewSet.as_view({
-    'get': 'retrieve',
-    'put': 'update',
-    'delete': 'destroy'
-})
-
-urlpatterns =[
+urlpatterns = [
     path('', public_diary_list),
     path('<int:pk>/', public_diary_detail),
-    # path('likes/', LikeViewSet.as_view()),
-    path('comments/', comments_list),
-    path('comments/<int:pk>/', comment_detail),
     path('private/', private_diary_list),
     path('private/<int:pk>/', private_diary_detail),
     path('sentiment-summary/', DiarySentimentSummaryView.as_view(), name='diary-sentiment-summary'),
+    # path('reaction', reaction_list),
+    # path('reaction/<int:pk>/', reaction_detail),
 ]
