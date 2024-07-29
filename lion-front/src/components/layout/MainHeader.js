@@ -35,84 +35,84 @@ const Auth = styled.div`
 const LogoText = styled.h1`
   font-size: 24px;
   font-weight: 800;
-  color: #F06E6E; /* 로고 텍스트 색상 */
+  color: #f06e6e; /* 로고 텍스트 색상 */
   margin: 0;
   padding: 0;
   text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2); /* 텍스트 그림자 효과 */
   cursor: pointer;
 `;
 const LogoutBtn = styled.button`
-    width: 120px;
-    height: 60px;
-    border-radius: 10px;
-    border: white;
-    background-color: white;
-    cursor: pointer;
-    &:hover {
-        background-color: rgb(255,0,0, 0.5);
-    }
-    text-align: center;
-    margin: 5px;
-    font-size: 17px;
+  width: 120px;
+  height: 60px;
+  border-radius: 10px;
+  border: white;
+  background-color: white;
+  cursor: pointer;
+  &:hover {
+    background-color: rgb(255, 0, 0, 0.5);
+  }
+  text-align: center;
+  margin: 5px;
+  font-size: 17px;
 `;
 const MyPageBtn = styled.button`
-    width: 120px;
-    height: 60px;
-    border-radius: 10px;
-    border: white;
-    background-color: white;
-    cursor: pointer;
-    &:hover {
-        background-color: rgb(255,0,0, 0.5);
-    }
-    text-align: center;
-    margin: 5px;
-    font-size: 17px;
+  width: 120px;
+  height: 60px;
+  border-radius: 10px;
+  border: white;
+  background-color: white;
+  cursor: pointer;
+  &:hover {
+    background-color: rgb(255, 0, 0, 0.5);
+  }
+  text-align: center;
+  margin: 5px;
+  font-size: 17px;
 `;
 
 export default function MainHeader() {
-    const navigate = useNavigate();
+  const navigate = useNavigate();
 
-    const handleClick = () => {
-        navigate('/');
-    };
-    const handleLogout = async () => {
-      try {
-        await logoutApi();
-        alert('로그아웃 되었습니다.');
-        navigate('/');
-      } catch (error) {
-        console.error('Logout failed', error);
-      }
-    };
-    const handleMyPage = () => {
-        navigate('/mypage');
-    };
-    return (
-        <Wrapper>
-            <div style={{
-                display: 'flex',
-                alignItems: 'center',
-                cursor: 'pointer',
-                gap: '5px',
-            }}>
-
-              <img src={redlogo} alt="logo" onClick={handleClick}></img>
-              <LogoText onClick={handleClick}>FORHERO</LogoText>
-            
-            </div>
-            <Auth>
-              {(!isAuthenticated()) ? (
-                <>
-                  <SignINUPBtn/>
-                </>
-              ) : (
-                <>
-                  <LogoutBtn onClick={handleLogout}>로그아웃</LogoutBtn>
-                  <MyPageBtn onClick={handleMyPage}>마이페이지</MyPageBtn>
-                </>
-              )}
-            </Auth>
-        </Wrapper>
-    )
+  const handleClick = () => {
+    navigate("/");
+  };
+  const handleLogout = async () => {
+    try {
+      await logoutApi();
+      alert("로그아웃 되었습니다.");
+      navigate("/");
+    } catch (error) {
+      console.error("Logout failed", error);
+    }
+  };
+  const handleMyPage = () => {
+    navigate("/mypage");
+  };
+  return (
+    <Wrapper>
+      <div
+        style={{
+          display: "flex",
+          alignItems: "center",
+          cursor: "pointer",
+          gap: "5px",
+        }}
+      >
+        <img src={redlogo} alt="logo" onClick={handleClick}></img>
+        <LogoText onClick={handleClick}>FORHERO</LogoText>
+      </div>
+      <Auth>
+        {!isAuthenticated() ? (
+          <>
+            <SignINUPBtn />
+          </>
+        ) : (
+          <>
+            <LogoutBtn onClick={handleLogout}>로그아웃</LogoutBtn>
+            <MyPageBtn onClick={handleMyPage}>마이페이지</MyPageBtn>
+          </>
+        )}
+      </Auth>
+    </Wrapper>
+  );
 }

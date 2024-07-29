@@ -1,40 +1,39 @@
 .custom-calendar {
-    width: 90%; /* 캘린더 크기 조정 */
-    max-width: 800px; /* 반응형 디자인을 위한 최대 크기 */
-    font-family: 'Nunito', sans-serif; /* 캘린더 폰트 설정 */
-    height: 80%;
-  }
-  
-  .custom-calendar .react-calendar__tile {
-    height: 90px; /* 캘린더 타일 높이 증가 */
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
-  }
-  
-  .custom-calendar .react-calendar__tile--now {
-    background: #f0f0f0; /* 현재 날짜 강조 */
-    border-radius: 8px;
-  }
-  
-  .custom-calendar .react-calendar__tile--active {
-    background: #3f51b5; /* 선택된 날짜 강조 */
-    color: white;
-    border-radius: 8px;
-  }
-  
-  .custom-calendar .react-calendar__tile:enabled:hover {
-    background-color: #e0e0e0;
-  }
-  
-  .custom-calendar .react-calendar__month-view__days__day--weekend {
-    color: #d9534f;
-  }
-  
-  .custom-calendar .react-calendar__tile--hasActive,
-  .custom-calendar .react-calendar__tile--hasActive:hover {
-    background: #3f51b5;
-    color: white;
-  }
-  
+  width: 90%; /* 캘린더 크기 조정 */
+  max-width: 800px; /* 반응형 디자인을 위한 최대 크기 */
+  font-family: "Nunito", sans-serif; /* 캘린더 폰트 설정 */
+  height: 80%;
+}
+
+.custom-calendar .react-calendar__tile {
+  height: 90px; /* 캘린더 타일 높이 증가 */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.custom-calendar .react-calendar__tile--now {
+  background: #f0f0f0; /* 현재 날짜 강조 */
+  border-radius: 8px;
+}
+
+.custom-calendar .react-calendar__tile--active {
+  background: #3f51b5; /* 선택된 날짜 강조 */
+  color: white;
+  border-radius: 8px;
+}
+
+.custom-calendar .react-calendar__tile:enabled:hover {
+  background-color: #e0e0e0;
+}
+
+.custom-calendar .react-calendar__month-view__days__day--weekend {
+  color: #d9534f;
+}
+
+.custom-calendar .react-calendar__tile--hasActive,
+.custom-calendar .react-calendar__tile--hasActive:hover {
+  background: #3f51b5;
+  color: white;
+}

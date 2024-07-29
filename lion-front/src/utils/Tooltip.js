@@ -1,12 +1,8 @@
-import React from 'react';
-import styled from 'styled-components';
+import React from "react";
+import styled from "styled-components";
 
 const Tooltip = ({ text }) => {
-  return (
-    <TooltipContainer>
-      {text}
-    </TooltipContainer>
-  );
+  return <TooltipContainer>{text}</TooltipContainer>;
 };
 
 const TooltipContainer = styled.div`

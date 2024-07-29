@@ -1,6 +1,13 @@
 import styled, { keyframes } from "styled-components";
 import Tab from "./Tab";
-import { AlignJustify, House, NotebookTabs, Pen, Search, Undo2 } from "lucide-react";
+import {
+  AlignJustify,
+  House,
+  NotebookTabs,
+  Pen,
+  Search,
+  Undo2,
+} from "lucide-react";
 import { useEffect, useState } from "react";
 import Tooltip from "../../utils/Tooltip";
 import { useNavigate } from "react-router-dom";
@@ -17,91 +24,90 @@ const slideUp = keyframes`
 `;
 
 const Wrapper = styled.div`
-
-    width: 70%;
-    margin-left: 5px;
-    /* height: 740px; */
-    border-radius: 20px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.1);
-    height: 100%;
-    position: relative;
+  width: 70%;
+  margin-left: 5px;
+  /* height: 740px; */
+  border-radius: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.1);
+  height: 100%;
+  position: relative;
 `;
 const Back = styled.div`
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    cursor: pointer;
-    box-shadow: 0 0px 5px rgba(0,0,0,0.1);
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: #f44336;
-    &:hover {
-        background-color: #f7f7f7;
-    }
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  cursor: pointer;
+  box-shadow: 0 0px 5px rgba(0, 0, 0, 0.1);
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #f44336;
+  &:hover {
+    background-color: #f7f7f7;
+  }
 `;
 const HomeRedirect = styled.div`
-    position: absolute;
-    top: 10px;
-    left: 10px;
-    cursor: pointer;
-    width: 40px;
-    height: 40px;
-    box-shadow: 0 0px 5px rgba(0,0,0,0.1);
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: #f44336;
-    &:hover {
-        background-color: #f7f7f7;
-    }
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  cursor: pointer;
+  width: 40px;
+  height: 40px;
+  box-shadow: 0 0px 5px rgba(0, 0, 0, 0.1);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #f44336;
+  &:hover {
+    background-color: #f7f7f7;
+  }
 `;
 const FilterAndWrite = styled.div`
-    position: absolute;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 10px;
-    transition: opacity 0.5s, visibility 0.5s;
-    width: 40px;
-    height: 130px;
-    left: 10px;
-    top: 60px;
-    box-shadow: 0 0px 5px rgba(0,0,0,0.1);
-    border-radius: 20px;
-
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  transition:
+    opacity 0.5s,
+    visibility 0.5s;
+  width: 40px;
+  height: 130px;
+  left: 10px;
+  top: 60px;
+  box-shadow: 0 0px 5px rgba(0, 0, 0, 0.1);
+  border-radius: 20px;
 `;
 const ModalBtn = styled.div`
-    opacity: 0;
-    transform: translateY(20px);
-    animation: ${({ delay }) => delay}ms ${slideUp} forwards;    
+  opacity: 0;
+  transform: translateY(20px);
+  animation: ${({ delay }) => delay}ms ${slideUp} forwards;
 
-    width: 40px;
-    height: 40px;
-    box-shadow: 0 0px 5px rgba(0,0,0,0.1);
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: #f44336;
-    cursor: pointer;
-    &:hover {
-        background-color: #f7f7f7;
-    }
-
+  width: 40px;
+  height: 40px;
+  box-shadow: 0 0px 5px rgba(0, 0, 0, 0.1);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #f44336;
+  cursor: pointer;
+  &:hover {
+    background-color: #f7f7f7;
+  }
 `;
 // const WriteDiv = styled.div`
 //     font-size: 24px;
 //     opacity: 0;
 //     transform: translateY(20px);
-//     animation: ${({ delay }) => delay}ms ${slideUp} forwards;    
+//     animation: ${({ delay }) => delay}ms ${slideUp} forwards;
 //     width: 40px;
 //     height: 40px;
 //     box-shadow: 0 0px 5px rgba(0,0,0,0.1);
@@ -116,19 +122,18 @@ const ModalBtn = styled.div`
 //     }
 // `;
 export default function Features() {
-    const navigate = useNavigate();
-    const [ isModal, setIsModal ] = useState(false);
-    const [tooltip, setTooltip] = useState(null);
+  const navigate = useNavigate();
+  const [isModal, setIsModal] = useState(false);
+  const [tooltip, setTooltip] = useState(null);
 
-    
-    const showTooltip = (text) => setTooltip(text);
-    const hideTooltip = () => setTooltip(null);
-    return (
-        <Wrapper>
-            <HomeRedirect>
-                <House  onClick={()=>navigate('/')} style={{color: "#FF5A5A",}}/>
-            </HomeRedirect>
-            {/* {(isModal) && (
+  const showTooltip = (text) => setTooltip(text);
+  const hideTooltip = () => setTooltip(null);
+  return (
+    <Wrapper>
+      <HomeRedirect>
+        <House onClick={() => navigate("/")} style={{ color: "#FF5A5A" }} />
+      </HomeRedirect>
+      {/* {(isModal) && (
                 <FilterAndWrite>
                     <ModalBtn 
                         delay={100}
@@ -158,11 +163,10 @@ export default function Features() {
                     </ModalBtn>
                 </FilterAndWrite>
             )} */}
-            <Tab/>
-            <Back onClick={() => navigate(-1)}>
-                <Undo2 style={{color: "#FF5A5A",}}/>
-            </Back>
-
-        </Wrapper>
-    );
+      <Tab />
+      <Back onClick={() => navigate(-1)}>
+        <Undo2 style={{ color: "#FF5A5A" }} />
+      </Back>
+    </Wrapper>
+  );
 }

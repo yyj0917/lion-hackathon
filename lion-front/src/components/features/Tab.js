@@ -1,13 +1,12 @@
 // src/components/Tabs.js
-import React, { useEffect, useState } from 'react';
-import styled from 'styled-components';
-import PublicDiary from '../diary/PublicDiary';
-import Matching from '../matching/Matching';
-import {Outlet, useLocation, useNavigate } from 'react-router-dom';
-import SharedDiary from '../diary/SharedDiary';
-import WritePost from '../diary/WritePublicDiary';
-import Posts from '../diary/Posts';
-
+import React, { useEffect, useState } from "react";
+import styled from "styled-components";
+import PublicDiary from "../diary/PublicDiary";
+import Matching from "../matching/Matching";
+import { Outlet, useLocation, useNavigate } from "react-router-dom";
+import SharedDiary from "../diary/SharedDiary";
+import WritePost from "../diary/WritePublicDiary";
+import Posts from "../diary/Posts";
 
 const TabContainer = styled.div`
   display: flex;
@@ -55,7 +54,7 @@ const ActiveTabIndicator = styled.div`
   left: 0;
   width: calc(100% / 2);
   height: 100%;
-  background-color: #FF5A5A	;
+  background-color: #ff5a5a;
   border-radius: 25px;
   transition: left 0.3s ease;
   z-index: 0;
@@ -89,12 +88,11 @@ const Tabs = () => {
   const location = useLocation();
 
   useEffect(() => {
-    if (location.pathname === '/') {
+    if (location.pathname === "/") {
       setActiveIndex(0);
-    } else if (location.pathname === '/matching') {
+    } else if (location.pathname === "/matching") {
       setActiveIndex(1);
     }
-
   }, [location]);
 
   return (
@@ -107,12 +105,14 @@ const Tabs = () => {
           checked={activeIndex === 0}
           onChange={() => {
             setActiveIndex(0);
-            navigate('/');
+            navigate("/");
           }}
           // onClick={navigate('/')}
         />
         <TabLabel htmlFor="tab1">공유 일기</TabLabel>
-        <ActiveTabIndicator style={{ left: `calc(${activeIndex * 100}% / 2)` }} />
+        <ActiveTabIndicator
+          style={{ left: `calc(${activeIndex * 100}% / 2)` }}
+        />
 
         <RadioInput
           type="radio"
@@ -121,13 +121,13 @@ const Tabs = () => {
           checked={activeIndex === 1}
           onChange={() => {
             setActiveIndex(1);
-            navigate('/matching');
+            navigate("/matching");
           }}
         />
         <TabLabel htmlFor="tab2">동료 매칭</TabLabel>
       </TabContainer>
       <TabContent>
-        <Outlet/>
+        <Outlet />
       </TabContent>
     </>
   );
