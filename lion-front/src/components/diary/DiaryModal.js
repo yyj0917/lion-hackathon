@@ -9,7 +9,7 @@ import {
   ThumbsUp,
 } from "lucide-react";
 import { useNavigate, useParams } from "react-router-dom";
-import { ReadPersonalPostApi, ReadPostsApi } from "../../api/diary";
+import { DeletePostApi, ReadPersonalPostApi, ReadPostsApi, UpdatePostApi } from "../../api/diary";
 
 const ModalBackground = styled.div`
   width: 100%;
@@ -129,12 +129,40 @@ const DiaryModal = () => {
   const fetchDiary = async () => {
     try {
       const response = await ReadPersonalPostApi(id);
-      console.log(response);
+      console.log('get diary one',response);
       setDiary(response);
     } catch (error) {
       console.error("Error creating diary entry:", error);
     }
   };
+
+  const handlePublicUpdate = async () => {
+    try {
+      const response = await UpdatePostApi(
+        diary.id,
+        diary.title,
+        diary.body,
+        diary.date,
+        );
+      alert("수정되었습니다.")
+      console.log('update diary',response);
+    } catch (error) {
+      alert("같은 유저만 수정할 수 있습니다.")
+      console.error("Error creating diary entry:", error);
+    }
+  }
+  const handleDelete = async () => {
+    try {
+      const response = await DeletePostApi(diary.id);
+      alert("삭제되었습니다.")
+      console.log(response);
+      navigate("/");
+    } catch (error) {
+      alert("같은 유저만 삭제할 수 있습니다.")
+
+      console.error("Error creating diary entry:", error);
+    }
+  }
   useEffect(() => {
     fetchDiary();
   }, [id]);
@@ -171,8 +199,8 @@ const DiaryModal = () => {
             </span>
           </IconSpan>
           <div>
-            <EditButton>수정하기</EditButton>
-            <DeleteButton>삭제하기</DeleteButton>
+            <EditButton onClick={handlePublicUpdate}>수정하기</EditButton>
+            <DeleteButton onClick={handleDelete}>삭제하기</DeleteButton>
           </div>
         </ModalFooter>
       </ModalContainer>

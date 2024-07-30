@@ -104,7 +104,7 @@ const Others = styled.div`
     }
 
 `;
-export default function GakeKeeperCard() {
+export default function GakeKeeperCard({ gatekeeper }) {
     const [gateKeeper, setGateKeeper] = useState([]);
     useEffect(() => {
         setGateKeeper({

@@ -27,7 +27,7 @@ const CategoryButton = styled.label`
   cursor: pointer;
   background-color: ${props => props.checked ? '#FFE6E6' : 'white'};
   color: ${props => props.checked ? '#FF5A5A' : 'black'};
-  font-family: "Sunflower", sans-serif;
+  font-family: "Poppins", sans-serif;
     box-shadow: 0px 4px 6px 0px rgba(0, 0, 0, 0.1);
 
 `;
@@ -75,7 +75,7 @@ const ConfirmButton = styled.button`
   cursor: pointer;
   background-color: #FF5A5A;
   color: white;
-  font-family: "Sunflower", sans-serif;
+  font-family: "Poppins", sans-serif;
   box-shadow: 0px 4px 6px 0px rgba(0, 0, 0, 0.1);
   transition: all 0.3s ease;
   font-weight: 500;
@@ -104,7 +104,7 @@ const FooterButton = styled.div`
       background-color: #0056b3;
     }
     p {
-
+      text-align: center;
       margin: 0;
       padding: 5px;
       font-size: 13px;
@@ -136,7 +136,7 @@ const TextCard = styled.div`
     margin-top: 10px;
     padding: 20px;
     p {
-        font-family: "Sunflower", sans-serif;
+        font-family: "Poppins", sans-serif;
         font-size: 16px; /* 글자 크기 */
         color: #333; /* 글자 색상 */
         margin: 0; /* 마진 제거 */
@@ -147,6 +147,7 @@ const TextCard = styled.div`
 const CategorySelection = () => {
   const [selectedCategories, setSelectedCategories] = useState([]);
   const [selectedCounselor, setSelectedCounselor] = useState(null);
+  const [gatekeeper, setGatekeeper] = useState([]);
   const [loading, setLoading] = useState(false);
 
   const navigate = useNavigate();
@@ -235,7 +236,7 @@ const CategorySelection = () => {
       ) : (
         // 상담사 정보 및 전체보기 버튼
         <Wrapper>
-          <GateKeeperCard key={selectedCounselor.id}>{selectedCounselor.name}</GateKeeperCard>
+          <GateKeeperCard key={selectedCounselor.id} gatekeeper={gatekeeper}>{selectedCounselor.name}</GateKeeperCard>
           <FooterButton>
             <button className='rematching' onClick={handleRematching}><IterationCcw/><p>다시 매칭하기</p></button>
             <button className='viewAll' onClick={handleViewAll}><AlignJustify/><p>전체 상담사리스트</p></button>
