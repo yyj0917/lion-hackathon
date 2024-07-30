@@ -10,7 +10,7 @@ from django.db.models import Count
      
 class PublicDiarySerializer(serializers.ModelSerializer):
     
-    # reactions = serializers.SerializerMethodField()
+    reactions = serializers.SerializerMethodField()
 
     class Meta:
         model = PublicDiary
