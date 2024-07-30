@@ -35,3 +35,4 @@ Back-end  : 변호영, 이석원, 정세진, 김지민
 
 7/29 윤영준 FE user info, private api connect
 
+7/30 변호영 BE diary user 이용 CRUD 권한 제어
