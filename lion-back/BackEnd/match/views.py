@@ -2,7 +2,8 @@ from django.shortcuts import render
 from rest_framework import viewsets, status
 from rest_framework.response import Response
 from django.db.models import Count
-from django.shortcuts import redirect
+from rest_framework.permissions import IsAuthenticated
+
 import random
 
 from .models import Advisor, Client
@@ -16,20 +17,22 @@ class AdvisorViewSet(viewsets.ModelViewSet):
     def retrieve(self, request, *args, **kwargs):
         instance = self.get_object()
         serializer = self.get_serializer(instance)
-        response_data = serializer.data
 
-        # 매칭된 클라이언트들 가져오기
-        matched_clients = instance.matched_clients.all()
-        client_serializer = ClientSerializer(matched_clients, many=True)
-        response_data['matched_clients'] = client_serializer.data
-
-        return Response(response_data)
+        return Response(serializer.data)
 
 class ClientViewSet(viewsets.ModelViewSet):
     queryset = Client.objects.all()
     serializer_class = ClientSerializer
+    permission_classes = [IsAuthenticated]  # Ensure the user is authenticated
+
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)
 
     def create(self, request, *args, **kwargs):
+
+        # user = request.data.get('user')
+        # if not user:
+        #     return Response({'error': 'User field is required.'}, status=status.HTTP_400_BAD_REQUEST)
 
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
