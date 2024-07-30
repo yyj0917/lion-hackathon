@@ -6,17 +6,15 @@ import {
   BrowserRouter,
 } from "react-router-dom";
 import Login from "../pages/login";
-// import SignUp from "../pages/signup";
 import Main from "../pages/main";
 import Layout from "../components/layout/Layout";
-import CounselorList from "../components/matching/CounselorList";
-import Counselor from "../components/matching/Counselor";
-import RandomMatching from "../components/matching/RandomMatching";
+import CounselorList from "../components/matching/Receive-counselor/CounselorList";
+import Counselor from "../components/matching/Give-counselor/Counselor";
+import RandomMatching from "../components/matching/Receive-counselor/RandomMatching";
 import MyPage from "../components/MyPage/MyPage";
 import SentimentResult from "../components/MyPage/SentimentResult";
 import Sentiment from "../components/MyPage/Sentiment";
 import PrivateDiary from "../components/MyPage/PrivateDiary/PrivateDiary";
-import WritePost from "../components/diary/WritePublicDiary";
 import Features from "../components/features/Features";
 import Matching from "../components/matching/Matching";
 import DiaryModal from "../components/diary/DiaryModal";

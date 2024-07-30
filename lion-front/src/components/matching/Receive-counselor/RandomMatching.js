@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import styled, { keyframes } from 'styled-components';
-import { useHistory, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+import GateKeeperCard from './GateKeeperCard';
+import { AlignJustify, IterationCcw } from 'lucide-react';
 
 // styled-components 정의
 const Wrapper = styled.div`
@@ -20,7 +22,7 @@ const CategoryButton = styled.label`
   align-items: center;
   margin: 5px;
   padding: 10px;
-  /* border: 1px solid ${props => props.checked ? '#ccc' : 'none'}; */
+  
   border-radius: 4px;
   cursor: pointer;
   background-color: ${props => props.checked ? '#FFE6E6' : 'white'};
@@ -65,43 +67,50 @@ const Checkmark = styled.span`
 
 const ConfirmButton = styled.button`
   padding: 10px;
+  margin-top: 40px;
   border: none;
   border-radius: 4px;
-  width: 100px;
+  width: 130px;
+  height: 50px;
   cursor: pointer;
   background-color: #FF5A5A;
   color: white;
   font-family: "Sunflower", sans-serif;
   box-shadow: 0px 4px 6px 0px rgba(0, 0, 0, 0.1);
   transition: all 0.3s ease;
-  font-weight: 800;
+  font-weight: 500;
+  font-size: 18px;
   &:hover {
     transform: scale(1.08);
   }
 `;
 
-const RoomCard = styled.div`
-  margin: 20px;
-  padding: 20px;
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  background-color: #fff;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-  text-align: center;
-`;
+const FooterButton = styled.div`
+  width: 300px;
+  margin-top: 20px;
+  display: flex;
+  justify-content: space-between;
+  button {
+    display: flex;
+    align-items: center;
+    border: 1px solid #007BFF;
+    border-radius: 4px;
+    cursor: pointer;
+    background-color: #007BFF;
+    color: white;
+    width: 48%;
+    padding: 5px;
+    &:hover {
+      background-color: #0056b3;
+    }
+    p {
 
-const FooterButton = styled.button`
-  margin: 20px;
-  padding: 10px 20px;
-  border: 1px solid #007BFF;
-  border-radius: 4px;
-  cursor: pointer;
-  background-color: #007BFF;
-  color: white;
-  display: block;
-  width: fit-content;
-  margin-left: auto;
-  margin-right: auto;
+      margin: 0;
+      padding: 5px;
+      font-size: 13px;
+      font-weight: 800;
+    }
+  }
 `;
 const spin = keyframes`
   0% { transform: rotate(0deg); }
@@ -174,6 +183,16 @@ const CategorySelection = () => {
         setLoading(false);
     }, 2000);
   };
+  const handleRematching = () => {
+    setLoading(true);
+    setTimeout(() => {
+        alert('다시 매칭중입니다. 잠시만 기다려주세요. ');
+        const mockCounselor = { id: 2, name: '랜덤 아무나' };
+        setSelectedCounselor(mockCounselor);
+        setLoading(false);
+    }, 2000);
+
+  }
 
   const handleViewAll = () => {
     navigate('/matching/counselor-list');
@@ -216,8 +235,11 @@ const CategorySelection = () => {
       ) : (
         // 상담사 정보 및 전체보기 버튼
         <Wrapper>
-          <RoomCard key={selectedCounselor.id}>{selectedCounselor.name}</RoomCard>
-          <FooterButton onClick={handleViewAll}>상담사 전체보기</FooterButton>
+          <GateKeeperCard key={selectedCounselor.id}>{selectedCounselor.name}</GateKeeperCard>
+          <FooterButton>
+            <button className='rematching' onClick={handleRematching}><IterationCcw/><p>다시 매칭하기</p></button>
+            <button className='viewAll' onClick={handleViewAll}><AlignJustify/><p>전체 상담사리스트</p></button>
+          </FooterButton>
         </Wrapper>
       )}
     </>
