@@ -154,7 +154,7 @@ const PrivateDiary = () => {
   };
   useEffect(() => {
     fetchPrivateDiary();
-  }, [privateDiary]);
+  }, []);
 
   const filteredDiary = selectedDate
     ? privateDiary.filter((diary) => diary.date === selectedDate)
