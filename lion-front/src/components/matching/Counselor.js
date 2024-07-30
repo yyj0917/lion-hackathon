@@ -8,13 +8,15 @@ const Wrapper = styled.div`
   overflow: hidden;
   display: flex;
   flex-direction: column;
+  justify-content: center;
+  align-items: center;
 `;
 const FormPosts = styled.form`
   display: flex;
   flex-direction: column;
-  width: 100%;
+  width: 90%;
   min-height: 300px; /* 고정된 높이 설정 */
-  height: 100%;
+  height: 80%;
   padding: 20px;
   box-sizing: border-box;
   /* align-items: center; */
@@ -116,6 +118,24 @@ const CheckBoxInput = styled.input.attrs({ type: "checkbox" })`
     /* padding: 2px 6px; */
   }
 `;
+const TextCard = styled.div`
+    /* background-color: #f9f9f9; 배경색 */
+    border: 1px solid #e0e0e0; /* 테두리 */
+    display: flex;
+    width: 80%;
+    height: 20%;
+    border-radius: 8px;
+    box-shadow: 0px 4px 6px 0px rgba(0, 0, 0, 0.1);
+    margin-top: 10px;
+    padding: 20px;
+    p {
+        font-family: "Sunflower", sans-serif;
+        font-size: 16px; /* 글자 크기 */
+        color: #333; /* 글자 색상 */
+        margin: 0; /* 마진 제거 */
+        line-height: 1.5; /* 줄 간격 */
+    }
+`;
 
 function Counselor() {
   const [formWrite, setFormWrite] = useState(false);
@@ -176,6 +196,9 @@ function Counselor() {
         </>
       ) : (
         <Wrapper>
+          <TextCard>
+            <p>Form 작성관련 필수 사항</p>
+          </TextCard>
           <FormPosts onSubmit={handleSubmit}>
             <input
               type="text"
