@@ -63,7 +63,6 @@ export default function SignUpComponent() {
   const [office, setOffice] = useState("");
   const [phonenumber, setPhoneNumber] = useState("");
   const [username, setUsername] = useState("");
-  const [message, setMessage] = useState("");
 
   const navigate = useNavigate();
   // email, password, name, age, position, office, phoneNumber, nickname
@@ -82,13 +81,11 @@ export default function SignUpComponent() {
         username,
       );
       console.log(response);
-      setMessage("회원가입 성공! 이메일을 확인하여 계정을 활성화하세요.");
-      alert(message);
+      alert("회원가입 성공! 이메일을 확인하여 계정을 활성화하세요.");
       navigate("/login");
     } catch (error) {
       console.error("Registration failed", error);
-      setMessage("회원가입 실패. 다시 시도하세요.");
-      console.log(message);
+      alert("회원가입 실패. 다시 시도하세요.");
     }
   };
 

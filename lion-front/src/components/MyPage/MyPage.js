@@ -31,7 +31,7 @@ const Navbar = styled.div`
   align-items: center;
   gap: 20px;
   padding: 20px 0;
-  border-right: 1px solid #f7f7f7;
+  /* border-right: 1px solid #f7f7f7; */
 `;
 const Contents = styled.div`
   margin-left: 5px;
@@ -41,7 +41,8 @@ const Contents = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  /* background-color: rgba(220, 220, 220, 0.3); 흐린 회색 배경색 */
+  
+  background-color: rgba(220, 220, 220, 0.3);
 
   position: relative;
 `;
