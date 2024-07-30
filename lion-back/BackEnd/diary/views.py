@@ -11,10 +11,12 @@ from .sentiment_analysis import sentimentAnalysis
 from rest_framework.views import APIView
 
 # 공감 기능 구현
-from rest_framework.decorators import action
-from django.db.models import Count
-from rest_framework.permissions import IsAuthenticated
+# from rest_framework.decorators import action
+# from django.db.models import Count
 
+# 유저 권한에 따른 diary 접근 제어
+from rest_framework.permissions import IsAuthenticated, AllowAny
+from rest_framework.exceptions import PermissionDenied
 
 
 # Public Diary의 목록, detail 보여주기, 수정하기, 삭제하기
@@ -23,52 +25,46 @@ class PublicDiaryViewSet(viewsets.ModelViewSet):
     queryset = PublicDiary.objects.all()
     serializer_class = PublicDiarySerializer
 
-    # 감정분석 결과 저장 위해서 create 새롭게 정의
-    def create(self, request, *args, **kwargs):
+    # public diary 조회의 경우 모든 사용자에게 허용
+    def get_permissions(self):
+        if self.action in ['list', 'retrieve']:
+            return [AllowAny()]
+        return [IsAuthenticated()]
 
-        # 시리얼라이저로 데이터 검증 및 저장
-        serializer = self.get_serializer(data=self.request.data) # login된 user로 user 정보 저장??
-        serializer.is_valid(raise_exception=True)
+    def perform_create(self, serializer):
+
+        # 현재 로그인한 사용자를 user로 설정하여 일기 저장
+        diary = serializer.save(user=self.request.user)
         
-        diary = serializer.save() # diary 저장 / user = request.user??
-        diary.save()
-
         # 감성 분석 수행 및 결과 저장
-        sentiment, confidence = sentimentAnalysis(diary.body)
-
+        sentiment, confidence, negative_contents = sentimentAnalysis(diary.body) # negative_contents 추후 감정분석에 활용 예정
         diary.sentiment = sentiment
         diary.positive = confidence['positive']
         diary.negative = confidence['negative']
         diary.neutral = confidence['neutral']
         diary.save()
-        
-        headers = self.get_success_headers(serializer.data)
-        return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
-    
 
-    # update 메서드 오버라이드
-    def update(self, request, *args, **kwargs):
+        return super().perform_create(serializer)
 
-        partial = kwargs.pop('partial', False) # 부분 업데이트 or 전체업데이트를 결정
-        instance = self.get_object() # url에 지정된 인스턴스 가져옴
-        
-        # 기존 데이터와 새로운 데이터 결합
-        serializer = self.get_serializer(instance, data=request.data, partial=partial)
-        serializer.is_valid(raise_exception=True)
+    def perform_update(self, serializer):
+
         diary = serializer.save()
-        
+        if diary.user != self.request.user:
+            raise PermissionDenied("You do not have permission to edit this diary.")
+
         # 감성 분석 수행 및 결과 저장
-        sentiment, confidence = sentimentAnalysis(diary.body)
+        sentiment, confidence, negative_contents = sentimentAnalysis(diary.body)
         diary.sentiment = sentiment
         diary.positive = confidence['positive']
         diary.negative = confidence['negative']
         diary.neutral = confidence['neutral']
         diary.save()
-        
-        if getattr(instance, '_prefetched_objects_cache', None):
-            instance._prefetched_objects_cache = {}
 
-        return Response(serializer.data, status=status.HTTP_200_OK)
+
+    def perform_destroy(self, instance):
+        if instance.user != self.request.user:
+            raise PermissionDenied("You do not have permission to delete this diary.")
+        instance.delete()
     
     # # 공감 생성
     # @action(detail=True, methods=['post'], permission_classes=[IsAuthenticated])
@@ -102,54 +98,46 @@ class PrivateDiaryViewSet(viewsets.ModelViewSet):
 
     queryset = PrivateDiary.objects.all()
     serializer_class = PrivateDiarySerializer
+    permission_classes = [IsAuthenticated]
 
-    # 감정분석 결과 저장 위해서 create 새롭게 정의
-    def create(self, request, *args, **kwargs):
+    def get_queryset(self):
+        return PrivateDiary.objects.filter(user=self.request.user)
+    
 
-        # 시리얼라이저로 데이터 검증 및 저장
-        serializer = self.get_serializer(data=self.request.data) # login된 user로 user 정보 저장??
-        serializer.is_valid(raise_exception=True)
-        
-        diary = serializer.save() # diary 저장 
-        diary.save()
+    def perform_create(self, serializer):
+
+        # 현재 로그인한 사용자를 user로 설정하여 일기 저장
+        diary = serializer.save(user=self.request.user)
 
         # 감성 분석 수행 및 결과 저장
-        sentiment, confidence = sentimentAnalysis(diary.body)
-
+        sentiment, confidence, negative_contents = sentimentAnalysis(diary.body)
         diary.sentiment = sentiment
         diary.positive = confidence['positive']
         diary.negative = confidence['negative']
         diary.neutral = confidence['neutral']
         diary.save()
-        
-        headers = self.get_success_headers(serializer.data)
-        return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
     
 
-    # update 메서드 오버라이드
-    def update(self, request, *args, **kwargs):
+    def perform_update(self, serializer):
+    
+        diary = self.get_object()
 
-        partial = kwargs.pop('partial', False) # 부분 업데이트 or 전체업데이트를 결정
-        instance = self.get_object() # url에 지정된 인스턴스 가져옴
-        
-        # 기존 데이터와 새로운 데이터 결합
-        serializer = self.get_serializer(instance, data=request.data, partial=partial)
-        serializer.is_valid(raise_exception=True)
-        diary = serializer.save()
-        
+        if diary.user != self.request.user:
+            raise PermissionDenied("You do not have permission to edit this diary.")
+    
         # 감성 분석 수행 및 결과 저장
-        sentiment, confidence = sentimentAnalysis(diary.body)
-        diary.sentiment = sentiment
-        diary.positive = confidence['positive']
-        diary.negative = confidence['negative']
-        diary.neutral = confidence['neutral']
-        diary.save()
-        
-        if getattr(instance, '_prefetched_objects_cache', None):
-            instance._prefetched_objects_cache = {}
+        updated_diary = serializer.save()
+        sentiment, confidence, negative_contents = sentimentAnalysis(updated_diary.body)
+        updated_diary.sentiment = sentiment
+        updated_diary.positive = confidence['positive']
+        updated_diary.negative = confidence['negative']
+        updated_diary.neutral = confidence['neutral']
+        updated_diary.save()
 
-        return Response(serializer.data)
-    
+    def perform_destroy(self, instance):
+        if instance.user != self.request.user:
+            raise PermissionDenied("You do not have permission to delete this diary.")
+        instance.delete()
 
 # 감정분석 결과 반환용 view
 class DiarySentimentSummaryView(APIView):
