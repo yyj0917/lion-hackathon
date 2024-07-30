@@ -9,8 +9,9 @@ import Login from "../pages/login";
 // import SignUp from "../pages/signup";
 import Main from "../pages/main";
 import Layout from "../components/layout/Layout";
-import RecieveCounselor from "../components/matching/ReceiveCounselor";
+import CounselorList from "../components/matching/CounselorList";
 import Counselor from "../components/matching/Counselor";
+import RandomMatching from "../components/matching/RandomMatching";
 import MyPage from "../components/MyPage/MyPage";
 import SentimentResult from "../components/MyPage/SentimentResult";
 import Sentiment from "../components/MyPage/Sentiment";
@@ -48,9 +49,10 @@ function App() {
               <Route path="/matching" element={<Matching />} />
               <Route path="/matching/counselor" element={<Counselor />} />
               <Route
-                path="/matching/recieve-counsel"
-                element={<RecieveCounselor />}
+                path="/matching/counselor-list"
+                element={<CounselorList />}
               />
+              <Route path="/matching/randomMatching/" element={<RandomMatching />} />
             </Route>
             {/* 마이 페이지 루트로 라우팅 */}
             <Route path="/mypage" element={<MyPage />}>

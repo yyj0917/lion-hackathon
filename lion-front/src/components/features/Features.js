@@ -130,6 +130,7 @@ export default function Features() {
   const [isModal, setIsModal] = useState(false);
   const [tooltip, setTooltip] = useState(null);
   const location = useLocation();
+  const isPath = location.pathname.startsWith('/matching');
 
   const showTooltip = (text) => setTooltip(text);
   const hideTooltip = () => setTooltip(null);
@@ -138,7 +139,7 @@ export default function Features() {
       <HomeRedirect>
         <House onClick={() => navigate("/")} style={{ color: "#FF5A5A" }} />
       </HomeRedirect>
-      {(location.pathname !== '/matching') && (
+      {(!isPath) && (
         <FilterAndWrite>
             <ModalBtn 
                 delay={100}
