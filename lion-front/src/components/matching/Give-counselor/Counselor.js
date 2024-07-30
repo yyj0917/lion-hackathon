@@ -1,7 +1,8 @@
 // Counselor.js
 import React, { useState } from "react";
 import styled from "styled-components";
-import { WriteCounselorApi } from "../../api/matching";
+import { WriteCounselorApi } from "../../../api/matching";
+import { useNavigate } from "react-router-dom";
 const Wrapper = styled.div`
   width: 100%;
   height: 100%;
@@ -138,6 +139,7 @@ const TextCard = styled.div`
 `;
 
 function Counselor() {
+  const navigate = useNavigate();
   const [formWrite, setFormWrite] = useState(false);
   const [name, setName] = useState("");
   const [age, setAge] = useState(null);
@@ -164,10 +166,14 @@ function Counselor() {
       setOpenlink("");
       setGiveTalk("");
       alert("제출이 완료되었습니다.");
+      navigate(-1);
+      
     } catch (error) {
       console.error("Error creating diary entry:", error);
     }
   };
+
+  // form 제출 시 카테고리 복수체크 처리
   const handleCategoryChange = (e) => {
     const { value, checked } = e.target;
     if (checked) {
@@ -177,111 +183,91 @@ function Counselor() {
     }
   };
   return (
-    <>
-      {(false) ? (
-        <>
-          <AlertBox>
-            <h2>오픈채팅방 만드는 법</h2>
-            <p>1. 카카오톡 앱을 열고 로그인합니다.</p>
-            <p>2. 하단의 "친구" 탭을 선택합니다.</p>
-            <p>3. 우측 상단의 "+" 버튼을 클릭합니다.</p>
-            <p>4. "오픈채팅"을 선택합니다.</p>
-            <p>5. "오픈채팅방 만들기"를 선택하고 원하는 설정을 합니다.</p>
-            <h2>신청하는 법</h2>
-            <p>1. 오픈채팅방을 생성한 후, 생성된 링크를 복사합니다.</p>
-            <p>2. 우리 서비스의 신청 페이지로 이동합니다.</p>
-            <p>3. 복사한 오픈채팅방 링크를 신청 폼에 붙여넣고 제출합니다.</p>
-          </AlertBox>
-          <Btn onClick={() => setFormWrite(true)}>상담사 신청</Btn>
-        </>
-      ) : (
-        <Wrapper>
-          <TextCard>
-            <p>Form 작성관련 필수 사항</p>
-          </TextCard>
-          <FormPosts onSubmit={handleSubmit}>
-            <input
-              type="text"
-              placeholder="이름"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              required
-            />
-            <input
-              type="integer"
-              placeholder="나이"
-              value={age}
-              onChange={(e) => setAge(e.target.value)}
-              required
-            />
-            <input
-              type="text"
-              placeholder="근무하고 있는 곳"
-              value={workIn}
-              onChange={(e) => setWorkIn(e.target.value)}
-              required
-            />
-            <input
-              type="text"
-              placeholder="오픈채팅방 링크"
-              value={openlink}
-              onChange={(e) => setOpenlink(e.target.value)}
-              required
-            />
-            <input
-              type="text"
-              placeholder="하고 싶은 말"
-              value={giveTalk}
-              onChange={(e) => setGiveTalk(e.target.value)}
-              required
-            />
-            <CheckBoxGroup>
-              <label>
-                <CheckBoxInput
-                  type="checkbox"
-                  value="정신건강"
-                  onChange={handleCategoryChange}
-                />
-                <span>정신건강</span>
-              </label>
-              <label>
-                <CheckBoxInput
-                  type="checkbox"
-                  value="직업적 스트레스"
-                  onChange={handleCategoryChange}
-                />
-                <span>직업적 스트레스</span>
-              </label>
-              <label>
-                <CheckBoxInput
-                  type="checkbox"
-                  value="신체건강"
-                  onChange={handleCategoryChange}
-                />
-                <span>신체건강</span>
-              </label>
-              <label>
-                <CheckBoxInput
-                  type="checkbox"
-                  value="대인관계"
-                  onChange={handleCategoryChange}
-                />
-                <span>대인관계</span>
-              </label>
-              <label>
-                <CheckBoxInput
-                  type="checkbox"
-                  value="기타"
-                  onChange={handleCategoryChange}
-                />
-                <span>기타</span>
-              </label>
-            </CheckBoxGroup>
-            <button type="submit">Submit</button>
-          </FormPosts>
-        </Wrapper>
-      )}
-    </>
+      <Wrapper>
+        <TextCard>
+          <p>Form 작성관련 필수 사항</p>
+        </TextCard>
+        <FormPosts onSubmit={handleSubmit}>
+          <input
+            type="text"
+            placeholder="이름"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            required
+          />
+          <input
+            type="integer"
+            placeholder="나이"
+            value={age}
+            onChange={(e) => setAge(e.target.value)}
+            required
+          />
+          <input
+            type="text"
+            placeholder="근무하고 있는 곳"
+            value={workIn}
+            onChange={(e) => setWorkIn(e.target.value)}
+            required
+          />
+          <input
+            type="text"
+            placeholder="오픈채팅방 링크"
+            value={openlink}
+            onChange={(e) => setOpenlink(e.target.value)}
+            required
+          />
+          <input
+            type="text"
+            placeholder="하고 싶은 말"
+            value={giveTalk}
+            onChange={(e) => setGiveTalk(e.target.value)}
+            required
+          />
+          <CheckBoxGroup>
+            <label>
+              <CheckBoxInput
+                type="checkbox"
+                value="정신건강"
+                onChange={handleCategoryChange}
+              />
+              <span>정신건강</span>
+            </label>
+            <label>
+              <CheckBoxInput
+                type="checkbox"
+                value="직업적 스트레스"
+                onChange={handleCategoryChange}
+              />
+              <span>직업적 스트레스</span>
+            </label>
+            <label>
+              <CheckBoxInput
+                type="checkbox"
+                value="신체건강"
+                onChange={handleCategoryChange}
+              />
+              <span>신체건강</span>
+            </label>
+            <label>
+              <CheckBoxInput
+                type="checkbox"
+                value="대인관계"
+                onChange={handleCategoryChange}
+              />
+              <span>대인관계</span>
+            </label>
+            <label>
+              <CheckBoxInput
+                type="checkbox"
+                value="기타"
+                onChange={handleCategoryChange}
+              />
+              <span>기타</span>
+            </label>
+          </CheckBoxGroup>
+          <button type="submit">Submit</button>
+        </FormPosts>
+      </Wrapper>
   );
 }
 

@@ -2,12 +2,10 @@ import React from "react";
 import styled from "styled-components";
 
 const SideBar = styled.div`
-  width: 20%;
-  padding: 20px;
-  height: 100%;
+  width: 100%;
+  height: 10%;
   display: flex;
-  flex-direction: column;
-  justify-content: center;
+  justify-content: space-between;
   border-right: 1px solid #ccc;
 `;
 
