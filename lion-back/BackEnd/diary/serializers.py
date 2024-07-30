@@ -10,15 +10,15 @@ from django.db.models import Count
      
 class PublicDiarySerializer(serializers.ModelSerializer):
     
-    reactions = serializers.SerializerMethodField()
+#    reactions = serializers.SerializerMethodField()
 
     class Meta:
         model = PublicDiary
         fields = '__all__'
 
-    def get_reactions(self, obj):
-        reactions = obj.reactions.values('reaction').annotate(count=Count('reaction'))
-        return {reaction['reaction']: reaction['count'] for reaction in reactions}
+    # def get_reactions(self, obj):
+    #     reactions = obj.reactions.values('reaction').annotate(count=Count('reaction'))
+    #     return {reaction['reaction']: reaction['count'] for reaction in reactions}
 
 
 class PrivateDiarySerializer(serializers.ModelSerializer):
