@@ -57,44 +57,29 @@ const FormPosts = styled.form`
     box-sizing: border-box;
   }
 `;
-
-const Btn = styled.button`
-  width: 40%;
-  height: 20%;
-  padding: 20px;
-  background-color: #ffe6e6;
-  border: 1px solid #f5f5f5;
-  border-radius: 20px;
-  font-size: 15px;
-  margin-top: 10px;
-  font-weight: bold;
-  color: #000;
-  cursor: pointer;
-  &:hover {
-    background-color: #ff5a5a;
-  }
-`;
-const AlertBox = styled.div`
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  border-radius: 20px;
-  padding: 20px;
-  width: 80%;
-  height: 80%;
-  h2 {
-    font-size: 20px;
-    color: #ff6b6b;
-    margin-top: 0;
+const WorkInput = styled.div`
+  display: flex;
+  align-items: center;
+  width: 100%;
+  gap: 2px;
+  input {
+    width: 50%;
     margin-bottom: 10px;
-  }
-  p {
+    padding: 10px;
     font-size: 16px;
-    color: #555;
-    line-height: 1.6;
-    margin: 0;
-    padding: 0;
-    margin-bottom: 5px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    box-sizing: border-box;
+    transition: all 0.3s ease;
+
+    &:focus {
+      border-color: #4285f4;
+      box-shadow: 0 0 5px rgba(66, 133, 244, 0.5);
+    }
+
   }
 `;
+
 const CheckBoxGroup = styled.div`
   margin-bottom: 20px;
   display: flex;
@@ -140,7 +125,7 @@ const TextCard = styled.div`
 
 function Counselor() {
   const navigate = useNavigate();
-  const [formWrite, setFormWrite] = useState(false);
+  // const [formWrite, setFormWrite] = useState(false);
   const [name, setName] = useState("");
   const [age, setAge] = useState(null);
   const [workIn, setWorkIn] = useState("");
@@ -202,13 +187,29 @@ function Counselor() {
             onChange={(e) => setAge(e.target.value)}
             required
           />
-          <input
-            type="text"
-            placeholder="근무하고 있는 곳"
-            value={workIn}
-            onChange={(e) => setWorkIn(e.target.value)}
-            required
-          />
+          <WorkInput>
+            <input
+              type="text"
+              placeholder="현재직위"
+              value={workIn}
+              onChange={(e) => setWorkIn(e.target.value)}
+              required
+            />
+            <input
+              type="text"
+              placeholder="근무위치"
+              value={workIn}
+              onChange={(e) => setWorkIn(e.target.value)}
+              required
+            />
+            <input
+              type="text"
+              placeholder="근무기간"
+              value={workIn}
+              onChange={(e) => setWorkIn(e.target.value)}
+              required
+            />
+          </WorkInput>
           <input
             type="text"
             placeholder="오픈채팅방 링크"

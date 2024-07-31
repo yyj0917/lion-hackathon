@@ -14,12 +14,15 @@ const Wrapper = styled.div`
 `;
 const CategoryContainer = styled.section`
   display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
   margin: 20px;
 `;
 
 const CategoryButton = styled.label`
   display: flex;
   align-items: center;
+  justify-content: space-between;
   margin: 5px;
   padding: 10px;
   
@@ -36,6 +39,7 @@ const CheckInput = styled.input`
 
     &:checked + span {
         background-color: #FF5A5A;
+        border: 2px solid white;
     }
     &:checked + span::after {
     background-color: #FF5A5A;
@@ -44,13 +48,12 @@ const CheckInput = styled.input`
 `;
 const Checkmark = styled.span`
   display: inline-block;
-  width: 10px;
-  height: 10px;
+  width: 14.5px;
+  height: 14.5px;
   margin-right: 10px;
   border-radius: 50%;
   transition: all 0.3s ease;
-  border: 3px solid white;
-  
+  border: 2px solid #FF5A5A;
   
   &::after {
     content: "";
@@ -144,7 +147,7 @@ const TextCard = styled.div`
     }
 `;
 
-const CategorySelection = () => {
+const RandomMatching = () => {
   const [selectedCategories, setSelectedCategories] = useState([]);
   const [selectedCounselor, setSelectedCounselor] = useState(null);
   const [gatekeeper, setGatekeeper] = useState([]);
@@ -185,13 +188,19 @@ const CategorySelection = () => {
     }, 2000);
   };
   const handleRematching = () => {
-    setLoading(true);
-    setTimeout(() => {
+    const confirm = window.confirm('다시 매칭하시겠습니까?');
+    if (confirm) {
+      setLoading(true);
+      setTimeout(() => {
         alert('다시 매칭중입니다. 잠시만 기다려주세요. ');
         const mockCounselor = { id: 2, name: '랜덤 아무나' };
         setSelectedCounselor(mockCounselor);
         setLoading(false);
-    }, 2000);
+      }, 2000);
+
+    } else {
+      alert('매칭을 취소하였습니다.');
+    }
 
   }
 
@@ -214,22 +223,22 @@ const CategorySelection = () => {
                 </p>
             </TextCard>
             <CategoryContainer>
-            {categories.map((category) => (
-                <CategoryButton
-                key={category.id}
-                checked={selectedCategories.includes(category.id)}
-                >
-                <CheckInput
-                    type="checkbox"
-                    value={category.id}
-                    checked={selectedCategories.includes(category.id)}
-                    onChange={handleCategoryChange}
-                    style={{ marginRight: '10px' }}
-                />
-                <Checkmark/>
-                {category.name}
-                </CategoryButton>
-            ))}
+              {categories.map((category) => (
+                  <CategoryButton
+                  key={category.id}
+                  checked={selectedCategories.includes(category.id)}
+                  >
+                  <CheckInput
+                      type="checkbox"
+                      value={category.id}
+                      checked={selectedCategories.includes(category.id)}
+                      onChange={handleCategoryChange}
+                      style={{ marginRight: '10px' }}
+                  />
+                  <Checkmark/>
+                  {category.name}
+                  </CategoryButton>
+              ))}
             </CategoryContainer>
             <ConfirmButton onClick={handleConfirm}>제출하기</ConfirmButton>
         </Wrapper>
@@ -247,4 +256,4 @@ const CategorySelection = () => {
   );
 };
 
-export default CategorySelection;
+export default RandomMatching;

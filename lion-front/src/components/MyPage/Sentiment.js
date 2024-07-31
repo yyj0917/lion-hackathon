@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
-import { Smile, Meh, Frown, Book, Laugh } from "lucide-react"; // 감정 아이콘
+import { Meh, Frown, Book, Laugh } from "lucide-react"; // 감정 아이콘
 import { fetchPrivateDiaryEntry } from "../../api/privateDiary";
 import "../../styles/custom-calendar.css"; // 추가적인 스타일링을 위한 CSS
 import { useNavigate } from "react-router-dom";

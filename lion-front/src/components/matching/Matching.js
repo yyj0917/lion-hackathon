@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { isAuthenticated } from "../../utils/auth";
@@ -82,7 +82,7 @@ const Matching = () => {
   const [isCounselor, setIsCounselor] = useState(false);
   const [isRecieveCounsel, setIsRecieveCounsel] = useState(false);
   const navigate = useNavigate();
-  const location = useLocation();
+  // const location = useLocation();
 
   const handleCounselorClick = () => {
     if (isAuthenticated()) {
@@ -90,7 +90,7 @@ const Matching = () => {
       setIsRecieveCounsel(false);
       navigate("/matching/counselor");
     } else {
-      alert("로그인 후 다시 시도해주세요.");
+      alert("로그인 후 이용해주세요.");
       navigate("/login"); // 로그인 페이지로 리디렉트
     }
   };
@@ -101,7 +101,7 @@ const Matching = () => {
       setIsRecieveCounsel(true);
       navigate("/matching/randomMatching");
     } else {
-      alert("로그인 후 다시 시도해주세요.");
+      alert("로그인 후 이용해주세요.");
       navigate("/login"); // 로그인 페이지로 리디렉트
     }
   };

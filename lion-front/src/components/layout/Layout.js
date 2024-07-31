@@ -1,6 +1,8 @@
 import React from "react";
 import styled from "styled-components";
 import MainHeader from "./MainHeader";
+import PropTypes from 'prop-types';
+
 
 const HeaderWrapper = styled.div`
   width: 100%;
@@ -20,6 +22,9 @@ const Layout = ({ children }) => {
       <>{children}</>
     </>
   );
+};
+Layout.propTypes = {
+    children: PropTypes.node.isRequired,
 };
 
 export default Layout;
