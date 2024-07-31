@@ -24,7 +24,7 @@ import SharedDiary from "../components/diary/SharedDiary";
 import DiaryDetail from "../components/MyPage/PrivateDiary/DiaryDetail";
 import WritePublicDiary from "../components/diary/WritePublicDiary";
 import WritePrivateDiary from "../components/MyPage/PrivateDiary/WritePrivateDiary";
-import { SearchProvider } from "../contexts/\bSearchContext";
+import { SearchProvider } from "../contexts/SearchContext";
 
 function App() {
   return (

@@ -4,7 +4,7 @@ import styled from "styled-components";
 import { ReadPostsApi } from "../../api/diary";
 import { HandMetal, HeartHandshake, PartyPopper, ThumbsUp } from "lucide-react";
 import { isAuthenticated } from "../../utils/auth";
-import { useSearch } from "../../contexts/\bSearchContext";
+import { useSearch } from "../../contexts/SearchContext";
 
 // export default Diary;
 const Wrapper = styled.div`

@@ -11,7 +11,7 @@ import { useEffect, useState } from "react";
 import Tooltip from "../../utils/Tooltip";
 import { useLocation, useNavigate } from "react-router-dom";
 import { isAuthenticated } from "../../utils/auth";
-import { useSearch } from "../../contexts/\bSearchContext";
+import { useSearch } from "../../contexts/SearchContext";
 
 const slideUp = keyframes`
   0% {
