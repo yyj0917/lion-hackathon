@@ -8,29 +8,30 @@ import CategorySidebar from "./CategorySideBar";
 
 const Wrapper = styled.div`
   display: flex;
-  flex-direction: column;
   align-items: center;
-  justify-content: center;
   width: 100%;
   height: 100%;
+  gap: 20px;
+
 `;
 const ListWrapper = styled.div`
   box-sizing: border-box;
-  width: 100%;
+  width: 90%;
   height: 100%;
-  padding: 20px;
-  display: grid;
-  grid-template-columns: repeat(2, 1fr); /* 처음에 4개의 요소가 꽉 차게 */
-  grid-auto-rows: minmax(150px, auto); /* 각 행의 높이 */
-  gap: 20px;
-  /* overflow-y: auto; 세로 스크롤 가능하게 설정 */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  overflow-y: auto; 
+  gap: 5px;
   a {
     position: relative;
+    box-sizing: border-box;
+    height: 25%;
     display: block;
     background-color: #fff;
     border: 1px solid #ddd;
     border-radius: 10px;
-    padding: 15px;
+    padding: 10px;
     text-decoration: none;
     color: #333;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
@@ -111,6 +112,8 @@ const ListFooter = styled.div`
 const CardList = styled.div`
   display: flex;
   flex-direction: column;
+  align-items: center;
+  justify-content: center;
   width: 80%;
   height: 100%;
 `;

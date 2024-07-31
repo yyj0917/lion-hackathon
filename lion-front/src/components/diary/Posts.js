@@ -2,9 +2,9 @@ import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { ReadPostsApi } from "../../api/diary";
-import DiaryModal from "./DiaryModal";
 import { HandMetal, HeartHandshake, PartyPopper, ThumbsUp } from "lucide-react";
 import { isAuthenticated } from "../../utils/auth";
+import { useSearch } from "../../contexts/\bSearchContext";
 
 // export default Diary;
 const Wrapper = styled.div`
@@ -17,21 +17,14 @@ const Wrapper = styled.div`
   /* gap: 20px; */
 `;
 const PostWrapper = styled.div`
-  flex: 1;
   height: 100%;
   width: 100%;
-  /* margin-right: 5px; */
-  border-radius: 10px;
   position: relative;
-  display: grid;
-  grid-template-columns: repeat(2, 1fr); /* 처음에 4개의 요소가 꽉 차게 */
-  grid-auto-rows: minmax(150px, auto); /* 각 행의 높이 */
-  gap: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: wrap;
   overflow-y: auto;
   box-sizing: border-box;
-  @media (max-width: 600px) {
-    grid-template-columns: 1fr; /* 화면이 좁아지면 1열 */
-  }
   padding-bottom: 1px;
 `;
 const Post = styled.div`
@@ -39,22 +32,25 @@ const Post = styled.div`
     background-color: #f9f9f9;
   }
   width: 100%;
-  padding: 20px;
+  height: 25%;
+  padding: 5px;
   margin-bottom: -1px;
   box-sizing: border-box;
-  border-radius: 20px;
+  /* border-radius: 20px; */
   border: 1px solid #ddd;
 
   /* box-shadow: 0px 0px 5px 0px rgba(0,0,0,0.1); */
 
   background-color: #fff;
   border-width: 1px 0;
-
-  a {
+    a {
     color: #666;
     text-decoration: none;
     -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
   }
+`;
+const Diary = styled.div`
+
 `;
 const Desc = styled.div`
   overflow: hidden;
@@ -70,12 +66,13 @@ const Desc = styled.div`
     font-size: 14px;
   }
   p {
+    margin: 0;
     margin-bottom: 4px;
     max-height: 100px;
     line-height: 20px;
     display: -webkit-box;
     -webkit-box-orient: vertical;
-    -webkit-line-clamp: 4;
+    -webkit-line-clamp: 2;
     text-overflow: ellipsis;
     overflow: hidden;
     word-break: break-word;
@@ -106,7 +103,9 @@ const IconSpan = styled.div`
 `;
 const DateSpan = styled.div`
   text-align: center;
-  border-bottom: 1px solid #dcdcdc;
+  border: 1px solid #ddd;
+  padding: 3px;
+    border-radius: 10px;
 `;
 const PostFooter = styled.div`
   display: flex;
@@ -144,17 +143,16 @@ const PostFooter = styled.div`
 
 export default function Posts() {
   const [posts, setPosts] = useState([]);
-  const [selectedDiary, setSelectedDiary] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
   const postsPerPage = 4;
   const navigate = useNavigate();
+  const { searchTerm } = useSearch();
+
   // Post list 전부 가져오기
-  const handleDiaryClick = (postId) => {
-    if (isAuthenticated()) {
-      navigate(`/publicDiary/${postId}`);
-    } else {
-      alert("로그인 되지 않았습니다. 로그인 후 다시 시도해주세요.");
-      navigate("/login"); // 로그인 페이지로 리디렉트
+  const handlePostVerify = () => {
+    if (!isAuthenticated()) {
+      alert("로그인 후 이용해주세요.");
+      navigate("/login", {replace: 'true'}); // 로그인 페이지로 리디렉트
     }
   };
   const fetchPosts = async () => {
@@ -169,15 +167,21 @@ export default function Posts() {
   useEffect(() => {
     fetchPosts();
   }, []);
+  const filteredPosts = posts.filter(
+    post =>
+      post.title.includes(searchTerm) ||
+      post.body.includes(searchTerm)
+  );
+
   const indexOfLastPost = currentPage * postsPerPage;
   const indexOfFirstPost = indexOfLastPost - postsPerPage;
-  const currentPosts = Array.isArray(posts)
-    ? posts.slice(indexOfFirstPost, indexOfLastPost)
+  const currentPosts = Array.isArray(filteredPosts)
+    ? filteredPosts.slice(indexOfFirstPost, indexOfLastPost)
     : [];
 
   // 페이지네이션 페이지 수 계산
   const pageNumbers = [];
-  for (let i = 1; i <= Math.ceil(posts.length / postsPerPage); i++) {
+  for (let i = 1; i <= Math.ceil(filteredPosts.length / postsPerPage); i++) {
     pageNumbers.push(i);
   }
 
@@ -185,8 +189,9 @@ export default function Posts() {
     <Wrapper>
       <PostWrapper>
         {currentPosts.map((post) => (
-          <Post key={post.id} className="diary-card">
-            <Link to={`/publicDiary/${post.id}`}>
+          <Post key={post.id} className="diary-card"
+                onClick={handlePostVerify}>
+            <Link to={`/publicDiary/${post.id}`} onClick={handlePostVerify}>
               <Desc>
                 <div>
                   <div
@@ -197,7 +202,7 @@ export default function Posts() {
                     }}
                   >
                     <h2>{post.title}</h2>
-                    <h2>닉네임</h2>
+                    <h2>{post.user.username}</h2>
                   </div>
                   <p>{post.body}</p>
                 </div>

@@ -217,7 +217,7 @@ export default function Login() {
       setTimeout(1000);
       navigate("/");
     } catch (error) {
-      alert("로그인 실패")
+      alert("로그인 실패");
       console.error("Login failed", error);
       console.log("로그인 실패");
     }

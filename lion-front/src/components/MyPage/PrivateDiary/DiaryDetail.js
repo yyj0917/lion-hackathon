@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { DeletePrivateDiaryApi, UpdatePrivateDiaryApi, fetchPrivateDiaryOne } from "../../../api/privateDiary";
 import styled from "styled-components";
-import { CircleX, Undo2 } from "lucide-react";
+import { Undo2 } from "lucide-react";
 
 // const D = styled.div`
 //   width: 80%;
@@ -18,6 +18,7 @@ const Wrapper = styled.div`
   height: 100%;
   display: flex;
   flex-direction: column;
+  align-items: center;
   justify-content: center;
 `;
 const Title = styled.h2`
@@ -28,14 +29,15 @@ const DiaryContainer = styled.div`
   padding: 20px;
   border-radius: 20px;
   max-width: 600px;
-  max-height: 600px;
-  width: 100%;
+  max-height: 500px;
+  width: 99%;
   height: 100%;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   overflow: auto;
   box-sizing: border-box;
+  //
 `;
 const DiaryHeader = styled.div`
   display: flex;
@@ -66,9 +68,11 @@ const DiaryContent = styled.div`
   border: solid #ddd;
   border-left: 1px;
   border-right: 1px;
-  border-radius: 20px;
   padding: 10px;
   height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
   p {
     display: -webkit-box;
     -webkit-box-orient: vertical;
@@ -108,37 +112,49 @@ const DeleteButton = styled.button`
   border-radius: 5px;
   cursor: pointer;
 `;
-const SaveButton = styled.button`
-    background-color: #007bff;
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 5px;
-    margin-right: 10px;
-    cursor: pointer;
-`;
-const CancelButton = styled.button`
-  background-color: #007bff;
-  color: white;
-  border: none;
-  padding: 10px 20px;
-  border-radius: 5px;
-  cursor: pointer;
-`;
-const InputTitle = styled.input`
-  width: 100%;
-  padding: 10px;
-  margin-bottom: 10px;
-  color: black;
-  /* 스타일링 추가 */
-`;
 
-const TextArea = styled.textarea`
+// Edit
+const EditContainer = styled.div`
+  padding: 20px;
+  box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.1);
+  border-radius: 20px;
+  max-width: 600px;
+  max-height: 500px;
   width: 100%;
-  /* padding: 10px; */
   height: 100%;
-  border: none;
-  /* 스타일링 추가 */
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  overflow: auto;
+  box-sizing: border-box;
+`;
+const EditForm = styled.form`
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  min-height: 300px; /* 고정된 높이 설정 */
+  height: 100%;
+  padding: 20px;
+  box-sizing: border-box;
+
+  input,
+  textarea {
+    margin-bottom: 10px;
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    box-sizing: border-box;
+    transition: all 0.3s ease;
+
+    &:focus {
+      border-color: #4285f4;
+      box-shadow: 0 0 5px rgba(66, 133, 244, 0.5);
+    }
+  }
+  textarea {
+    height: 100%;
+  }
 `;
 
 const DiaryDetail = () => {
@@ -165,11 +181,11 @@ const DiaryDetail = () => {
     fetchDiary();
   }, [id]);
   
-  // Diary Update function
+  // Private 일기 수정버튼 클릭
   const handleEditClick = () => {
     setIsEditing(true);
   };
-
+  // Private 일기 수정사항 저장
   const handleSaveClick = async () => {
     try {
         const updatedDiary = await UpdatePrivateDiaryApi(
@@ -185,15 +201,22 @@ const DiaryDetail = () => {
         console.error("Error updating diary: ", error);
     }
   };
+  // Private 일기 삭제버튼 클릭
   const handleDeleteClick = async () => {
     try {
+        const confirmDelete = window.confirm("정말 삭제하시겠습니까?");
+      if (confirmDelete) {
         await DeletePrivateDiaryApi(diary.id);
         alert("삭제되었습니다.");
-        navigate("/mypage/privateDiary");
+        navigate(-1);
+      } else {
+        alert("취소되었습니다.");
+      }
     } catch (error) {
         console.error("Error updating diary: ", error);
     }
   }
+  // Private 일기 수정 취소
   const handleCancelClick = () => {
     setIsEditing(false);
     setEditedTitle(diary.title);
@@ -207,52 +230,46 @@ const DiaryDetail = () => {
   }
 
   return (
-    <>
       <Wrapper>
-        <DiaryContainer>
-          <DiaryHeader>
-            {isEditing ? (
-                    <InputTitle
+        {isEditing ? (
+            <EditContainer>
+                <EditForm>
+                <input
                     type="text"
                     value={editedTitle}
                     onChange={(e) => setEditedTitle(e.target.value)}
-                    />
-            ) : (
-                <>
+                    required
+                />
+                <textarea
+                    value={editedBody}
+                    onChange={(e) => setEditedBody(e.target.value)}
+                    required
+                />
+                
+                <div style={{display: 'flex', justifyContent: 'end'}}>
+                    <EditButton onClick={handleSaveClick}>저장하기</EditButton>
+                    <DeleteButton onClick={handleCancelClick}>취소하기</DeleteButton>
+                </div>
+                </EditForm>
+          </EditContainer>
+        ) : (
+            <DiaryContainer>
+                <DiaryHeader>
                     <Title>{diary.title}</Title>
                     <Undo2 className="back" onClick={() => navigate(-1)} />
-                </>
-            )}
-          </DiaryHeader>
-          <DiaryContent>
-            {isEditing ? (
-                <TextArea
-                value={editedBody}
-                onChange={(e) => setEditedBody(e.target.value)}
-              />
-            ) : (
-                <>
+                </DiaryHeader>
+                <DiaryContent>
                     <p>{diary.body}</p>
-                    <p className="username">닉네임/{diary.date}</p>
-                </>
-            )}
-          </DiaryContent>
-          <DiaryFooter>
-            {isEditing ? (
-                <>
-                    <SaveButton onClick={handleSaveClick}>저장하기</SaveButton>
-                    <CancelButton onClick={handleCancelClick}>취소하기</CancelButton>
-                </>
-            ) : (
-                <>
+                    <p className="username">{diary.date}</p>
+                
+                </DiaryContent>
+                <DiaryFooter>
                     <EditButton onClick={handleEditClick}>수정하기</EditButton>
                     <DeleteButton onClick={handleDeleteClick}>삭제하기</DeleteButton>
-                </>
-            )}
-          </DiaryFooter>
-        </DiaryContainer>
+                </DiaryFooter>
+            </DiaryContainer>
+        )}
       </Wrapper>
-    </>
   );
 };
 

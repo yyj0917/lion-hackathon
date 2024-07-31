@@ -1,13 +1,10 @@
 import React from "react";
 import styled from "styled-components";
-
-const Tooltip = ({ text }) => {
-  return <TooltipContainer>{text}</TooltipContainer>;
-};
+import PropTypes from "prop-types";
 
 const TooltipContainer = styled.div`
   position: absolute;
-  background-color: rgba(0, 0, 0, 0.75);
+  background-color: rgba(12, 0, 0, 0.75);
   color: #fff;
   padding: 5px 10px;
   border-radius: 5px;
@@ -18,4 +15,13 @@ const TooltipContainer = styled.div`
   white-space: nowrap;
   z-index: 1000;
 `;
+const Tooltip = ({ text }) => {
+  console.log(text);
+  return <TooltipContainer>{text}</TooltipContainer>;
+};
+
+// PropType 정의
+Tooltip.propTypes = {
+    text: PropTypes.string.isRequired,
+  };
 export default Tooltip;

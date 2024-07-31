@@ -1,7 +1,5 @@
 import {
   BarChart4,
-  CircleUser,
-  Flame,
   Laugh,
   Notebook,
   SquarePen,
@@ -10,7 +8,7 @@ import styled from "styled-components";
 import { Outlet, useNavigate } from "react-router-dom";
 import profile from "../../assets/profileimages.png";
 import { useEffect, useState } from "react";
-import { UserInfoTokenVerify, getUserInfo } from "../../api/auth";
+import { getUserInfo } from "../../api/auth";
 
 const Wrapper = styled.div`
   width: 70%;
@@ -31,7 +29,7 @@ const Navbar = styled.div`
   align-items: center;
   gap: 20px;
   padding: 20px 0;
-  /* border-right: 1px solid #f7f7f7; */
+  border-right: 2px solid #f7f7f7;
 `;
 const Contents = styled.div`
   margin-left: 5px;
@@ -42,7 +40,7 @@ const Contents = styled.div`
   justify-content: center;
   align-items: center;
   
-  background-color: rgba(220, 220, 220, 0.3);
+  /* background-color: rgba(220, 220, 220, 0.3); */
 
   position: relative;
 `;

@@ -37,7 +37,7 @@ axiosInstance.interceptors.response.use(
         if (!refreshToken) {
           // No refresh token, redirect to login
           window.location.href = "/login";
-          return Promise.reject(error);
+          return Promise.reject();
         }
         const response = await axios.post(`${API_URL}auth/refresh/`, {
           refresh: refreshToken,

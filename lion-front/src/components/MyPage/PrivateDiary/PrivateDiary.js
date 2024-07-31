@@ -1,25 +1,14 @@
-import { BookHeart, BookIcon, BookOpen } from "lucide-react";
+import { BookOpen } from "lucide-react";
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { fetchPrivateDiaryEntry } from "../../../api/privateDiary";
 import { useNavigate } from "react-router-dom";
 
-const books = [
-  { date: "2024-07-25", title: "일기 제목 1" },
-  { date: "2024-07-24", title: "일기 제목 2" },
-  { date: "2024-07-24", title: "일기 제목 3" },
-  { date: "2024-07-24", title: "일기 제목 4" },
-  { date: "2024-07-24", title: "일기 제목 5" },
-  { date: "2024-07-24", title: "일기 제목 6" },
-  { date: "2024-07-24", title: "일기 제목 7" },
-  { date: "2024-07-24", title: "일기 제목 8" },
 
-  // 더 많은 책 데이터를 추가
-];
 const FilterWrapper = styled.div`
   display: flex;
   align-items: center;
-  height: 20%;
+  height: 10%;
   label {
     margin-right: 10px;
     font-size: 16px;
@@ -33,36 +22,34 @@ const Select = styled.select`
   border-radius: 4px;
 `;
 const DiaryWrapper = styled.div`
-  box-sizing: border-box;
-  display: grid;
-  grid-template-columns: repeat(2, minmax(150px, 1fr));
-  grid-template-rows: repeat(2, auto); /* 두 줄로 고정 */
-  gap: 16px;
-  padding: 20px;
+
+  height: 100%;
   width: 100%;
-  height: 90%;
-  margin: auto;
-`;
-const Book = styled.div`
-  background-color: #fff;
-  border-radius: 8px;
-  padding: 16px;
+  position: relative;
   display: flex;
   flex-direction: column;
+  justify-content: wrap;
+  box-sizing: border-box;
+  overflow: hidden;
+`;
+const Book = styled.div`
+  display: flex;
   align-items: center;
-  transition: transform 0.2s ease-in-out;
-  box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.1);
-  cursor: pointer;
-  text-align: center;
-  position: relative;
-
   &:hover {
-    transform: scale(1.05);
+    background-color: #f9f9f9;
   }
+  width: 100%;
+  height: 25%;
+  margin-bottom: -1px;
+  box-sizing: border-box;
+  border: 1px solid #ddd;
+
+  box-shadow: 0px 0px 5px 0px rgba(0,0,0,0.1);
+  background-color: #fff;
+  border-width: 1px 0;
+  cursor: pointer;
 `;
 const BookIconWrapper = styled.div`
-  /* opacity: 0.1; 아이콘 투명도 설정 */
-  /* font-size: 50%; */
   width: 40%;
 `;
 const BookInfo = styled.div`
@@ -88,6 +75,7 @@ const Wrapper = styled.div`
   width: 100%;
   display: flex;
   flex-direction: column;
+  justify-content: space-between;
   align-items: center;
   height: 100%;
   position: relative;
@@ -102,9 +90,9 @@ const DiaryFooter = styled.div`
   display: flex;
   box-sizing: border-box;
   justify-content: center;
+  align-items: center;
   padding: 10px 0;
-  /* background-color: aliceblue; */
-  /* background: #ffffff; */
+
   label {
     margin: 0 5px;
     color: black;
@@ -196,13 +184,13 @@ const PrivateDiary = () => {
         <DiaryWrapper>
           {currentDiary.map((diary, index) => (
             <Book key={index} onClick={() => handleDiaryClick(diary.id)}>
+              <BookIconWrapper>
+                <BookOpen size={100} strokeWidth={1} />
+              </BookIconWrapper>
               <BookInfo>
                 <p>{diary.date}</p>
                 <h3>{diary.title}</h3>
               </BookInfo>
-              <BookIconWrapper>
-                <BookOpen size={100} strokeWidth={1} />
-              </BookIconWrapper>
             </Book>
           ))}
         </DiaryWrapper>

@@ -1,18 +1,21 @@
 import { Award, CircleUserRound, MessageSquareText, SquareMousePointer } from "lucide-react";
 import { useEffect, useState } from "react";
 import styled from "styled-components";
+import PropTypes from "prop-types";
+import  Tooltip  from "../../../utils/Tooltip";
 
 const Container = styled.div`
     display: flex;
     gap: 40px;
 `;
 const CardWrapper = styled.div`
+    position: relative;
     width: 300px;
     height: 400px;
     background: #fff;
     border-radius: 15px;
     border: 5px solid #fff;
-    overflow: hidden;
+    /* overflow: hidden; */
     color: #616161;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1), 
               0 6px 20px rgba(0, 0, 0, 0.1);
@@ -29,7 +32,7 @@ const CardHeader = styled.div`
     height: 200px;
     width: 100%;
     background: red;
-    border-radius:100% 0% 100% 0% / 0% 50% 50% 100%;
+    border-radius: 100% 0% 100% 0% / 0% 50% 50% 100%;
     display: grid;
     place-items: center;
     background: linear-gradient(to bottom left, #f12711, #f5af19);
@@ -104,8 +107,17 @@ const Others = styled.div`
     }
 
 `;
-export default function GakeKeeperCard({ gatekeeper }) {
+// PropType 정의
+
+  
+export default function GateKeeperCard({ gatekeeper }) {
     const [gateKeeper, setGateKeeper] = useState([]);
+    const [tooltip, setTooltip] = useState(null);
+    const showTooltip = (text) => {
+        setTooltip(text);
+    }
+        
+    const hideTooltip = () => setTooltip(null);
     useEffect(() => {
         setGateKeeper({
             id: 1,
@@ -123,7 +135,11 @@ export default function GakeKeeperCard({ gatekeeper }) {
 
     return (
         <Container>
-            <CardWrapper>
+            <CardWrapper
+                onMouseEnter={() => 
+                    showTooltip("https://open.kakao.com/o/sdEKmaEg 이동하기")}
+                onMouseLeave={hideTooltip}
+            >
                 <CardHeader>
                     <CircleUserRound size={100} color="white"/>
                 </CardHeader>
@@ -140,8 +156,12 @@ export default function GakeKeeperCard({ gatekeeper }) {
                         <button>신체건강</button>
                     </Others>
                 </CardContent>
+                {tooltip === "https://open.kakao.com/o/sdEKmaEg 이동하기" && <Tooltip text="https://open.kakao.com/o/sdEKmaEg 이동하기" />}
             </CardWrapper>
             
         </Container>
     );
 }
+GateKeeperCard.propTypes = {
+    gatekeeper: PropTypes.arrayOf(PropTypes.string).isRequired,
+};

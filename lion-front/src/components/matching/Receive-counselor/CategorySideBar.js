@@ -1,12 +1,12 @@
 import React from "react";
 import styled from "styled-components";
+import PropTypes from "prop-types";
 
 const SideBar = styled.div`
-  width: 100%;
-  height: 10%;
+  height: 70%;
   display: flex;
+  flex-direction: column;
   justify-content: space-between;
-  border-right: 1px solid #ccc;
 `;
 
 const CategoryButton = styled.label`
@@ -33,6 +33,7 @@ const CategoryButton = styled.label`
     margin-right: 10px;
   }
 `;
+
 
 const CategorySidebar = ({ selectedCategories, onCategoryChange }) => {
   const categories = [
@@ -63,5 +64,9 @@ const CategorySidebar = ({ selectedCategories, onCategoryChange }) => {
     </SideBar>
   );
 };
-
+// PropType 정의
+CategorySidebar.propTypes = {
+  selectedCategories: PropTypes.arrayOf(PropTypes.string).isRequired,
+  onCategoryChange: PropTypes.func.isRequired,
+};
 export default CategorySidebar;

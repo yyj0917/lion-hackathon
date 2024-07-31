@@ -74,7 +74,7 @@ export default function MainHeader() {
   const navigate = useNavigate();
 
   const handleClick = () => {
-    navigate("/");
+    navigate("/", {replace: true});
   };
   const handleLogout = async () => {
     try {
