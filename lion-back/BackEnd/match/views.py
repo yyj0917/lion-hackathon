@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect
 from rest_framework import viewsets, status
+from rest_framework import generics, permissions
 from rest_framework.response import Response
 from django.db.models import Count
 from rest_framework.permissions import IsAuthenticated
@@ -10,9 +11,17 @@ from .models import *
 from .serializers import *
 
 
+class AdvisorCreateView(generics.CreateAPIView):
+    queryset = Advisor.objects.all()
+    serializer_class = AdvisorSerializer
+
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)
+
 class AdvisorViewSet(viewsets.ModelViewSet):
     queryset = Advisor.objects.all()
     serializer_class = AdvisorSerializer
+    # permission_classes = [permissions.IsAuthenticated]
 
     def retrieve(self, request, *args, **kwargs):
         instance = self.get_object()
@@ -24,15 +33,14 @@ class ClientViewSet(viewsets.ModelViewSet):
     queryset = Client.objects.all()
     serializer_class = ClientSerializer
 
-    def perform_create(self, serializer):
-        serializer.save(user=self.request.user)
-
     def create(self, request, *args, **kwargs):
 
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
+
+        user = User.objects.get(username=request.user.username)
         
-        client = serializer.save()
+        client = serializer.save(user=user)
 
         advisor_count = Advisor.objects.count()
         
