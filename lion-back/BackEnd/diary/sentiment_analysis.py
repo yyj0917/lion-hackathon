@@ -27,13 +27,16 @@ def sentimentAnalysis(content) :
 
         sentiment = result['document']['sentiment']
         confidence = result['document']['confidence']
+        
+        negative_contents = []
+        for sentence in result['sentences'] :
+            if sentence['sentiment'] == "negative" :
+                negative_contents.append(sentence['content']) 
 
-        return sentiment, confidence
+        return sentiment, confidence, negative_contents
     
     else:
         print("Error occured during sentiment analysis")
-
-
 
 
 # 분석 결과는 dictionary 형태

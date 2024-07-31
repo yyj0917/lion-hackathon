@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { UpdatePrivateDiaryApi, fetchPrivateDiaryOne } from "../../../api/privateDiary";
+import { DeletePrivateDiaryApi, UpdatePrivateDiaryApi, fetchPrivateDiaryOne } from "../../../api/privateDiary";
 import styled from "styled-components";
 import { CircleX, Undo2 } from "lucide-react";
 
@@ -146,8 +146,8 @@ const DiaryDetail = () => {
   const [diary, setDiary] = useState(null);
   const navigate = useNavigate();
   const [isEditing, setIsEditing] = useState(false);
-  const [editedTitle, setEditedTitle] = useState(null);
-  const [editedBody, setEditedBody] = useState(null);
+  const [editedTitle, setEditedTitle] = useState('');
+  const [editedBody, setEditedBody] = useState('');
 
   // Fetch Diary
   useEffect(() => {
@@ -155,8 +155,8 @@ const DiaryDetail = () => {
       try {
         const response = await fetchPrivateDiaryOne(id);
         setDiary(response);
-        setEditedTitle(diary.title);
-        setEditedBody(diary.body);
+        setEditedTitle(response.title);
+        setEditedBody(response.body);
       } catch (error) {
         console.error("Error fetching diary:", error);
       }
@@ -185,6 +185,15 @@ const DiaryDetail = () => {
         console.error("Error updating diary: ", error);
     }
   };
+  const handleDeleteClick = async () => {
+    try {
+        await DeletePrivateDiaryApi(diary.id);
+        alert("삭제되었습니다.");
+        navigate("/mypage/privateDiary");
+    } catch (error) {
+        console.error("Error updating diary: ", error);
+    }
+  }
   const handleCancelClick = () => {
     setIsEditing(false);
     setEditedTitle(diary.title);
@@ -237,7 +246,7 @@ const DiaryDetail = () => {
             ) : (
                 <>
                     <EditButton onClick={handleEditClick}>수정하기</EditButton>
-                    <DeleteButton>삭제하기</DeleteButton>
+                    <DeleteButton onClick={handleDeleteClick}>삭제하기</DeleteButton>
                 </>
             )}
           </DiaryFooter>

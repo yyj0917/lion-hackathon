@@ -37,11 +37,20 @@ export const WritePrivateDiaryApi = async (title, body, date) => {
 // PrivateDiary Update Diary - PUT
 export const UpdatePrivateDiaryApi = async (diary_id, title, body, date) => {
   try {
-    const response = await axiosInstance.put(`${API_URL}/${diary_id}`, {
+    const response = await axiosInstance.put(`${API_URL}/${diary_id}/`, {
       title,
       body,
       date,
     });
+    return response.data;
+  } catch (error) {
+    throw new Error(error.response.data.message);
+  }
+};
+// PrivateDiary Delete Diary - DELETE
+export const DeletePrivateDiaryApi = async (diary_id) => {
+  try {
+    const response = await axiosInstance.delete(`${API_URL}/${diary_id}/`);
     return response.data;
   } catch (error) {
     throw new Error(error.response.data.message);

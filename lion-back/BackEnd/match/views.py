@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from rest_framework import viewsets, status
 from rest_framework.response import Response
 from django.db.models import Count
@@ -6,8 +6,8 @@ from rest_framework.permissions import IsAuthenticated
 
 import random
 
-from .models import Advisor, Client
-from .serializers import AdvisorSerializer, ClientSerializer
+from .models import *
+from .serializers import *
 
 
 class AdvisorViewSet(viewsets.ModelViewSet):
@@ -23,16 +23,11 @@ class AdvisorViewSet(viewsets.ModelViewSet):
 class ClientViewSet(viewsets.ModelViewSet):
     queryset = Client.objects.all()
     serializer_class = ClientSerializer
-    permission_classes = [IsAuthenticated]  # Ensure the user is authenticated
 
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
 
     def create(self, request, *args, **kwargs):
-
-        # user = request.data.get('user')
-        # if not user:
-        #     return Response({'error': 'User field is required.'}, status=status.HTTP_400_BAD_REQUEST)
 
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)

@@ -1,6 +1,6 @@
 from django.urls import path, include
 
-from .views import AdvisorViewSet, ClientViewSet
+from .views import *
 
 advisor_info = AdvisorViewSet.as_view({
     'get' : 'list',

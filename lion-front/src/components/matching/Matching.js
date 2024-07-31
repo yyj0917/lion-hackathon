@@ -99,7 +99,7 @@ const Matching = () => {
     if (isAuthenticated()) {
       setIsCounselor(false);
       setIsRecieveCounsel(true);
-      navigate("/matching/recieve-counsel");
+      navigate("/matching/randomMatching");
     } else {
       alert("로그인 후 다시 시도해주세요.");
       navigate("/login"); // 로그인 페이지로 리디렉트

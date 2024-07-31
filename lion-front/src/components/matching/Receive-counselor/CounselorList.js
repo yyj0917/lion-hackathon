@@ -2,12 +2,13 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
-import kakao from "../../assets/kakaotalk.jpg";
-import profile from "../../assets/firefighterProfile.png";
+import kakao from "../../../assets/kakaotalk.jpg";
+import profile from "../../../assets/firefighterProfile.png";
 import CategorySidebar from "./CategorySideBar";
 
 const Wrapper = styled.div`
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
   width: 100%;

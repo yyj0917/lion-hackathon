@@ -78,11 +78,8 @@ AUTH_USER_MODEL = 'accounts.User' #장고에게 내가 만든 커스텀 모델�
 
 # jwt 토큰은 simplejwt의 JWTAuthentication으로 인증한다.
 REST_FRAMEWORK = {
-    'DEFAULT_PERMISSION_CLASSES': (
+    'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_simplejwt.authentication.JWTAuthentication',
-    ),
-    'DEFAULT_PERMISSION_CLASSES': (
-        'rest_framework.permissions.IsAdminUser'
     ),
     'TOKEN_MODEL': None,
 }
