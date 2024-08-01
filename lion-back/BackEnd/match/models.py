@@ -36,3 +36,5 @@ class Client(models.Model):
     categories = models.ManyToManyField(ClientCategory)
     
     matched_advisor = models.ForeignKey(Advisor, on_delete=models.CASCADE, null=True, related_name='matched_clients')
+    # 상담 수락 여부
+    accepted = models.BooleanField(default=False)
