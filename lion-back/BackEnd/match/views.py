@@ -16,7 +16,7 @@ from .filters import *
 class AdvisorListViewSet(viewsets.ModelViewSet):
     serializer_class = AdvisorSerializer
     filter_backends = [DjangoFilterBackend]
-    filterset_fields = AdvisorFilter
+    filterset_class = AdvisorFilter
 
     def get_queryset(self):
         user = self.request.user
