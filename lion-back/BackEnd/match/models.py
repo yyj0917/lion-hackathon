@@ -18,6 +18,8 @@ class ClientCategory(models.Model):
 
 class Advisor(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=False)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
     age = models.IntegerField()
     work_experience = models.IntegerField()
     workIn = models.TextField()
@@ -27,6 +29,7 @@ class Advisor(models.Model):
 
 class Client(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=False)
+    created_at = models.DateTimeField(auto_now_add=True)
     age = models.IntegerField()
     work_experience = models.IntegerField()
     purpose = models.CharField(max_length=200, blank=True)
