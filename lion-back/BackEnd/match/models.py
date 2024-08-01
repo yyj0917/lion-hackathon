@@ -1,20 +1,38 @@
 from django.db import models
-from django.conf import settings
-from django.contrib.auth.models import AbstractUser
 from accounts.models import User
+from django.conf import settings
 
-class Adviser(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+class AdvisorCategory(models.Model):
+    all = models.CharField(max_length=20)
+    ptsd = models.CharField(max_length=20)
+    relationship = models.CharField(max_length=20)
+    
+class ClientCategory(models.Model):
+    no_purpose = models.CharField(max_length=20)
+    ptsd = models.CharField(max_length=20)
+    relationship = models.CharField(max_length=20)
+    other = models.CharField(max_length=20)
+
+    def __str__(self):
+        return self.no_purpose or self.ptsd or self.relationship or self.other
+
+class Advisor(models.Model):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=False)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
     age = models.IntegerField()
     work_experience = models.IntegerField()
-    workln = models.TextField()
+    workIn = models.TextField()
     openlink = models.URLField(blank=True, null=True)
     giveTalk = models.CharField(max_length=100, blank=True)
+    categories = models.ManyToManyField(AdvisorCategory)
 
 class Client(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=False)
+    created_at = models.DateTimeField(auto_now_add=True)
     age = models.IntegerField()
     work_experience = models.IntegerField()
     purpose = models.CharField(max_length=200, blank=True)
+    categories = models.ManyToManyField(ClientCategory)
     
-    matched_adviser = models.ForeignKey(Adviser, on_delete=models.CASCADE, null=True, related_name='matched_client')
+    matched_advisor = models.ForeignKey(Advisor, on_delete=models.CASCADE, null=True, related_name='matched_clients')
