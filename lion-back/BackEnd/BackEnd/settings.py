@@ -70,7 +70,7 @@ INSTALLED_APPS = [
 
     # 동료매칭
     'match',
-    'django-filter',
+    'django_filters',
 
 ]
 
