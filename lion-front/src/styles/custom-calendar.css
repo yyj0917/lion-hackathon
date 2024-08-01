@@ -23,22 +23,3 @@
   /* background: #f0f0f0; 현재 날짜 강조 */
   border-radius: 8px;
 }
-/* 
-.custom-calendar .react-calendar__tile--active {
-  background: #3f51b5; /* 선택된 날짜 강조 */
-  /* color: #d9534f;
-}
-
-.custom-calendar .react-calendar__tile:enabled:hover {
-  background-color: #e0e0e0;
-}
-
-.custom-calendar .react-calendar__month-view__days__day--weekend {
-  color: #d9534f;
-}
-
-.custom-calendar .react-calendar__tile--hasActive,
-.custom-calendar .react-calendar__tile--hasActive:hover {
-  background: #3f51b5;
-  color: white;
-} */ 

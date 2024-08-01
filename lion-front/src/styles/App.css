@@ -52,20 +52,7 @@ body {
   margin-left: 10px;
   height: 50px;
 }
-/* #messageBubble:after {
-  content: '';
-	position: absolute;
-	left: 0;
-	top: 50%;
-	width: 0;
-	height: 0;
-	border: 20px solid transparent;
-	border-right-color: #e6b2b22a;
-	border-left: 0;
-	border-bottom: 0;
-	margin-top: -10px;
-	margin-left: -20px;
-} */
+
 
 /* LoginForm */
 .loginForm {
@@ -102,60 +89,8 @@ body {
   justify-content: space-between;
   width: 300px;
 }
-/* .btn {
-  margin: 10px;
-  margin-top: 20px;
-  background-color: rgb(245, 235, 235);
-  border: white;
-  border-radius: 8px;
-  width: 210px;
-  height: 40px;
-  font-size: 20px;
-  font-weight: 600;
-  font-style: normal;
-  color: rgb(91, 84, 84);
-  cursor: pointer;
-  
-}
-.btn:hover {
-  background-color: rgb(245, 235, 235);
-} */
 
-/* Article poem */
-.poem-container::before {
-  content: "";
-  background-image: url("../assets/backgroundFire.png"); /* 이미지 경로를 알맞게 설정 */
-  background-size: cover;
-  background-position: center;
-  opacity: 0.3; /* 투명도 설정 */
-  z-index: -1; /* 텍스트보다 뒤에 오도록 설정 */
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-}
-.poem-header {
-  font-size: 36px;
-  font-weight: bold;
-  margin-bottom: 10px;
-  text-align: center;
-  font-family: "Nanum Pen Script", cursive;
-  position: relative; /* 텍스트가 배경 이미지 위에 있도록 설정 */
-  z-index: 1;
-}
 
-.poem-content {
-  font-size: 22px;
-  line-height: 1.2;
-  text-align: center;
-  white-space: pre-line;
-  font-family: "Nanum Pen Script", cursive;
-  font-weight: 400;
-  font-style: normal;
-  position: relative; /* 텍스트가 배경 이미지 위에 있도록 설정 */
-  z-index: 1;
-}
 
 /* Features nav bar */
 .tabset {
@@ -255,8 +190,18 @@ input {
 }
 
 .react-calendar__tile--active {
-  background: rgb(251,63,63) !important;
   background: radial-gradient(circle, rgba(251,63,63,1) 0%, rgba(255,255,255,1) 53%) !important;
   /* background: #ffb3b3 ; */
   color: rgb(242, 235, 235) !important;
 }
+
+.highlight-tile {
+  background: radial-gradient(circle, rgba(251,153,63,1) 0%, rgba(255,255,255,1) 53%) !important;
+  color: white !important; 
+}
+/* .highlight-tile:enabled:hover {
+  background-color: #ffce54 !important;
+}
+.react-calendar__tile--active:enabled:hover {
+  background-color: #66bb6a !important;
+} */

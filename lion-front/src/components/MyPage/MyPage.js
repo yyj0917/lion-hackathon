@@ -3,6 +3,7 @@ import {
   Laugh,
   Notebook,
   SquarePen,
+  SquareUser,
 } from "lucide-react";
 import styled from "styled-components";
 import { Outlet, useNavigate } from "react-router-dom";
@@ -46,21 +47,17 @@ const Contents = styled.div`
 `;
 const ImgWrapper = styled.div`
   width: 100%;
-  height: 30%;
+  height: 50%;
   text-align: center;
   display: flex;
   flex-direction: column;
   align-items: center;
   position: relative;
-  img {
-    border-radius: 50%;
-    width: 50%;
-    height: 50%;
-  }
-  span {
-    position: absolute;
-    bottom: 50px;
-    right: 10px;
+  .profile-text {
+    display: flex;
+    align-items: center; /* 세로 정렬 */
+    font-size: 16px;
+    line-height: 1.5;
   }
   p {
     width: 100%;
@@ -73,18 +70,12 @@ const ImgWrapper = styled.div`
   }
 `;
 const IconWrapper = styled.div`
-  height: 70%;
+  height: 50%;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  .profile-text {
-    display: flex;
-    align-items: center; /* 세로 정렬 */
-    margin-left: 10px; /* 아이콘과 텍스트 간의 간격 */
-    font-size: 16px;
-    line-height: 1.5;
-  }
+  
   p {
     cursor: pointer;
     position: relative;
@@ -112,7 +103,6 @@ export default function MyPage() {
   const fetchUserInfo = async () => {
     try {
       const response = await getUserInfo();
-      console.log(response);
       setUser(response);
     } catch (error) {
       console.log("Error message", error);
@@ -127,8 +117,7 @@ export default function MyPage() {
     <Wrapper>
       <Navbar>
         <ImgWrapper>
-          <img src={profile} alt="profile" />
-          {/* <span><Flame strokeWidth={4} style={{color: "#f44336", display:"flex", marginTop:"10%"}} /></span> */}
+          <SquareUser color="#FF5A5A" strokeWidth={1} size={100}/>
           <div className="profile-text">
             <p>
               {user.name}({user.age})/{user.username} <br /> {user.office}{" "}

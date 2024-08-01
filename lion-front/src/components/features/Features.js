@@ -1,11 +1,13 @@
 import styled, { keyframes } from "styled-components";
 import Tab from "./Tab";
 import {
+    CircleX,
   House,
   NotebookTabs,
   Pen,
   Search,
   Undo2,
+  X,
 } from "lucide-react";
 import { useEffect, useState } from "react";
 import Tooltip from "../../utils/Tooltip";
@@ -33,15 +35,27 @@ const slideIn = keyframes`
     opacity: 1;
   }
 `;
+const slideOut = keyframes`
+  from {
+    width: 200px;
+    opacity: 1;
+  }
+  to {
+    width: 0;
+    opacity: 0;
+  }
+`;
+
 const SearchInput = styled.input`
+  height: 25px;
   position: absolute;
   bottom: 60px;
-    right: 10px;
-  animation: ${slideIn} 0.5s forwards;
+  right: 10px;
+  animation: ${({ animate }) => (animate ? slideIn : slideOut)} 0.5s forwards;
   margin-left: 10px;
   padding: 5px 10px;
   border-radius: 20px;
-  border: 1px solid #FF5A5A;
+  border: 2px solid #FF5A5A;
   width: 0;
   opacity: 0;
   transition: width 0.5s ease, opacity 0.5s ease;
@@ -52,13 +66,14 @@ const SearchInput = styled.input`
   &::placeholder {
     font-family: 'Courier New', Courier, monospace;
     color: #999;
+    font-weight: 600;
+    font-size: 100%;
   }
 `;
 
 const Wrapper = styled.div`
   width: 70%;
   margin-left: 5px;
-  /* height: 740px; */
   border-radius: 20px;
   display: flex;
   flex-direction: column;
@@ -108,7 +123,7 @@ const FilterAndWrite = styled.div`
   align-items: center;
   gap: 10px;
   transition:
-    opacity 0.5s,
+    opacity 5s,
     visibility 0.5s;
   width: 40px;
   height: 250px;
@@ -116,13 +131,12 @@ const FilterAndWrite = styled.div`
   bottom: 10px;
   justify-content: center;
   z-index: 1000;
-  /* box-shadow: 0 0px 5px rgba(0, 0, 0, 0.1); */
   border-radius: 20px;
 `;
 const ModalBtn = styled.div`
   opacity: 0;
   /* transform: translateY(20px); */
-  animation: ${({ delay }) => delay}ms ${slideUp} forwards;
+  animation: ${({ $delay }) => $delay}ms ${slideUp} forwards;
 
   width: 50px;
   height: 50px;
@@ -149,8 +163,13 @@ export default function Features() {
   const isPath = location.pathname.startsWith('/matching');
 
   const handleSearchClick = () => {
-    setShowSearch(!showSearch);
+    setShowSearch(prev => !prev);
   };
+  const handleCancelClick = () => {
+    setShowSearch(prev => !prev);
+    setSearchTerm('');
+  };
+
 
   const handleInputChange = (e) => {
     setSearchTerm(e.target.value);
@@ -164,17 +183,26 @@ export default function Features() {
       </HomeRedirect>
       {(!isPath && isAuthenticated()) && (
         <FilterAndWrite>
-            <ModalBtn 
-                delay={100}
-                onMouseEnter={() => showTooltip("검색")}
-                onMouseLeave={hideTooltip}
-                >
-                <Search onClick={handleSearchClick}/>
-                {showSearch && <SearchInput type="text" onChange={handleInputChange} placeholder="검색어를 입력하세요." />}
+            <ModalBtn $delay={100}>
+                {!showSearch ? (
+                    <Search 
+                        onClick={handleSearchClick}
+                        onMouseEnter={() => showTooltip("검색")}
+                        onMouseLeave={hideTooltip}
+                        />
+                ) : (
+                    <X
+                        onClick={handleCancelClick}
+                        onMouseEnter={() => showTooltip("취소")}
+                        onMouseLeave={hideTooltip}
+                    />
+                )}
+                {showSearch && <SearchInput type="text" onChange={handleInputChange} placeholder="검색어를 입력하세요." animate={showSearch} />}
                 {tooltip === "검색" && <Tooltip text="검색" />}
+                {tooltip === "취소" && <Tooltip text="취소" />}
             </ModalBtn>
             <ModalBtn 
-                delay={200} 
+                $delay={200} 
                 onClick={()=>navigate('/publicDiary/writePublicDiary')}
                 onMouseEnter={() => showTooltip("일기 작성")}
                 onMouseLeave={hideTooltip}
@@ -183,7 +211,7 @@ export default function Features() {
                 {tooltip === "일기 작성" && <Tooltip text="일기 작성" />}
             </ModalBtn>
             <ModalBtn 
-                delay={300}
+                $delay={300}
                 onClick={()=>navigate('/publicDiary/sharedDiary')}
                 onMouseEnter={() => showTooltip("내가 쓴 공유 일기")}
                 onMouseLeave={hideTooltip}

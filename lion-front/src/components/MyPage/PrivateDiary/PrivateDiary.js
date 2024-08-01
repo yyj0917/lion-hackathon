@@ -1,8 +1,17 @@
-import { BookOpen } from "lucide-react";
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { fetchPrivateDiaryEntry } from "../../../api/privateDiary";
 import { useNavigate } from "react-router-dom";
+import background1 from "../../../assets/background/background_1.jpg";
+import background2 from "../../../assets/background/background_2.jpg";
+import background3 from "../../../assets/background/background_3.jpg";
+import background4 from "../../../assets/background/background_4.jpg";
+import background5 from "../../../assets/background/background_5.jpg";
+
+
+const images = [
+  background1, background2, background3, background4, background5
+];
 
 
 const FilterWrapper = styled.div`
@@ -35,6 +44,8 @@ const DiaryWrapper = styled.div`
 const Book = styled.div`
   display: flex;
   align-items: center;
+  gap: 50px;
+  padding: 20px;
   &:hover {
     background-color: #f9f9f9;
   }
@@ -50,7 +61,15 @@ const Book = styled.div`
   cursor: pointer;
 `;
 const BookIconWrapper = styled.div`
-  width: 40%;
+  width: 100px;
+  height: 100px;
+  overflow: hidden;
+  border-radius: 8px;
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
 `;
 const BookInfo = styled.div`
   margin-top: 8px;
@@ -58,8 +77,8 @@ const BookInfo = styled.div`
   height: 100%;
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  gap: 5px;
+  justify-content: space-around;
+  
   p {
     margin: 0;
     font-size: 12px;
@@ -69,6 +88,19 @@ const BookInfo = styled.div`
     margin: 4px 0 0;
     font-size: 16px;
     color: #333;
+    display: flex;
+    justify-content: space-between;
+  }
+  .diary-body {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    word-break: break-word;
+    white-space: normal;
+    font-size: 12px;
+    color: #444444;
   }
 `;
 const Wrapper = styled.div`
@@ -126,9 +158,11 @@ const PrivateDiary = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const diaryPerPage = 4;
 
+  // 날짜 필터 날짜 고르기
   const handleDateChange = (event) => {
     setSelectedDate(event.target.value);
   };
+  // 일기 클릭시 이동
   const handleDiaryClick = (id) => {
     navigate(`/mypage/privateDiary/${id}`);
   };
@@ -144,6 +178,7 @@ const PrivateDiary = () => {
     fetchPrivateDiary();
   }, []);
 
+  // 날짜 필터링
   const filteredDiary = selectedDate
     ? privateDiary.filter((diary) => diary.date === selectedDate)
     : privateDiary;
@@ -185,11 +220,12 @@ const PrivateDiary = () => {
           {currentDiary.map((diary, index) => (
             <Book key={index} onClick={() => handleDiaryClick(diary.id)}>
               <BookIconWrapper>
-                <BookOpen size={100} strokeWidth={1} />
+                <img src={images[diary.id % images.length]} alt="Book cover" style={{ width: '100%', height: '100%'}} />
               </BookIconWrapper>
               <BookInfo>
-                <p>{diary.date}</p>
-                <h3>{diary.title}</h3>
+                <h3>{diary.title} <p>{diary.date}</p></h3>
+                
+                <p className="diary-body">{diary.body}</p>
               </BookInfo>
             </Book>
           ))}

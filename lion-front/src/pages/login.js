@@ -212,10 +212,9 @@ export default function Login() {
       const response = await loginApi(email, password);
       localStorage.setItem("accessToken", response.token.access);
       localStorage.setItem("refreshToken", response.token.refresh);
-      console.log(response);
       alert("로그인 성공");
       setTimeout(1000);
-      navigate("/");
+      navigate("/", {replace: true});
     } catch (error) {
       alert("로그인 실패");
       console.error("Login failed", error);
