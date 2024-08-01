@@ -7,25 +7,23 @@ import "../../styles/custom-calendar.css"; // 추가적인 스타일링을 위�
 import { useNavigate } from "react-router-dom";
 
 const emotionIcons = {
-  positive: <Laugh style={{ color: "#f44336" }} />,
-  neutral: <Meh style={{ color: "#f44336" }} />,
-  negative: <Frown style={{ color: "#f44336" }} />,
+  positive: <Laugh size={22} style={{ color: "#f44336" }} />,
+  neutral: <Meh size={22} style={{ color: "#f44336" }} />,
+  negative: <Frown size={22} style={{ color: "#f44336" }} />,
 };
 
 const Sentiment = () => {
   const navigate = useNavigate();
   const [date, setDate] = useState(new Date());
   const [entries, setEntries] = useState({});
-  const [selectedDate, setSelectedDate] = useState(null);
   useEffect(() => {
     const fetchDiaryEntries = async () => {
       try {
         const response = await fetchPrivateDiaryEntry(); // API 호출
-        const data = response;
         const entriesData = {};
-        data.forEach((entry) => {
+        response.forEach((entry) => {
           entriesData[new Date(entry.date).toDateString()] = {
-            diary: entry.diary,
+            diary_id: entry.id,
             sentiment: entry.sentiment,
           };
         });
@@ -38,9 +36,19 @@ const Sentiment = () => {
   }, []);
 
   const handleDateClick = (value) => {
-    setSelectedDate(value);
+    const dateKey = value.toDateString();
+    if (entries[dateKey]) {
+      navigate(`/mypage/privateDiary/${entries[dateKey].diary_id}`);
+    } else {
+      alert('작성된 일기가 없습니다.');
+    }
   };
 
+  const tileClassName = ({ date, view }) => {
+    if (view === 'month' && entries[date.toDateString()]) {
+      return 'highlight-tile'; // 스타일을 적용할 클래스 이름
+    }
+  };
   const tileContent = ({ date, view }) => {
     if (view === "month") {
       const entry = entries[date.toDateString()];
@@ -51,11 +59,10 @@ const Sentiment = () => {
               display: "flex",
               justifyContent: "center",
               alignItems: "center",
-              marginTop: "55px",
+              marginTop: "60px",
               position: "absolute",
             }}
           >
-            <Book style={{ color: "#3f51b5" }} />
             {emotionIcons[entry.sentiment]}
           </div>
         );
@@ -63,9 +70,6 @@ const Sentiment = () => {
     }
     return null;
   };
-  // font-family: 'Courier New', Courier, monospace;
-
-  const selectedEntry = entries[selectedDate?.toDateString()];
 
   return (
     <div
@@ -75,25 +79,13 @@ const Sentiment = () => {
         alignItems: "center",
       }}
     >
-      {/* <h2 style={{ fontFamily: "Courier New" }}>My Emotion Calendar</h2> */}
       <Calendar
         onClickDay={handleDateClick}
         value={date}
+        tileClassName={tileClassName}
         tileContent={tileContent}
         className={"custom-calendar"}
       />
-      {selectedDate && (
-        <div style={{ marginTop: "20px", width: "100%", maxWidth: "600px" }}>
-          {selectedEntry ? (
-            <div>
-              <p>{selectedEntry.diary}</p>
-              <div>{emotionIcons[selectedEntry.emotion]}</div>
-            </div>
-          ) : (
-            <p>No diary entry for this date.</p>
-          )}
-        </div>
-      )}
     </div>
   );
 };

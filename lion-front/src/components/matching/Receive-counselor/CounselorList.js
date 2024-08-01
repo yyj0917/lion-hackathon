@@ -2,9 +2,8 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
-import kakao from "../../../assets/kakaotalk.jpg";
-import profile from "../../../assets/firefighterProfile.png";
 import CategorySidebar from "./CategorySideBar";
+import { Award, CircleUserRound, MessageSquareText } from "lucide-react";
 
 const Wrapper = styled.div`
   display: flex;
@@ -26,10 +25,10 @@ const ListWrapper = styled.div`
   a {
     position: relative;
     box-sizing: border-box;
-    height: 25%;
-    display: block;
+    height: 23%;
+    display: flex;
     background-color: #fff;
-    border: 1px solid #ddd;
+    border: 1px solid #f5af19;
     border-radius: 10px;
     padding: 10px;
     text-decoration: none;
@@ -42,38 +41,7 @@ const ListWrapper = styled.div`
       transform: translateY(-5px);
       box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     }
-    h3 {
-      margin: 0 0 10px;
-      font-size: 18px;
-    }
-    p {
-      margin: 5px 0;
-      font-size: 14px;
-    }
-    .icon-container {
-      position: absolute;
-      top: 10px;
-      right: 10px;
-      display: flex;
-      align-items: center;
-      span {
-        font-size: 14px;
-        color: #3b5998; /* 카카오톡 아이콘 색상 */
-      }
-      img {
-        width: 30px;
-        border-radius: 50%;
-      }
-    }
-    .icon-profile {
-      position: absolute;
-      bottom: 10px;
-      right: 10px;
-      img {
-        width: 50px;
-        border-radius: 50%;
-      }
-    }
+    
   }
 `;
 const ListFooter = styled.div`
@@ -81,8 +49,6 @@ const ListFooter = styled.div`
   box-sizing: border-box;
   justify-content: center;
   padding: 10px 0;
-  /* background-color: aliceblue; */
-  /* background: #ffffff; */
   label {
     margin: 0 5px;
     color: black;
@@ -109,6 +75,63 @@ const ListFooter = styled.div`
     padding: 5px;
   }
 `;
+const Icon = styled.div`
+    width: 40%;
+    /* background: red; */
+    border-radius: 20px;
+    display: grid;
+    place-items: center;
+    /* background: linear-gradient(to bottom left, #f12711, #f5af19); */
+    span {
+        font-size: 12px;
+        padding: 5px 10px;
+        font-weight: 700;
+        color: #f5af19;
+        text-transform: uppercase;
+        font-family: 'Sunflower', sans-serif;
+        box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.1);
+        border-radius: 20px;
+    }
+`;
+const TextSpace = styled.div`
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 80%;
+    height: 100%;
+    h3 {
+        text-align: center;
+        text-transform: uppercase;
+        font-size: 16px;
+        font-family: 'Sunflower', sans-serif;
+        font-weight: 700;
+        display: flex;
+        align-items: center;
+        margin: 5px;
+    }
+`;
+const Info = styled.div`
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    p {
+        font-family: 'Sunflower', sans-serif;
+        font-weight: 700;
+        width: 100%;
+        height: 100%;
+        margin: 0;
+        padding: 5px;
+        font-size: 11px;
+        display: flex;
+        justify-content: center;
+        gap: 5px;
+    }
+`;
+
 const CardList = styled.div`
   display: flex;
   flex-direction: column;
@@ -230,23 +253,17 @@ const RecieveCounselor = () => {
               target="_blank"
               rel=""
             >
-              <div className="icon-container">
-                <img
-                  src={kakao}
-                  alt="kakaologo"
-                  style={{
-                    borderRadius: "50%",
-                  }}
-                />
-                <span>openchat</span>
-              </div>
-              <h3>{room.name}</h3>
-              <p>나이: {room.age}</p>
-              <p>근무지: {room.workplace}</p>
-              <p>한마디: {room.comment}</p>
-              <div className="icon-profile">
-                <img src={profile} alt="profile" />
-              </div>
+              <Icon>
+                <CircleUserRound size={70} color="#f5af19"/>
+                <span>카테고리</span>
+              </Icon>
+              <TextSpace>
+                <h3>{room.name} ({room.age})</h3>
+                <Info>
+                    <p><Award size={12}/>5년 / 소방교/ 서울소방청</p>
+                    <p><MessageSquareText size={12}/>{room.comment}</p>
+                </Info>
+              </TextSpace>
             </Link>
           ))}
         </ListWrapper>

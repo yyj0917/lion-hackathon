@@ -14,7 +14,6 @@ const Wrapper = styled.div`
   align-items: center;
   width: 100%;
   height: 100%;
-  /* gap: 20px; */
 `;
 const PostWrapper = styled.div`
   height: 100%;
@@ -36,10 +35,8 @@ const Post = styled.div`
   padding: 5px;
   margin-bottom: -1px;
   box-sizing: border-box;
-  /* border-radius: 20px; */
   border: 1px solid #ddd;
 
-  /* box-shadow: 0px 0px 5px 0px rgba(0,0,0,0.1); */
 
   background-color: #fff;
   border-width: 1px 0;
@@ -48,9 +45,6 @@ const Post = styled.div`
     text-decoration: none;
     -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
   }
-`;
-const Diary = styled.div`
-
 `;
 const Desc = styled.div`
   overflow: hidden;
@@ -92,7 +86,6 @@ const IconSpan = styled.div`
   display: inline-flex;
   line-height: 18px;
   font-size: 12px;
-  /* justify-content: space-between; */
   gap: 10px;
   span {
     font-size: 16px;
@@ -112,8 +105,6 @@ const PostFooter = styled.div`
   box-sizing: border-box;
   justify-content: center;
   padding: 10px 0;
-  /* background-color: aliceblue; */
-  /* background: #ffffff; */
   label {
     margin: 0 5px;
     color: black;
@@ -159,7 +150,6 @@ export default function Posts() {
     try {
       const response = await ReadPostsApi();
       setPosts(response);
-      console.log(response);
     } catch (error) {
       console.error("Error creating diary entry:", error);
     }
@@ -167,12 +157,15 @@ export default function Posts() {
   useEffect(() => {
     fetchPosts();
   }, []);
+
+  // 검색어에 따른 필터링
   const filteredPosts = posts.filter(
     post =>
       post.title.includes(searchTerm) ||
       post.body.includes(searchTerm)
   );
 
+  // 1페이지당 4개의 일기 -> 현재 페이지에 보여줄 일기 계산
   const indexOfLastPost = currentPage * postsPerPage;
   const indexOfFirstPost = indexOfLastPost - postsPerPage;
   const currentPosts = Array.isArray(filteredPosts)
@@ -191,7 +184,7 @@ export default function Posts() {
         {currentPosts.map((post) => (
           <Post key={post.id} className="diary-card"
                 onClick={handlePostVerify}>
-            <Link to={`/publicDiary/${post.id}`} onClick={handlePostVerify}>
+            <Link to={`/publicDiary/${post.id}`}>
               <Desc>
                 <div>
                   <div
@@ -231,7 +224,6 @@ export default function Posts() {
           </Post>
         ))}
       </PostWrapper>
-      {/* {selectedDiary && <DiaryModal diary={selectedDiary} onClose={closeModal} />} */}
       <PostFooter>
         {pageNumbers.map((number) => (
           <label

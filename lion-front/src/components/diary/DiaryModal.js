@@ -1,4 +1,3 @@
-// DiaryModal.js
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import {
@@ -109,7 +108,6 @@ const IconSpan = styled.div`
   display: inline-flex;
   line-height: 18px;
   font-size: 12px;
-  /* justify-content: space-between; */
   gap: 10px;
   width: 50%;
   span {
@@ -120,7 +118,6 @@ const IconSpan = styled.div`
     display: flex;
     gap: 5px;
     align-items: center;
-    /* color: #FF5A5A; */
     justify-content: center;
     cursor: pointer;
     transition: 0.3s ease-in-out;
