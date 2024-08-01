@@ -1,19 +1,19 @@
 import axiosInstance from "./axiosConfig";
 /*
 //쿠키 설정 함수
-const setCookie = (name, value, minutes) => {
+const setCookie = (name, value, minutes) => { //name은 쿠키이름 ex)access token or refresh token, value는 쿠키에 저장되는 토큰 값 , minutes는 만료기간
   let expires = "";
   if (minutes) {
     const date = new Date();
     date.setTime(date.getTime() + minutes * 60 * 1000); //분 x 초 x 밀리세컨드
-    expires = "; expires" + date. toUTCString
+    expires = "; expires" + date. toUTCString //만료기간 설정
   }
-  document.cookie = name + "=" + (value || "") + expires + "; path=/; Secure; SameSite=Lax"
+  document.cookie = name + "=" + (value || "") + expires + "; path=/; Secure; SameSite=Lax" //쿠키에 저장
 }
 
 //쿠키 삭제 함수
 const deleteCookie = (name) => {
-  document.cookie = name + '=; Max-Age=-99999999;'
+  document.cookie = name + '=; Max-Age=-99999999;' //쿠키 삭제
 };
 */
 
