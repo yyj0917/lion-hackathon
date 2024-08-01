@@ -1,4 +1,21 @@
 import axiosInstance from "./axiosConfig";
+/*
+//쿠키 설정 함수
+const setCookie = (name, value, minutes) => {
+  let expires = "";
+  if (minutes) {
+    const date = new Date();
+    date.setTime(date.getTime() + minutes * 60 * 1000); //분 x 초 x 밀리세컨드
+    expires = "; expires" + date. toUTCString
+  }
+  document.cookie = name + "=" + (value || "") + expires + "; path=/; Secure; SameSite=Lax"
+}
+
+//쿠키 삭제 함수
+const deleteCookie = (name) => {
+  document.cookie = name + '=; Max-Age=-99999999;'
+};
+*/
 
 // 인증 관련 API 호출을 담당하는 모듈입니다.
 const API_URL = "http://localhost:8000/user/auth/";
@@ -12,6 +29,8 @@ export const loginApi = async (email, password) => {
     if (response.data.token) {
       localStorage.setItem("accessToken", response.data.token.access);
       localStorage.setItem("refreshToken", response.data.token.refresh);
+      //setCookie("accessToken", response.data.token.access, 5);
+      //setCookie("refreshToken", response.data.token.refresh, 1400);
     }
     return response.data;
   } catch (error) {
@@ -58,6 +77,7 @@ export const refreshTokenApi = async (refreshToken) => {
     });
     if (response.data.access) {
       localStorage.setItem("accessToken", response.data.access);
+      //setCookie("accessToken", response.data.access, 5);
     }
     return response.data;
   } catch (error) {
@@ -70,6 +90,8 @@ export const logoutApi = async () => {
     const response = await axiosInstance.post(`${API_URL}logout/`);
     localStorage.removeItem("accessToken");
     localStorage.removeItem("refreshToken");
+    //deleteCookie("accessToken");
+    //deleteCookie("refreshToken");
     console.log(response);
     return response.data;
   } catch (error) {
