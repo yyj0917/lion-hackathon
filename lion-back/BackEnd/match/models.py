@@ -1,7 +1,6 @@
 from django.db import models
 from accounts.models import User
 from django.conf import settings
-from multiselectfield import MultiSelectField
 
 class AdvisorCategory(models.Model):
     all = models.CharField(max_length=20)
