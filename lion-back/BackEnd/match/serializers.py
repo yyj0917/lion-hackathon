@@ -38,10 +38,11 @@ class ClientSerializer(serializers.ModelSerializer):
     user = serializers.ReadOnlyField(source = 'user.username')
     user_id = serializers.ReadOnlyField(source = 'user.id')
     categories = serializers.PrimaryKeyRelatedField(queryset=ClientCategory.objects.all(), many=True)
+    accepted = serializers.BooleanField(write_only=True, required=False)
 
     class Meta:
         model = Client
-        fields = ['id','user','user_id','age','work_experience','categories']
+        fields = ['id','user','user_id','age','work_experience','categories','accepted']
         read_only_fields = ['matched_advisor']
     
     def create(self, validated_data):
