@@ -1,4 +1,5 @@
 from django.urls import path, include
+from rest_framework.routers import DefaultRouter
 
 from .views import *
 
@@ -24,10 +25,13 @@ client_info = ClientViewSet.as_view({
     'delete' : 'destroy'
 }) # 이것도 모르겠삼
 
+router = DefaultRouter()
+router.register(r'clients', ClientViewSet, basename='client')
+
 urlpatterns = [
     path('advisor-list', advisor_list),
     path('advisor/', advisor_info),
     path('advisor/<int:pk>/', advisor_info_detail),
     path('client/', client_info),
-    
+    path('', include(router.urls)),
 ]
