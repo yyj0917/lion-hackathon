@@ -1,3 +1,4 @@
+from django.db.models import Q
 from django.shortcuts import render, redirect
 from rest_framework import viewsets, status
 from rest_framework import generics, permissions
@@ -76,23 +77,37 @@ class ClientViewSet(viewsets.ModelViewSet):
         serializer.save(user=self.request.user)
 
     def create(self, request, *args, **kwargs):
-
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
 
-        user = User.objects.get(username=request.user.username)
-        
+        user = self.request.user
         client = serializer.save(user=user)
 
-        advisor_count = Advisor.objects.count()
+        selected_categories = set(request.data.get('categories', []))
+
+        matching_advisors = Advisor.objects.filter(
+            categories__in=selected_categories
+        ).distinct()
+
+        advisor_with_category_count = []
+        for advisor in matching_advisors:
+            common_categories_count = len(selected_categories.intersection(set(advisor.categories.values_list('id', flat=True))))
+            advisor_with_category_count.append((advisor, common_categories_count))
         
-        if advisor_count > 0:
-            matched_advisor = random.choice(Advisor.objects.all())
+        advisor_with_category_count.sort(key=lambda x: -x[1])  # 내림차순
+        sorted_advisors = [advisor for advisor, _ in advisor_with_category_count]
+
+        if sorted_advisors:
+            matched_advisor = random.choice(sorted_advisors)
             client.matched_advisor = matched_advisor
             client.save()
-
         else:
-            matched_advisor = None
+            if Advisor.objects.exists():
+                matched_advisor = random.choice(Advisor.objects.all())
+                client.matched_advisor = matched_advisor
+                client.save()
+            else:
+                matched_advisor = None
 
         headers = self.get_success_headers(serializer.data)
         response_data = serializer.data
