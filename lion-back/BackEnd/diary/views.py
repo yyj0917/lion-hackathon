@@ -5,7 +5,7 @@ from rest_framework import viewsets
 
 from rest_framework.response import Response
 from rest_framework import status
-from .sentiment_analysis import sentimentAnalysis
+from .sentiment_analysis import sentimentAnalysis, collect_negative_sentences, perform_kobert_analysis
 
 # 감정분석 결과 반환
 from rest_framework.views import APIView
@@ -172,29 +172,47 @@ class PrivateDiaryViewSet(viewsets.ModelViewSet):
             raise PermissionDenied("You do not have permission to delete this diary.")
         instance.delete()
 
-# 감정분석 결과 반환용 view
+# # 감정분석 결과 반환용 view
+# class DiarySentimentSummaryView(APIView):
+
+#     def get(self, request, *args, **kwargs):
+
+#         # PublicDiary와 PrivateDiary의 날짜별 감정 분석 결과 집계
+#         public_diary_sentiment = PublicDiary.objects.all().annotate().values('date', 'sentiment', 'positive', 'negative', 'neutral')
+#         private_diary_sentiment = PrivateDiary.objects.all().annotate().values('date', 'sentiment', 'positive', 'negative', 'neutral')
+
+#         # 감정 분석 결과를 집계하여 반환
+#         return Response({
+#             'public_diaries' : list(public_diary_sentiment),
+#             'private_diaries': list(private_diary_sentiment)
+#         }, status=status.HTTP_200_OK)
+
+
+# 30일간 Naver API 감정분석 결과 평균을 계산 -> 부정이 가장 높으면 추가 분석 진행한 것을 포함한 결과값 반환 / 아닐경우 기존 30일간의 분석 결과만 반환
 class DiarySentimentSummaryView(APIView):
+    permission_classes = [IsAuthenticated]
 
     def get(self, request, *args, **kwargs):
+        end_date = timezone.now().date()
+        start_date = end_date - timedelta(days=30)
+        diaries = PrivateDiary.objects.filter(user=request.user, date__range=[start_date, end_date])
+        
+        if not diaries.exists():
+            return Response({"detail": "No diaries found for the specified period."}, status=status.HTTP_404_NOT_FOUND)
+        
+        average_sentiment = diaries.aggregate(
+            avg_positive=Avg('positive'),
+            avg_negative=Avg('negative'),
+            avg_neutral=Avg('neutral')
+        )
 
-        # PublicDiary와 PrivateDiary의 날짜별 감정 분석 결과 집계
-        public_diary_sentiment = PublicDiary.objects.all().annotate().values('date', 'sentiment', 'positive', 'negative', 'neutral')
-        private_diary_sentiment = PrivateDiary.objects.all().annotate().values('date', 'sentiment', 'positive', 'negative', 'neutral')
+        if average_sentiment['avg_negative'] > average_sentiment['avg_positive'] and average_sentiment['avg_negative'] > average_sentiment['avg_neutral']:
+            negative_sentences = collect_negative_sentences(request.user)
+            detailed_sentiments = perform_kobert_analysis(negative_sentences)
+            return Response({
+                "average_sentiment": average_sentiment,
+                "detailed_sentiments": detailed_sentiments
+            }, status=status.HTTP_200_OK)
 
-        # 감정 분석 결과를 집계하여 반환
-        return Response({
-            'public_diaries' : list(public_diary_sentiment),
-            'private_diaries': list(private_diary_sentiment)
-        }, status=status.HTTP_200_OK)
+        return Response(average_sentiment, status=status.HTTP_200_OK)
 
-
-# def collect_negative_sentences(user):
-#     end_date = timezone.now().date()
-#     start_date = end_date - timedelta(days=30)
-#     diaries = PrivateDiary.objects.filter(user=user, date__range=[start_date, end_date])
-#     negative_sentences = []
-#     for diary in diaries:
-#         for sentence in diary.highlights:
-#             if sentence['confidence']['negative'] > sentence['confidence']['positive'] and sentence['confidence']['negative'] > sentence['confidence']['neutral']:
-#                 negative_sentences.append(sentence['content'])
-#     return negative_sentences
