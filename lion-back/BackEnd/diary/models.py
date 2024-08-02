@@ -55,3 +55,15 @@ class Reaction(models.Model):
 
     class Meta:
         unique_together = ('user', 'diary')  # 한 사용자가 한 일기에 하나의 공감만 누를 수 있도록 설정
+
+
+class Report(models.Model):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    diary = models.ForeignKey(PublicDiary, on_delete=models.CASCADE, related_name='reports')
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        unique_together = ('user', 'diary')  # 한 사용자가 한 일기에 한 번만 신고할 수 있도록 설정
+
+    def __str__(self):
+        return f'{self.user.username} - {self.diary.title}'
