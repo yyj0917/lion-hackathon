@@ -15,10 +15,11 @@ import RandomMatching from '../components/matching/Receive-counselor/RandomMatch
 import MyPage from '../components/MyPage/MyPage';
 import SentimentResult from '../components/MyPage/SentimentResult';
 import Sentiment from '../components/MyPage/Sentiment';
+import MyPublicDiary from '../components/diary/MyPublicDiary';
 import PrivateDiary from '../components/MyPage/PrivateDiary/PrivateDiary';
 import Features from '../components/features/Features';
 import Matching from '../components/matching/Matching';
-import DiaryModal from '../components/diary/DiaryModal';
+import PublicDiaryOne from '../components/diary/PublicDiaryOne';
 import Posts from '../components/diary/Posts';
 import SharedDiary from '../components/diary/SharedDiary';
 import DiaryDetail from '../components/MyPage/PrivateDiary/DiaryDetail';
@@ -46,7 +47,8 @@ function App() {
                   path="/publicDiary/sharedDiary"
                   element={<SharedDiary />}
                 />
-                <Route path="/publicDiary/:id" element={<DiaryModal />} />
+                <Route path="/publicDiary/:id" element={<PublicDiaryOne />} />
+                <Route path="/publicDiary/mypublic/:id" element={<MyPublicDiary />} />
                 <Route path="/matching" element={<Matching />} />
                 <Route path="/matching/counselor" element={<Counselor />} />
                 <Route

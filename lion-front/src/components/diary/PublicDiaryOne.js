@@ -10,7 +10,9 @@ import {
 import { useNavigate, useParams } from 'react-router-dom';
 import {
   DeletePostApi,
+  LikePostApi,
   ReadPersonalPostApi,
+  UnlikePostApi,
   UpdatePostApi,
 } from '../../api/diary';
 
@@ -174,7 +176,7 @@ const EditForm = styled.form`
     height: 100%;
   }
 `;
-function DiaryModal() {
+function PublicDiaryOne() {
   const { id } = useParams();
   const navigate = useNavigate();
   const [diary, setDiary] = useState({});
@@ -182,12 +184,14 @@ function DiaryModal() {
   const [isEditing, setIsEditing] = useState(false);
   const [editedTitle, setEditedTitle] = useState('');
   const [editedBody, setEditedBody] = useState('');
+  const [selectReaction, setSelectReaction] = useState(false);
 
   // Public 일기 id에 맞는 거 하나 불러오기
   const fetchDiary = async () => {
     try {
       const response = await ReadPersonalPostApi(id);
       setDiary(response);
+      console.log('detail',response);
       setEditedTitle(response.title);
       setEditedBody(response.body);
     } catch (error) {
@@ -243,6 +247,51 @@ function DiaryModal() {
     fetchDiary();
   }, [id]);
 
+  // 공감 누르기
+  const handleLike = async () => {
+    try {
+      await LikePostApi(id, 'like');
+      console.log(diary.reactions.like)
+      setSelectReaction(true);
+    } catch (error) {
+      console.error('Error liking post:', error);
+    }
+  };
+  // 공감 취소
+  const handleUnlike = async () => {
+    try {
+      await UnlikePostApi(id, 'like');
+      setSelectReaction(false);
+      console.log(diary);
+
+    } catch (error) {
+      console.error('Error unliking post:', error);
+    }
+  };
+  const handleLike2 = async () => {
+    try {
+      await LikePostApi(id, 'congrats');
+      console.log('congrats:', diary.reactions.congrats)
+      setSelectReaction(true);
+    } catch (error) {
+      console.error('Error liking post:', error);
+    }
+  };
+  // 공감 취소
+  const handleUnlike2 = async () => {
+    try {
+      await UnlikePostApi(id, 'congrats');
+      setSelectReaction(false);
+      console.log('congrats:', diary.reactions.congrats)
+
+    } catch (error) {
+      console.error('Error unliking post:', error);
+    }
+  };
+  useEffect(() => {
+    fetchDiary();
+  }, [selectReaction]);
+
   return (
     <ModalBackground>
       {isEditing ? (
@@ -282,23 +331,44 @@ function DiaryModal() {
           </ModalContent>
           <ModalFooter>
             <IconSpan>
-              <span>
-                <ThumbsUp size={16} style={{ color: '#0064FF' }} /> 0
-              </span>
-              <span>
+              {!selectReaction ? (
+                <span onClick={handleLike} style={{backgroundColor: 'white', color: '#0064FF'}}>
+                  <ThumbsUp size={16} />               
+                  {diary.reactions && diary.reactions.like !== undefined ? diary.reactions.like : 0}
+                </span>
+
+              ) : (
+                <span onClick={handleUnlike} style={{backgroundColor: '#0064FF', color: 'white'}}>
+                  <ThumbsUp size={16} /> 
+                  {diary.reactions && diary.reactions.like !== undefined ? diary.reactions.like : 0}
+                </span>
+              )}
+              {!selectReaction ? (
+                <span onClick={handleLike2} style={{backgroundColor: 'white', color: '#0064FF'}}>
+                  <PartyPopper size={16} />               
+                  {diary.reactions && diary.reactions.congrats !== undefined ? diary.reactions.congrats : 0}
+                </span>
+
+              ) : (
+                <span onClick={handleUnlike2} style={{backgroundColor: '#0064FF', color: 'white'}}>
+                  <PartyPopper size={16} /> 
+                  {diary.reactions && diary.reactions.congrats !== undefined ? diary.reactions.congrats : 0}
+                </span>
+              )}
+              {/* <span onClick={handleLike}>
                 <PartyPopper size={16} style={{ color: '#008C8C' }} /> 2
-              </span>
-              <span>
+              </span> */}
+              <span onClick={handleLike}>
                 <HandMetal size={16} style={{ color: '#FF8200' }} /> 0
               </span>
-              <span>
+              <span onClick={handleLike}>
                 <HeartHandshake size={16} style={{ color: '#FF5A5A' }} /> 0
               </span>
             </IconSpan>
-            <div style={{ display: 'flex', justifyContent: 'end' }}>
+            {/* <div style={{ display: 'flex', justifyContent: 'end' }}>
               <EditButton onClick={handleEditClick}>수정하기</EditButton>
               <DeleteButton onClick={handleDelete}>삭제하기</DeleteButton>
-            </div>
+            </div> */}
           </ModalFooter>
         </ModalContainer>
       )}
@@ -306,4 +376,4 @@ function DiaryModal() {
   );
 }
 
-export default DiaryModal;
+export default PublicDiaryOne;

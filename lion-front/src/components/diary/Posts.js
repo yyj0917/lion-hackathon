@@ -149,6 +149,7 @@ export default function Posts() {
     try {
       const response = await ReadPostsApi();
       setPosts(response);
+      console.log('Diary entries:', response);
     } catch (error) {
       console.error('Error creating diary entry:', error);
     }
@@ -156,6 +157,8 @@ export default function Posts() {
   useEffect(() => {
     fetchPosts();
   }, []);
+
+  
 
   // 검색어에 따른 필터링
   const filteredPosts = posts.filter(
@@ -198,7 +201,9 @@ export default function Posts() {
                 <div className="info">
                   <IconSpan>
                     <span>
-                      <ThumbsUp size={16} style={{ color: '#0064FF' }} /> 0
+                      <ThumbsUp size={16} style={{ color: '#0064FF' }} /> 
+                      {post.reactions && post.reactions.like !== undefined ? post.reactions.like : 0}
+
                     </span>
                     <span>
                       <PartyPopper size={16} style={{ color: '#008C8C' }} /> 2

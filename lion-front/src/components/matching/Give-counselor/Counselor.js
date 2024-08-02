@@ -1,5 +1,5 @@
 // Counselor.js
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 import { WriteCounselorApi } from '../../../api/matching';
@@ -125,10 +125,13 @@ const TextCard = styled.div`
 
 function Counselor() {
   const navigate = useNavigate();
+  const inputRef = useRef(null);
+
   // const [formWrite, setFormWrite] = useState(false);
   const [name, setName] = useState('');
   const [age, setAge] = useState(null);
   const [workIn, setWorkIn] = useState('');
+  const [work_experience, setWork_experience] = useState('');
   const [openlink, setOpenlink] = useState('');
   const [giveTalk, setGiveTalk] = useState('');
   const [categories, setCategories] = useState([]);
@@ -140,6 +143,7 @@ function Counselor() {
         name,
         age,
         workIn,
+        work_experience,
         openlink,
         giveTalk,
         categories
@@ -150,6 +154,8 @@ function Counselor() {
       setWorkIn('');
       setOpenlink('');
       setGiveTalk('');
+      setWork_experience('');
+      setCategories([]);
       alert('제출이 완료되었습니다.');
       navigate(-1);
     } catch (error) {
@@ -175,51 +181,50 @@ function Counselor() {
         <input
           type="text"
           placeholder="이름"
-          value={name}
+          defaultValue={name}
           onChange={(e) => setName(e.target.value)}
           required
         />
         <input
           type="integer"
           placeholder="나이"
-          value={age}
+          defaultValue={age}
           onChange={(e) => setAge(e.target.value)}
           required
         />
         <WorkInput>
-          <input
+          {/* <input
             type="text"
             placeholder="현재직위"
             value={workIn}
             onChange={(e) => setWorkIn(e.target.value)}
-            required
-          />
+          /> */}
           <input
             type="text"
             placeholder="근무위치"
-            value={workIn}
+            defaultValue={workIn}
             onChange={(e) => setWorkIn(e.target.value)}
             required
           />
           <input
             type="text"
             placeholder="근무기간"
-            value={workIn}
-            onChange={(e) => setWorkIn(e.target.value)}
+            defaultValue={work_experience}
+            onChange={(e) => setWork_experience(e.target.value)}
             required
           />
         </WorkInput>
         <input
           type="text"
           placeholder="오픈채팅방 링크"
-          value={openlink}
+          defaultValue={openlink}
           onChange={(e) => setOpenlink(e.target.value)}
           required
         />
         <input
           type="text"
           placeholder="하고 싶은 말"
-          value={giveTalk}
+          defaultValue={giveTalk}
           onChange={(e) => setGiveTalk(e.target.value)}
           required
         />
