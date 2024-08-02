@@ -48,6 +48,10 @@ public_diary_unreact = PublicDiaryViewSet.as_view({
     'delete': 'unreact'
 })
 
+# Report 생성
+public_diary_report = PublicDiaryViewSet.as_view({
+    'post': 'report'
+})
 
 urlpatterns = [
     path('', public_diary_list),
@@ -55,6 +59,7 @@ urlpatterns = [
     path('my/', public_diary_my_list),
     path('<int:pk>/react/', public_diary_react, name='publicdiary-react'),
     path('<int:pk>/unreact/', public_diary_unreact, name='publicdiary-unreact'),
+    path('<int:pk>/report/',public_diary_report, name='publicdiary-report'),
     path('private/', private_diary_list),
     path('private/<int:pk>/', private_diary_detail),
     path('sentiment-summary/', DiarySentimentSummaryView.as_view(), name='diary-sentiment-summary'),
