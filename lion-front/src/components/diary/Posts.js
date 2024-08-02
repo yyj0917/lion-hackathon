@@ -206,14 +206,16 @@ export default function Posts() {
 
                     </span>
                     <span>
-                      <PartyPopper size={16} style={{ color: '#008C8C' }} /> 2
+                      <PartyPopper size={16} style={{ color: '#008C8C' }} />
+                      {post.reactions && post.reactions.congrats !== undefined ? post.reactions.congrats : 0}
                     </span>
                     <span>
-                      <HandMetal size={16} style={{ color: '#FF8200' }} /> 0
+                      <HandMetal size={16} style={{ color: '#FF8200' }} /> 
+                      {post.reactions && post.reactions.excited !== undefined ? post.reactions.excited : 0}
                     </span>
                     <span>
-                      <HeartHandshake size={16} style={{ color: '#FF5A5A' }} />{' '}
-                      0
+                      <HeartHandshake size={16} style={{ color: '#FF5A5A' }} />
+                      {post.reactions && post.reactions.together !== undefined ? post.reactions.together : 0}
                     </span>
                   </IconSpan>
                   <DateSpan>
