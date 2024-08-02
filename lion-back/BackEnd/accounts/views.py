@@ -9,59 +9,44 @@ from BackEnd.settings import SECRET_KEY
 from rest_framework.permissions import IsAuthenticated
 from .models import User
 import jwt
-from django.http import HttpResponseRedirect
 from rest_framework.permissions import AllowAny
 from BackEnd import settings 
-from django.contrib.sites.shortcuts import get_current_site
 
-
+#회원가입 API
 class RegisterAPIView(APIView):
-    permission_classes = [AllowAny]
+    permission_classes = [AllowAny] #누구나 접근 가능!!
 
-    def post(self, request):
-        serializer = UserSerializer(data=request.data)
-        if serializer.is_valid():
-            user = serializer.save()
-
-            #토큰 접근
-            token = TokenObtainPairSerializer.get_token(user)
-            refresh_token = str(token)
-            access_token = str(token.access_token)
+    def post(self, request): #프론트에서 유저 데이터가 포함된 request를 받음
+        serializer = UserSerializer(data=request.data) #데이터를 직렬화하여 데이터베이스가 받을 수 있게 함
+        if serializer.is_valid(): #직렬화한 데이터가 유효하다면
+            serializer.save() #데이터베이스에 저장
 
             res = Response(
                 {
                     "user": serializer.data,
                     "message": "register success",
-                    "token": {
-                        "access": access_token,
-                        "refresh": refresh_token,
-                    },
                 },
                 status=status.HTTP_200_OK,
-            )
-
-            # jwt 토큰을 쿠키에 저장
-            res.set_cookie("access", access_token, max_age=5*60, httponly=True, secure=settings.SECURE_COOKIE, samesite='Lax')
-            res.set_cookie("refresh", refresh_token, max_age=24*60*60, httponly=True, secure=settings.SECURE_COOKIE, samesite='Lax')
+            ) #프론트에 보낼 응답 작성
 
             return res
-        else:
+        else: #직렬화한 데이터가 유효하지 않다면
             print(serializer.errors)
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
-
+#로그인 API
 class LogInAPIView(APIView):
-    permission_classes = [AllowAny]
+    permission_classes = [AllowAny] #누구나 접근 가능?
 
     # 로그인
-    def post(self, request):
+    def post(self, request):#프론트에서 유저 이메일과 password가 포함된 request를 받음
     	# 유저 인증
         user = authenticate(
             email=request.data.get("email"), password=request.data.get("password")
         )
         # 이미 회원가입 된 유저일 때
         if user is not None:
-            serializer = UserSerializer(user)
+            serializer = UserSerializer(user) #데이터를 직렬화하여 데이터베이스가 받을 수 있게 함
             # jwt 토큰 접근
             token = TokenObtainPairSerializer.get_token(user)
             refresh_token = str(token)
@@ -76,25 +61,26 @@ class LogInAPIView(APIView):
                     },
                 },
                 status=status.HTTP_200_OK,
-            )
+            ) #프론트에 보낼 response (user 시리얼라이저 데이터, 로그인 성공 메시지, 토큰)
             # jwt 토큰 => 쿠키에 저장
-            res.set_cookie(key="access", value=access_token, max_age=5*60, httponly=True, secure=settings.SECURE_COOKIE, samesite='Lax')
-            res.set_cookie(key="refresh", value=refresh_token, max_age=24*60*60, httponly=True, secure=settings.SECURE_COOKIE, samesite='Lax')
+            res.set_cookie(key="access", value=access_token, max_age=5*60, httponly=True, secure=settings.SECURE_COOKIE, samesite='Lax') #쿠키에 토큰 저장
+            res.set_cookie(key="refresh", value=refresh_token, max_age=24*60*60, httponly=True, secure=settings.SECURE_COOKIE, samesite='Lax') #쿠키에 토큰 저장
             return res
         else:
-            return Response(status=status.HTTP_400_BAD_REQUEST) #존재하지 않는 유저잆니다. 회원가입하세요!!
+            return Response(status=status.HTTP_400_BAD_REQUEST) 
 
+#유저 정보 API
 class UserDetailView(APIView):
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated] #로그인 된 사람만 접근 가능
 
-    def get(self, request):
+    def get(self, request): #요청이 들어오면 user의 데이터를 가져옴.
         user = request.user
         serializers = UserSerializer(user)
-        return Response(serializers.data)
+        return Response(serializers.data) #유저 데이터를 응답으로 보냄
 
-
+#로그아웃 API
 class LogOutView(APIView):
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated] #로그인 된 사람만 접근 가능
 
     # 로그아웃
     def post(self, request):
