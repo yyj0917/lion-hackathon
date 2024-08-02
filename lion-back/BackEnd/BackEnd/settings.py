@@ -70,6 +70,7 @@ INSTALLED_APPS = [
 
     # 동료매칭
     'match',
+    'django_filters',
 
 ]
 
@@ -81,6 +82,7 @@ REST_FRAMEWORK = {
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     ),
     'TOKEN_MODEL': None,
+    'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend']
 }
 
 

@@ -41,8 +41,8 @@ class RegisterAPIView(APIView):
             )
 
             # jwt 토큰을 쿠키에 저장
-            res.set_cookie("access", access_token, httponly=True)
-            res.set_cookie("refresh", refresh_token, httponly=True)
+            res.set_cookie("access", access_token, max_age=5*60, httponly=True, secure=settings.SECURE_COOKIE, samesite='Lax')
+            res.set_cookie("refresh", refresh_token, max_age=24*60*60, httponly=True, secure=settings.SECURE_COOKIE, samesite='Lax')
 
             return res
         else:
@@ -78,8 +78,8 @@ class LogInAPIView(APIView):
                 status=status.HTTP_200_OK,
             )
             # jwt 토큰 => 쿠키에 저장
-            res.set_cookie(key="access", value=access_token, httponly=True, secure=settings.SECURE_COOKIE, samesite='Lax')
-            res.set_cookie(key="refresh", value=refresh_token, httponly=True, secure=settings.SECURE_COOKIE, samesite='Lax')
+            res.set_cookie(key="access", value=access_token, max_age=5*60, httponly=True, secure=settings.SECURE_COOKIE, samesite='Lax')
+            res.set_cookie(key="refresh", value=refresh_token, max_age=24*60*60, httponly=True, secure=settings.SECURE_COOKIE, samesite='Lax')
             return res
         else:
             return Response(status=status.HTTP_400_BAD_REQUEST) #존재하지 않는 유저잆니다. 회원가입하세요!!
