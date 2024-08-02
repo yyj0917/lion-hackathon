@@ -1,8 +1,8 @@
-import { useEffect, useState } from "react";
-import styled from "styled-components";
-import ChatMessages from "./ChatMessages";
-import "../../styles/App.css";
-import fetchMessagesApi from "../../api/message";
+import { useEffect, useState } from 'react';
+import styled from 'styled-components';
+import ChatMessages from './ChatMessages';
+import '../../styles/App.css';
+import fetchMessagesApi from '../../api/message';
 
 const Wrapper = styled.div`
   /* padding: 10px; */
@@ -86,7 +86,7 @@ export default function Banner() {
       const response = await fetchMessagesApi();
       setMessages(response);
     } catch (error) {
-      console.error("Error fetching diary entries:", error);
+      console.error('Error fetching diary entries:', error);
     }
   };
   useEffect(() => {
@@ -119,7 +119,7 @@ export default function Banner() {
         {pageNumbers.map((number) => (
           <label
             key={number}
-            className={`${currentPage === number ? "active" : ""}`}
+            className={`${currentPage === number ? 'active' : ''}`}
           >
             <input
               type="checkbox"

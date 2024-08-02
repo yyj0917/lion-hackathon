@@ -1,5 +1,6 @@
-import styled from "styled-components";
-import { useNavigate } from "react-router-dom";
+import styled from 'styled-components';
+import { useNavigate } from 'react-router-dom';
+
 const Btn = styled.button`
   width: 120px;
   height: 60px;
@@ -19,7 +20,7 @@ export default function SignINUPBtn() {
   const navigate = useNavigate();
 
   const handleClick = () => {
-    navigate("/login");
+    navigate('/login');
   };
   return <Btn onClick={handleClick}>로그인/회원가입</Btn>;
 }

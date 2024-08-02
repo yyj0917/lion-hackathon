@@ -1,6 +1,6 @@
-import React from "react";
-import styled from "styled-components";
-import PropTypes from "prop-types";
+import React from 'react';
+import styled from 'styled-components';
+import PropTypes from 'prop-types';
 
 const TooltipContainer = styled.div`
   position: absolute;
@@ -15,13 +15,12 @@ const TooltipContainer = styled.div`
   white-space: nowrap;
   z-index: 1000;
 `;
-const Tooltip = ({ text }) => {
-  console.log(text);
+function Tooltip({ text }) {
   return <TooltipContainer>{text}</TooltipContainer>;
-};
+}
 
 // PropType 정의
 Tooltip.propTypes = {
-    text: PropTypes.string.isRequired,
-  };
+  text: PropTypes.string.isRequired,
+};
 export default Tooltip;

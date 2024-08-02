@@ -1,7 +1,7 @@
-import React from "react";
-import { Bar } from "react-chartjs-2";
-import { Chart, registerables } from "chart.js";
-import styled from "styled-components";
+import React from 'react';
+import { Bar } from 'react-chartjs-2';
+import { Chart, registerables } from 'chart.js';
+import styled from 'styled-components';
 
 Chart.register(...registerables);
 // const data = [
@@ -14,13 +14,48 @@ Chart.register(...registerables);
 //     { positive: 50, negative: 30, neutral: 20 },
 // ];
 const data = [
-  { day: "월", positive: 40, negative: 30, neutral: 30 },
-  { day: "화", positive: 50, negative: 20, neutral: 30 },
-  { day: "수", positive: 60, negative: 10, neutral: 30 },
-  { day: "목", positive: 30, negative: 50, neutral: 20 },
-  { day: "금", positive: 70, negative: 20, neutral: 10 },
-  { day: "토", positive: 40, negative: 30, neutral: 30 },
-  { day: "일", positive: 50, negative: 30, neutral: 20 },
+  {
+    day: '월',
+    positive: 40,
+    negative: 30,
+    neutral: 30,
+  },
+  {
+    day: '화',
+    positive: 50,
+    negative: 20,
+    neutral: 30,
+  },
+  {
+    day: '수',
+    positive: 60,
+    negative: 10,
+    neutral: 30,
+  },
+  {
+    day: '목',
+    positive: 30,
+    negative: 50,
+    neutral: 20,
+  },
+  {
+    day: '금',
+    positive: 70,
+    negative: 20,
+    neutral: 10,
+  },
+  {
+    day: '토',
+    positive: 40,
+    negative: 30,
+    neutral: 30,
+  },
+  {
+    day: '일',
+    positive: 50,
+    negative: 30,
+    neutral: 20,
+  },
 ];
 const Wrapper = styled.div`
   width: 100%;
@@ -31,7 +66,7 @@ const Wrapper = styled.div`
 `;
 const Header = styled.div`
   h1 {
-    font-family: "Courier New", Courier, monospace;
+    font-family: 'Courier New', Courier, monospace;
     font-size: 2rem;
     font-weight: 700;
     color: #333;
@@ -39,35 +74,35 @@ const Header = styled.div`
 `;
 const Footer = styled.div`
   h1 {
-    font-family: "Courier New", Courier, monospace;
+    font-family: 'Courier New', Courier, monospace;
     font-size: 2rem;
     font-weight: 700;
     color: #333;
   }
 `;
-const SentimentResult = () => {
+function SentimentResult() {
   const chartData = {
-    labels: ["월", "화", "수", "목", "금", "토", "일"],
+    labels: ['월', '화', '수', '목', '금', '토', '일'],
     datasets: [
       {
-        label: "긍정",
+        label: '긍정',
         data: data.map((day) => day.positive),
-        backgroundColor: "rgba(75, 192, 192, 0.6)",
-        borderColor: "rgba(75, 192, 192, 1)",
+        backgroundColor: 'rgba(75, 192, 192, 0.6)',
+        borderColor: 'rgba(75, 192, 192, 1)',
         borderWidth: 1,
       },
       {
-        label: "부정",
+        label: '부정',
         data: data.map((day) => day.negative),
-        backgroundColor: "rgba(255, 99, 132, 0.6)",
-        borderColor: "rgba(255, 99, 132, 1)",
+        backgroundColor: 'rgba(255, 99, 132, 0.6)',
+        borderColor: 'rgba(255, 99, 132, 1)',
         borderWidth: 1,
       },
       {
-        label: "중립",
+        label: '중립',
         data: data.map((day) => day.neutral),
-        backgroundColor: "rgba(153, 102, 255, 0.6)",
-        borderColor: "rgba(153, 102, 255, 1)",
+        backgroundColor: 'rgba(153, 102, 255, 0.6)',
+        borderColor: 'rgba(153, 102, 255, 1)',
         borderWidth: 1,
       },
     ],
@@ -97,6 +132,6 @@ const SentimentResult = () => {
       </Footer>
     </Wrapper>
   );
-};
+}
 
 export default SentimentResult;

@@ -1,12 +1,13 @@
-import styled from "styled-components";
+import styled from 'styled-components';
 // import { useNavigate } from "react-router-dom";
-import LoginBtn from "../button/LoginBtn";
-import SignUpBtn from "../button/SignUpBtn";
-import { useNavigate } from "react-router-dom";
-import redlogo from "../../assets/redlogo.png";
-import { isAuthenticated } from "../../utils/auth";
-import { logoutApi } from "../../api/auth";
-import SignINUPBtn from "../button/LoginBtn";
+import { useNavigate } from 'react-router-dom';
+import LoginBtn from '../button/LoginBtn';
+import SignUpBtn from '../button/SignUpBtn';
+import redlogo from '../../assets/redlogo.png';
+import { isAuthenticated } from '../../utils/auth';
+import { logoutApi } from '../../api/auth';
+import SignINUPBtn from '../button/LoginBtn';
+
 const Wrapper = styled.header`
   display: flex;
   flex-direction: row;
@@ -74,39 +75,37 @@ export default function MainHeader() {
   const navigate = useNavigate();
 
   const handleClick = () => {
-    navigate("/", {replace: true});
+    navigate('/', { replace: true });
   };
   const handleLogout = async () => {
     try {
       await logoutApi();
-      alert("로그아웃 되었습니다.");
+      alert('로그아웃 되었습니다.');
       setTimeout(1000);
-      navigate("/");
+      navigate('/');
     } catch (error) {
-      console.error("Logout failed", error);
+      console.error('Logout failed', error);
     }
   };
   const handleMyPage = () => {
-    navigate("/mypage");
+    navigate('/mypage');
   };
   return (
     <Wrapper>
       <div
         style={{
-          display: "flex",
-          alignItems: "center",
-          cursor: "pointer",
-          gap: "5px",
+          display: 'flex',
+          alignItems: 'center',
+          cursor: 'pointer',
+          gap: '5px',
         }}
       >
-        <img src={redlogo} alt="logo" onClick={handleClick}></img>
+        <img src={redlogo} alt="logo" onClick={handleClick} />
         <LogoText onClick={handleClick}>FORHERO</LogoText>
       </div>
       <Auth>
         {!isAuthenticated() ? (
-          <>
-            <SignINUPBtn />
-          </>
+          <SignINUPBtn />
         ) : (
           <>
             <LogoutBtn onClick={handleLogout}>로그아웃</LogoutBtn>

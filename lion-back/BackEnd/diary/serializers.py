@@ -19,7 +19,21 @@ class PublicDiarySerializer(serializers.ModelSerializer):
     def get_reactions(self, obj):
         reactions = obj.reactions.values('reaction').annotate(count=Count('reaction'))
         return {reaction['reaction']: reaction['count'] for reaction in reactions}
+    
+    def get_user_reaction(self, obj):
+        request = self.context.get('request', None)
+        if request is None:
+            return None
 
+        user = request.user
+        if not user.is_authenticated:
+            return None
+
+        try:
+            reaction = Reaction.objects.get(user=user, diary=obj)
+            return {'user_reaction_type' : reaction.reaction}
+        except Reaction.DoesNotExist:
+            return None
 
 class PrivateDiarySerializer(serializers.ModelSerializer):
      

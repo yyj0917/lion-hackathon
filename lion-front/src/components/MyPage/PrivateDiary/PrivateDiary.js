@@ -1,18 +1,20 @@
-import React, { useEffect, useState } from "react";
-import styled from "styled-components";
-import { fetchPrivateDiaryEntry } from "../../../api/privateDiary";
-import { useNavigate } from "react-router-dom";
-import background1 from "../../../assets/background/background_1.jpg";
-import background2 from "../../../assets/background/background_2.jpg";
-import background3 from "../../../assets/background/background_3.jpg";
-import background4 from "../../../assets/background/background_4.jpg";
-import background5 from "../../../assets/background/background_5.jpg";
-
+import React, { useEffect, useState } from 'react';
+import styled from 'styled-components';
+import { useNavigate } from 'react-router-dom';
+import { fetchPrivateDiaryEntry } from '../../../api/privateDiary';
+import background1 from '../../../assets/background/background_1.jpg';
+import background2 from '../../../assets/background/background_2.jpg';
+import background3 from '../../../assets/background/background_3.jpg';
+import background4 from '../../../assets/background/background_4.jpg';
+import background5 from '../../../assets/background/background_5.jpg';
 
 const images = [
-  background1, background2, background3, background4, background5
+  background1,
+  background2,
+  background3,
+  background4,
+  background5,
 ];
-
 
 const FilterWrapper = styled.div`
   display: flex;
@@ -31,7 +33,6 @@ const Select = styled.select`
   border-radius: 4px;
 `;
 const DiaryWrapper = styled.div`
-
   height: 100%;
   width: 100%;
   position: relative;
@@ -55,7 +56,7 @@ const Book = styled.div`
   box-sizing: border-box;
   border: 1px solid #ddd;
 
-  box-shadow: 0px 0px 5px 0px rgba(0,0,0,0.1);
+  box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.1);
   background-color: #fff;
   border-width: 1px 0;
   cursor: pointer;
@@ -78,7 +79,7 @@ const BookInfo = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-around;
-  
+
   p {
     margin: 0;
     font-size: 12px;
@@ -151,9 +152,9 @@ const DiaryFooter = styled.div`
     padding: 5px;
   }
 `;
-const PrivateDiary = () => {
+function PrivateDiary() {
   const navigate = useNavigate();
-  const [selectedDate, setSelectedDate] = useState("");
+  const [selectedDate, setSelectedDate] = useState('');
   const [privateDiary, setPrivateDiary] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const diaryPerPage = 4;
@@ -171,7 +172,7 @@ const PrivateDiary = () => {
       const response = await fetchPrivateDiaryEntry();
       setPrivateDiary(response);
     } catch (error) {
-      console.error("일기 조회 오류", error);
+      console.error('일기 조회 오류', error);
     }
   };
   useEffect(() => {
@@ -220,11 +221,17 @@ const PrivateDiary = () => {
           {currentDiary.map((diary, index) => (
             <Book key={index} onClick={() => handleDiaryClick(diary.id)}>
               <BookIconWrapper>
-                <img src={images[diary.id % images.length]} alt="Book cover" style={{ width: '100%', height: '100%'}} />
+                <img
+                  src={images[diary.id % images.length]}
+                  alt="Book cover"
+                  style={{ width: '100%', height: '100%' }}
+                />
               </BookIconWrapper>
               <BookInfo>
-                <h3>{diary.title} <p>{diary.date}</p></h3>
-                
+                <h3>
+                  {diary.title} <p>{diary.date}</p>
+                </h3>
+
                 <p className="diary-body">{diary.body}</p>
               </BookInfo>
             </Book>
@@ -235,7 +242,7 @@ const PrivateDiary = () => {
         {pageNumbers.map((number) => (
           <label
             key={number}
-            className={`${currentPage === number ? "active" : ""}`}
+            className={`${currentPage === number ? 'active' : ''}`}
           >
             <input
               type="checkbox"
@@ -248,6 +255,6 @@ const PrivateDiary = () => {
       </DiaryFooter>
     </Wrapper>
   );
-};
+}
 
 export default PrivateDiary;
