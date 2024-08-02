@@ -1,12 +1,7 @@
 // src/components/Tabs.js
-import React, { useEffect, useState } from "react";
-import styled from "styled-components";
-import PublicDiary from "../diary/PublicDiary";
-import Matching from "../matching/Matching";
-import { Outlet, useLocation, useNavigate } from "react-router-dom";
-import SharedDiary from "../diary/SharedDiary";
-import WritePost from "../diary/WritePublicDiary";
-import Posts from "../diary/Posts";
+import React, { useEffect, useState } from 'react';
+import styled from 'styled-components';
+import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 
 const TabContainer = styled.div`
   display: flex;
@@ -70,27 +65,16 @@ const TabContent = styled.div`
   position: relative;
   /* background-color: aliceblue; */
 `;
-// const TabFilter = styled.div`
-//   padding: 20px;
-//   text-align: center;
-//   input {
-//     width: 80%;
-//     padding: 10px;
-//     font-size: 16px;
-//     border: 1px solid #ccc;
-//     border-radius: 20px;
-//     outline: none;
-//   }
-// `;
-const Tabs = () => {
+
+function Tabs() {
   const [activeIndex, setActiveIndex] = useState(0);
   const navigate = useNavigate();
   const location = useLocation();
 
   useEffect(() => {
-    if (location.pathname === "/") {
+    if (location.pathname === '/') {
       setActiveIndex(0);
-    } else if (location.pathname === "/matching") {
+    } else if (location.pathname === '/matching') {
       setActiveIndex(1);
     }
   }, [location]);
@@ -105,9 +89,8 @@ const Tabs = () => {
           checked={activeIndex === 0}
           onChange={() => {
             setActiveIndex(0);
-            navigate("/");
+            navigate('/');
           }}
-          // onClick={navigate('/')}
         />
         <TabLabel htmlFor="tab1">공유 일기</TabLabel>
         <ActiveTabIndicator
@@ -121,7 +104,7 @@ const Tabs = () => {
           checked={activeIndex === 1}
           onChange={() => {
             setActiveIndex(1);
-            navigate("/matching");
+            navigate('/matching');
           }}
         />
         <TabLabel htmlFor="tab2">동료 매칭</TabLabel>
@@ -131,6 +114,6 @@ const Tabs = () => {
       </TabContent>
     </>
   );
-};
+}
 
 export default Tabs;

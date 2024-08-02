@@ -1,8 +1,7 @@
-import React from "react";
-import styled from "styled-components";
-import MainHeader from "./MainHeader";
+import React from 'react';
+import styled from 'styled-components';
 import PropTypes from 'prop-types';
-
+import MainHeader from './MainHeader';
 
 const HeaderWrapper = styled.div`
   width: 100%;
@@ -13,18 +12,18 @@ const HeaderWrapper = styled.div`
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 `;
 
-const Layout = ({ children }) => {
+function Layout({ children }) {
   return (
     <>
       <HeaderWrapper>
         <MainHeader />
       </HeaderWrapper>
-      <>{children}</>
+      {children}
     </>
   );
-};
+}
 Layout.propTypes = {
-    children: PropTypes.node.isRequired,
+  children: PropTypes.node.isRequired,
 };
 
 export default Layout;

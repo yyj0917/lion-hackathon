@@ -1,7 +1,7 @@
-import React, { useState } from "react";
-import styled from "styled-components";
-import { WritePrivateDiaryApi } from "../../../api/privateDiary";
-import { useNavigate } from "react-router-dom";
+import React, { useState } from 'react';
+import styled from 'styled-components';
+import { useNavigate } from 'react-router-dom';
+import { WritePrivateDiaryApi } from '../../../api/privateDiary';
 
 const Wrapper = styled.div`
   width: 100%;
@@ -54,24 +54,24 @@ const FormPosts = styled.form`
     box-sizing: border-box;
   }
 `;
-const WritePrivateDiary = () => {
-  const [body, setBody] = useState("");
-  const [title, setTitle] = useState("");
-  const [date, setDate] = useState("");
+function WritePrivateDiary() {
+  const [body, setBody] = useState('');
+  const [title, setTitle] = useState('');
+  const [date, setDate] = useState('');
   const navigate = useNavigate();
 
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
       const response = await WritePrivateDiaryApi(title, body, date);
-      console.log("Diary entry created:", response.data);
-      setTitle("");
-      setBody("");
-      setDate("");
-      alert("제출이 완료되었습니다.");
-      navigate("/mypage/privateDiary");
+      console.log('Diary entry created:', response.data);
+      setTitle('');
+      setBody('');
+      setDate('');
+      alert('제출이 완료되었습니다.');
+      navigate('/mypage/privateDiary');
     } catch (error) {
-      console.error("Error creating diary entry:", error);
+      console.error('Error creating diary entry:', error);
     }
   };
 
@@ -101,6 +101,6 @@ const WritePrivateDiary = () => {
       </FormPosts>
     </Wrapper>
   );
-};
+}
 
 export default WritePrivateDiary;

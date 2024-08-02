@@ -1,13 +1,11 @@
 .custom-calendar {
   width: 90%; /* 캘린더 크기 조정 */
   max-width: 800px; /* 반응형 디자인을 위한 최대 크기 */
-  font-family: "Nunito", sans-serif; /* 캘린더 폰트 설정 */
+  font-family: 'Nunito', sans-serif; /* 캘린더 폰트 설정 */
   font-weight: 800;
   height: 80%;
-  border-left: 1px solid #f0f0f0; 
-  border-right: 1px solid #f0f0f0; 
-
-
+  border-left: 1px solid #f0f0f0;
+  border-right: 1px solid #f0f0f0;
 }
 
 .custom-calendar .react-calendar__tile {

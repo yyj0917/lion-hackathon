@@ -1,14 +1,18 @@
-import React, { useEffect, useState } from "react";
-import styled from "styled-components";
+import React, { useEffect, useState } from 'react';
+import styled from 'styled-components';
 import {
   HandMetal,
   HeartHandshake,
   PartyPopper,
   Siren,
   ThumbsUp,
-} from "lucide-react";
-import { useNavigate, useParams } from "react-router-dom";
-import { DeletePostApi, ReadPersonalPostApi, UpdatePostApi } from "../../api/diary";
+} from 'lucide-react';
+import { useNavigate, useParams } from 'react-router-dom';
+import {
+  DeletePostApi,
+  ReadPersonalPostApi,
+  UpdatePostApi,
+} from '../../api/diary';
 
 const ModalBackground = styled.div`
   width: 100%;
@@ -79,7 +83,7 @@ const ModalContent = styled.div`
     font-size: 14px;
     font-weight: 700;
     color: #5a5a5a;
-    font-family: "Nunito", Courier, monospace;
+    font-family: 'Nunito', Courier, monospace;
   }
 `;
 
@@ -122,7 +126,7 @@ const IconSpan = styled.div`
     cursor: pointer;
     transition: 0.3s ease-in-out;
     &:hover {
-      background-color: #FAC6C6;
+      background-color: #fac6c6;
       transform: scale(1.1);
     }
   }
@@ -170,7 +174,7 @@ const EditForm = styled.form`
     height: 100%;
   }
 `;
-const DiaryModal = () => {
+function DiaryModal() {
   const { id } = useParams();
   const navigate = useNavigate();
   const [diary, setDiary] = useState({});
@@ -187,7 +191,7 @@ const DiaryModal = () => {
       setEditedTitle(response.title);
       setEditedBody(response.body);
     } catch (error) {
-      console.error("Error creating diary entry:", error);
+      console.error('Error creating diary entry:', error);
     }
   };
 
@@ -202,33 +206,33 @@ const DiaryModal = () => {
         diary.id,
         editedTitle,
         editedBody,
-        diary.date,
-        );
+        diary.date
+      );
       setDiary(response);
-      alert("수정되었습니다.")
+      alert('수정되었습니다.');
       setIsEditing(false);
     } catch (error) {
-      alert("같은 유저만 수정할 수 있습니다.")
+      alert('같은 유저만 수정할 수 있습니다.');
       setIsEditing(false);
     }
-  }
+  };
   // Public 일기 삭제
   const handleDelete = async () => {
     try {
-      const confirmDelete = window.confirm("정말 삭제하시겠습니까?");
+      const confirmDelete = window.confirm('정말 삭제하시겠습니까?');
       if (confirmDelete) {
         await DeletePostApi(diary.id);
-        alert("삭제되었습니다.");
+        alert('삭제되었습니다.');
         navigate(-1);
       } else {
-        alert("취소되었습니다.");
+        alert('취소되었습니다.');
       }
     } catch (error) {
-      alert("같은 유저만 삭제할 수 있습니다.")
+      alert('같은 유저만 삭제할 수 있습니다.');
 
-      console.error("Error creating diary entry:", error);
+      console.error('Error creating diary entry:', error);
     }
-  }
+  };
   // Public 일기 수정 취소
   const handleCancelClick = () => {
     setIsEditing(false);
@@ -255,22 +259,20 @@ const DiaryModal = () => {
               onChange={(e) => setEditedBody(e.target.value)}
               required
             />
-            
-            <div style={{display: 'flex', justifyContent: 'end'}}>
+
+            <div style={{ display: 'flex', justifyContent: 'end' }}>
               <EditButton onClick={handleSaveClick}>저장하기</EditButton>
               <DeleteButton onClick={handleCancelClick}>취소하기</DeleteButton>
             </div>
           </EditForm>
         </EditContainer>
       ) : (
-
         <ModalContainer onClick={(e) => e.stopPropagation()}>
           <ModalHeader>
             <ModalTitle>{diary.title}</ModalTitle>
-            <div style={{ display: "flex", gap: "10px" }}>
+            <div style={{ display: 'flex', gap: '10px' }}>
               <span>
-                <Siren size={24} style={{ color: "white" }} />
-                
+                <Siren size={24} style={{ color: 'white' }} />
               </span>
             </div>
           </ModalHeader>
@@ -281,19 +283,19 @@ const DiaryModal = () => {
           <ModalFooter>
             <IconSpan>
               <span>
-                <ThumbsUp size={16} style={{ color: "#0064FF" }} /> 0
+                <ThumbsUp size={16} style={{ color: '#0064FF' }} /> 0
               </span>
               <span>
-                <PartyPopper size={16} style={{ color: "#008C8C" }} /> 2
+                <PartyPopper size={16} style={{ color: '#008C8C' }} /> 2
               </span>
               <span>
-                <HandMetal size={16} style={{ color: "#FF8200" }} /> 0
+                <HandMetal size={16} style={{ color: '#FF8200' }} /> 0
               </span>
               <span>
-                <HeartHandshake size={16} style={{ color: "#FF5A5A" }} /> 0
+                <HeartHandshake size={16} style={{ color: '#FF5A5A' }} /> 0
               </span>
             </IconSpan>
-            <div style={{display: 'flex', justifyContent: 'end'}}>
+            <div style={{ display: 'flex', justifyContent: 'end' }}>
               <EditButton onClick={handleEditClick}>수정하기</EditButton>
               <DeleteButton onClick={handleDelete}>삭제하기</DeleteButton>
             </div>
@@ -302,6 +304,6 @@ const DiaryModal = () => {
       )}
     </ModalBackground>
   );
-};
+}
 
 export default DiaryModal;

@@ -1,7 +1,7 @@
-import axiosInstance from "./axiosConfig";
+import axiosInstance from './axiosConfig';
 
 // 인증 관련 API 호출을 담당하는 모듈입니다.
-const API_URL = "http://localhost:8000/user/auth/";
+const API_URL = 'http://localhost:8000/user/auth/';
 // 로그인 API 호출
 export const loginApi = async (email, password) => {
   try {
@@ -10,8 +10,8 @@ export const loginApi = async (email, password) => {
       password,
     });
     if (response.data.token) {
-      localStorage.setItem("accessToken", response.data.token.access);
-      localStorage.setItem("refreshToken", response.data.token.refresh);
+      localStorage.setItem('accessToken', response.data.token.access);
+      localStorage.setItem('refreshToken', response.data.token.refresh);
     }
     return response.data;
   } catch (error) {
@@ -28,7 +28,7 @@ export const registerApi = async (
   position,
   office,
   phonenumber,
-  username,
+  username
 ) => {
   try {
     const response = await axiosInstance.post(`${API_URL}register/`, {
@@ -46,7 +46,7 @@ export const registerApi = async (
     if (error.response) {
       throw new Error(error.response.data.message);
     } else {
-      throw new Error("Network Error");
+      throw new Error('Network Error');
     }
   }
 };
@@ -57,19 +57,19 @@ export const refreshTokenApi = async (refreshToken) => {
       refresh: refreshToken,
     });
     if (response.data.access) {
-      localStorage.setItem("accessToken", response.data.access);
+      localStorage.setItem('accessToken', response.data.access);
     }
     return response.data;
   } catch (error) {
-    throw new Error(error.response?.data?.message || "Network Error");
+    throw new Error(error.response?.data?.message || 'Network Error');
   }
 };
 // 로그아웃 API 호출
 export const logoutApi = async () => {
   try {
     const response = await axiosInstance.post(`${API_URL}logout/`);
-    localStorage.removeItem("accessToken");
-    localStorage.removeItem("refreshToken");
+    localStorage.removeItem('accessToken');
+    localStorage.removeItem('refreshToken');
     console.log(response);
     return response.data;
   } catch (error) {
@@ -83,7 +83,7 @@ export const UserInfoTokenVerify = async () => {
     const response = await axiosInstance.get(`${API_URL}verify/`);
     return response.data;
   } catch (error) {
-    throw new Error(error.response?.data?.message || "Network Error");
+    throw new Error(error.response?.data?.message || 'Network Error');
   }
 };
 
@@ -92,6 +92,6 @@ export const getUserInfo = async () => {
     const response = await axiosInstance.get(`${API_URL}user/`);
     return response.data;
   } catch (error) {
-    throw new Error(error.response?.data?.message || "Network Error");
+    throw new Error(error.response?.data?.message || 'Network Error');
   }
 };

@@ -1,16 +1,16 @@
 import React, { useState } from 'react';
 import styled, { keyframes } from 'styled-components';
 import { useNavigate } from 'react-router-dom';
-import GateKeeperCard from './GateKeeperCard';
 import { AlignJustify, IterationCcw } from 'lucide-react';
+import GateKeeperCard from './GateKeeperCard';
 
 // styled-components 정의
 const Wrapper = styled.div`
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
 `;
 const CategoryContainer = styled.section`
   display: flex;
@@ -25,24 +25,23 @@ const CategoryButton = styled.label`
   justify-content: space-between;
   margin: 5px;
   padding: 10px;
-  
+
   border-radius: 4px;
   cursor: pointer;
-  background-color: ${props => props.checked ? '#FFE6E6' : 'white'};
-  color: ${props => props.checked ? '#FF5A5A' : 'black'};
-  font-family: "Poppins", sans-serif;
-    box-shadow: 0px 4px 6px 0px rgba(0, 0, 0, 0.1);
-
+  background-color: ${(props) => (props.checked ? '#FFE6E6' : 'white')};
+  color: ${(props) => (props.checked ? '#FF5A5A' : 'black')};
+  font-family: 'Poppins', sans-serif;
+  box-shadow: 0px 4px 6px 0px rgba(0, 0, 0, 0.1);
 `;
 const CheckInput = styled.input`
   display: none;
 
-    &:checked + span {
-        background-color: #FF5A5A;
-        border: 2px solid white;
-    }
-    &:checked + span::after {
-    background-color: #FF5A5A;
+  &:checked + span {
+    background-color: #ff5a5a;
+    border: 2px solid white;
+  }
+  &:checked + span::after {
+    background-color: #ff5a5a;
     transform: scale(1);
   }
 `;
@@ -53,10 +52,10 @@ const Checkmark = styled.span`
   margin-right: 10px;
   border-radius: 50%;
   transition: all 0.3s ease;
-  border: 2px solid #FF5A5A;
-  
+  border: 2px solid #ff5a5a;
+
   &::after {
-    content: "";
+    content: '';
     display: none;
     position: absolute;
     left: 6px;
@@ -76,9 +75,9 @@ const ConfirmButton = styled.button`
   width: 130px;
   height: 50px;
   cursor: pointer;
-  background-color: #FF5A5A;
+  background-color: #ff5a5a;
   color: white;
-  font-family: "Poppins", sans-serif;
+  font-family: 'Poppins', sans-serif;
   box-shadow: 0px 4px 6px 0px rgba(0, 0, 0, 0.1);
   transition: all 0.3s ease;
   font-weight: 500;
@@ -96,10 +95,10 @@ const FooterButton = styled.div`
   button {
     display: flex;
     align-items: center;
-    border: 1px solid #007BFF;
+    border: 1px solid #007bff;
     border-radius: 4px;
     cursor: pointer;
-    background-color: #007BFF;
+    background-color: #007bff;
     color: white;
     width: 48%;
     padding: 5px;
@@ -121,33 +120,33 @@ const spin = keyframes`
 `;
 
 const Spinner = styled.div`
-  border: 4px solid rgba(0,0,0,0.1);
-  border-top: 4px solid #FF5A5A;
+  border: 4px solid rgba(0, 0, 0, 0.1);
+  border-top: 4px solid #ff5a5a;
   border-radius: 50%;
   width: 40px;
   height: 40px;
   animation: ${spin} 1s linear infinite;
 `;
 const TextCard = styled.div`
-    /* background-color: #f9f9f9; 배경색 */
-    border: 1px solid #e0e0e0; /* 테두리 */
-    display: flex;
-    width: 80%;
-    height: 20%;
-    border-radius: 8px;
-    box-shadow: 0px 4px 6px 0px rgba(0, 0, 0, 0.1);
-    margin-top: 10px;
-    padding: 20px;
-    p {
-        font-family: "Poppins", sans-serif;
-        font-size: 16px; /* 글자 크기 */
-        color: #333; /* 글자 색상 */
-        margin: 0; /* 마진 제거 */
-        line-height: 1.5; /* 줄 간격 */
-    }
+  /* background-color: #f9f9f9; 배경색 */
+  border: 1px solid #e0e0e0; /* 테두리 */
+  display: flex;
+  width: 80%;
+  height: 20%;
+  border-radius: 8px;
+  box-shadow: 0px 4px 6px 0px rgba(0, 0, 0, 0.1);
+  margin-top: 10px;
+  padding: 20px;
+  p {
+    font-family: 'Poppins', sans-serif;
+    font-size: 16px; /* 글자 크기 */
+    color: #333; /* 글자 색상 */
+    margin: 0; /* 마진 제거 */
+    line-height: 1.5; /* 줄 간격 */
+  }
 `;
 
-const RandomMatching = () => {
+function RandomMatching() {
   const [selectedCategories, setSelectedCategories] = useState([]);
   const [selectedCounselor, setSelectedCounselor] = useState(null);
   const [gatekeeper, setGatekeeper] = useState([]);
@@ -168,7 +167,9 @@ const RandomMatching = () => {
     if (checked) {
       setSelectedCategories([value]);
     } else {
-      setSelectedCategories(selectedCategories.filter((category) => category !== value));
+      setSelectedCategories(
+        selectedCategories.filter((category) => category !== value)
+      );
     }
   };
 
@@ -181,10 +182,10 @@ const RandomMatching = () => {
     // 임시 데이터로 랜덤 상담사를 설정합니다.
     setLoading(true);
     setTimeout(() => {
-        alert('제출이 완료되었습니다. 잠시만 기다려주세요. ');
-        const mockCounselor = { id: 1, name: '랜덤 상담사' };
-        setSelectedCounselor(mockCounselor);
-        setLoading(false);
+      alert('제출이 완료되었습니다. 잠시만 기다려주세요. ');
+      const mockCounselor = { id: 1, name: '랜덤 상담사' };
+      setSelectedCounselor(mockCounselor);
+      setLoading(false);
     }, 2000);
   };
   const handleRematching = () => {
@@ -197,12 +198,10 @@ const RandomMatching = () => {
         setSelectedCounselor(mockCounselor);
         setLoading(false);
       }, 2000);
-
     } else {
       alert('매칭을 취소하였습니다.');
     }
-
-  }
+  };
 
   const handleViewAll = () => {
     navigate('/matching/counselor-list');
@@ -212,48 +211,54 @@ const RandomMatching = () => {
     <>
       {loading ? (
         <Wrapper>
-            <Spinner />
+          <Spinner />
         </Wrapper>
       ) : selectedCounselor === null ? (
         // 카테고리 선택 UI
         <Wrapper>
-            <TextCard>
-                <p>
-                    상담을 받고 싶은 카테고리를 선택해주세요.
-                </p>
-            </TextCard>
-            <CategoryContainer>
-              {categories.map((category) => (
-                  <CategoryButton
-                  key={category.id}
+          <TextCard>
+            <p>상담을 받고 싶은 카테고리를 선택해주세요.</p>
+          </TextCard>
+          <CategoryContainer>
+            {categories.map((category) => (
+              <CategoryButton
+                key={category.id}
+                checked={selectedCategories.includes(category.id)}
+              >
+                <CheckInput
+                  type="checkbox"
+                  value={category.id}
                   checked={selectedCategories.includes(category.id)}
-                  >
-                  <CheckInput
-                      type="checkbox"
-                      value={category.id}
-                      checked={selectedCategories.includes(category.id)}
-                      onChange={handleCategoryChange}
-                      style={{ marginRight: '10px' }}
-                  />
-                  <Checkmark/>
-                  {category.name}
-                  </CategoryButton>
-              ))}
-            </CategoryContainer>
-            <ConfirmButton onClick={handleConfirm}>제출하기</ConfirmButton>
+                  onChange={handleCategoryChange}
+                  style={{ marginRight: '10px' }}
+                />
+                <Checkmark />
+                {category.name}
+              </CategoryButton>
+            ))}
+          </CategoryContainer>
+          <ConfirmButton onClick={handleConfirm}>제출하기</ConfirmButton>
         </Wrapper>
       ) : (
         // 상담사 정보 및 전체보기 버튼
         <Wrapper>
-          <GateKeeperCard key={selectedCounselor.id} gatekeeper={gatekeeper}>{selectedCounselor.name}</GateKeeperCard>
+          <GateKeeperCard key={selectedCounselor.id} gatekeeper={gatekeeper}>
+            {selectedCounselor.name}
+          </GateKeeperCard>
           <FooterButton>
-            <button className='rematching' onClick={handleRematching}><IterationCcw/><p>다시 매칭하기</p></button>
-            <button className='viewAll' onClick={handleViewAll}><AlignJustify/><p>전체 상담사리스트</p></button>
+            <button className="rematching" onClick={handleRematching}>
+              <IterationCcw />
+              <p>다시 매칭하기</p>
+            </button>
+            <button className="viewAll" onClick={handleViewAll}>
+              <AlignJustify />
+              <p>전체 상담사리스트</p>
+            </button>
           </FooterButton>
         </Wrapper>
       )}
     </>
   );
-};
+}
 
 export default RandomMatching;

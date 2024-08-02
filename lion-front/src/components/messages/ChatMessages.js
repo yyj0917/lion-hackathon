@@ -1,7 +1,7 @@
-import React from "react";
-import styled from "styled-components";
-import "../../styles/App.css";
-import PropTypes from "prop-types";
+import React from 'react';
+import styled from 'styled-components';
+import '../../styles/App.css';
+import PropTypes from 'prop-types';
 
 const ChatMessage = styled.div`
   background-color: white;
@@ -43,18 +43,18 @@ const ChatMessageWriter = styled.span`
   font-size: 0.8em;
   color: #888;
 `;
-const ChatMessages = ({ content, writer }) => {
-    return (
-        <ChatMessage id="messageBubble">
+function ChatMessages({ content, writer }) {
+  return (
+    <ChatMessage id="messageBubble">
       <ChatMessageContent>{content}</ChatMessageContent>
       <ChatMessageWriter>{writer}</ChatMessageWriter>
     </ChatMessage>
   );
-};
+}
 
 // PropType 정의
 ChatMessages.propTypes = {
-    content: PropTypes.string.isRequired,
-    writer: PropTypes.string.isRequired,
+  content: PropTypes.string.isRequired,
+  writer: PropTypes.string.isRequired,
 };
 export default ChatMessages;

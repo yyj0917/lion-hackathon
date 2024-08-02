@@ -1,6 +1,6 @@
-import axiosInstance from "./axiosConfig";
+import axiosInstance from './axiosConfig';
 
-const API_URL = "http://localhost:8000/";
+const API_URL = 'http://localhost:8000/';
 
 // 일기 쓰기 POST 요청 - WritePost.js
 export const WritePostApi = async (title, body, date) => {

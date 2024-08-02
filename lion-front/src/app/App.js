@@ -1,37 +1,36 @@
-import "../styles/App.css";
-import React from "react";
+import '../styles/App.css';
+import React from 'react';
 import {
   BrowserRouter as Router,
   Route,
   Routes,
   BrowserRouter,
-} from "react-router-dom";
-import Login from "../pages/login";
-import Main from "../pages/main";
-import Layout from "../components/layout/Layout";
-import CounselorList from "../components/matching/Receive-counselor/CounselorList";
-import Counselor from "../components/matching/Give-counselor/Counselor";
-import RandomMatching from "../components/matching/Receive-counselor/RandomMatching";
-import MyPage from "../components/MyPage/MyPage";
-import SentimentResult from "../components/MyPage/SentimentResult";
-import Sentiment from "../components/MyPage/Sentiment";
-import PrivateDiary from "../components/MyPage/PrivateDiary/PrivateDiary";
-import Features from "../components/features/Features";
-import Matching from "../components/matching/Matching";
-import DiaryModal from "../components/diary/DiaryModal";
-import Posts from "../components/diary/Posts";
-import SharedDiary from "../components/diary/SharedDiary";
-import DiaryDetail from "../components/MyPage/PrivateDiary/DiaryDetail";
-import WritePublicDiary from "../components/diary/WritePublicDiary";
-import WritePrivateDiary from "../components/MyPage/PrivateDiary/WritePrivateDiary";
-import { SearchProvider } from "../contexts/SearchContext";
+} from 'react-router-dom';
+import Login from '../pages/login';
+import Main from '../pages/main';
+import Layout from '../components/layout/Layout';
+import CounselorList from '../components/matching/Receive-counselor/CounselorList';
+import Counselor from '../components/matching/Give-counselor/Counselor';
+import RandomMatching from '../components/matching/Receive-counselor/RandomMatching';
+import MyPage from '../components/MyPage/MyPage';
+import SentimentResult from '../components/MyPage/SentimentResult';
+import Sentiment from '../components/MyPage/Sentiment';
+import PrivateDiary from '../components/MyPage/PrivateDiary/PrivateDiary';
+import Features from '../components/features/Features';
+import Matching from '../components/matching/Matching';
+import DiaryModal from '../components/diary/DiaryModal';
+import Posts from '../components/diary/Posts';
+import SharedDiary from '../components/diary/SharedDiary';
+import DiaryDetail from '../components/MyPage/PrivateDiary/DiaryDetail';
+import WritePublicDiary from '../components/diary/WritePublicDiary';
+import WritePrivateDiary from '../components/MyPage/PrivateDiary/WritePrivateDiary';
+import { SearchProvider } from '../contexts/SearchContext';
 
 function App() {
   return (
     <BrowserRouter>
       <Layout>
         <SearchProvider>
-
           <Routes>
             <Route path="/login" element={<Login />} />
             {/* <Route path="/signup" element={<SignUp />} /> */}
@@ -55,8 +54,8 @@ function App() {
                   element={<CounselorList />}
                 />
                 <Route
-                  path="/matching/randomMatching" 
-                  element={<RandomMatching />} 
+                  path="/matching/randomMatching"
+                  element={<RandomMatching />}
                 />
               </Route>
               {/* 마이 페이지 루트로 라우팅 */}
@@ -67,7 +66,10 @@ function App() {
 
                 <Route path="sentiment" element={<Sentiment />} />
                 <Route path="sentimentResult" element={<SentimentResult />} />
-                <Route path="writePrivateDiary" element={<WritePrivateDiary />} />
+                <Route
+                  path="writePrivateDiary"
+                  element={<WritePrivateDiary />}
+                />
               </Route>
             </Route>
           </Routes>

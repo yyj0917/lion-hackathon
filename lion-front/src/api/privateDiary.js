@@ -1,6 +1,6 @@
-import axiosInstance from "./axiosConfig";
+import axiosInstance from './axiosConfig';
 
-const API_URL = "http://localhost:8000/diary/private";
+const API_URL = 'http://localhost:8000/diary/private';
 
 // PrivateDiary Entry 가져오기 GET
 export const fetchPrivateDiaryEntry = async () => {
