@@ -2,6 +2,10 @@ import sys
 import requests
 import json
 
+from django.utils import timezone
+from datetime import timedelta
+from .models import PrivateDiary
+
 def sentimentAnalysis(content) :
 
     client_id = "si864t2no6"
@@ -27,16 +31,36 @@ def sentimentAnalysis(content) :
 
         sentiment = result['document']['sentiment']
         confidence = result['document']['confidence']
-        
-        negative_contents = []
-        for sentence in result['sentences'] :
-            if sentence['sentiment'] == "negative" :
-                negative_contents.append(sentence['content']) 
+        negative_contents = {'sentences':result['sentences']}
 
         return sentiment, confidence, negative_contents
     
     else:
         print("Error occured during sentiment analysis")
+
+
+def collect_negative_sentences(user):
+    end_date = timezone.now().date()
+    start_date = end_date - timedelta(days=30)
+    diaries = PrivateDiary.objects.filter(user=user, date__range=[start_date, end_date])
+    negative_sentences = []
+    for diary in diaries:
+        for sentence in diary.highlights['sentences']:
+            if sentence['confidence']['negative'] > sentence['confidence']['positive'] and sentence['confidence']['negative'] > sentence['confidence']['neutral']:
+                negative_sentences.append(sentence['content'])
+    return negative_sentences
+
+
+def perform_kobert_analysis(sentences):
+    # Kobert 모델을 호출하는 코드를 여기에 추가합니다.
+    # 이 예제에서는 가상의 결과를 반환합니다.
+    return {
+        "detailed_sentiments": [
+            {"sentence": sentence, "sentiment": "anger"} for sentence in sentences
+        ]
+    }
+
+
 
 
 # 분석 결과는 dictionary 형태
