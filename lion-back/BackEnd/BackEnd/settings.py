@@ -13,6 +13,11 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 import os
 from pathlib import Path
 from datetime import timedelta
+from decouple import config
+
+SECRET_KEY = config('DJANGO_SECRET_KEY')
+REFRESH_TOKEN_SECRET = config('REFRESH_TOKEN_SECRET')
+DEBUG = config('DJANGO_DEBUG', default=False, cast=bool)
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -25,8 +30,7 @@ STATICFILES_DIRS = [
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
 
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-)hsihi+)jydua4g@!zni7)qq35sk+m7k!1%9q1e9bs_8p2m#pz'
+
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
