@@ -31,7 +31,17 @@ def sentimentAnalysis(content) :
 
         sentiment = result['document']['sentiment']
         confidence = result['document']['confidence']
-        negative_contents = {'sentences':result['sentences']}
+
+        negative_contents = []
+        for sentence in result['sentences'] :
+            
+            sentence_result = {
+                'content': sentence['content'],
+                'sentiment': sentence['sentiment'],
+                'confidence': sentence['confidence']
+            }
+
+            negative_contents.append(sentence_result)
 
         return sentiment, confidence, negative_contents
     
