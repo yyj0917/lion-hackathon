@@ -4,6 +4,7 @@ import '../styles/App.css';
 import { Link, useNavigate } from 'react-router-dom';
 import { loginApi } from '../api/auth';
 import SignUp from '../components/SignUpComponent';
+import { useDispatch } from 'react-redux';
 
 const Wrapper = styled.div`
   height: calc(100vh - 100px - 40px);
@@ -194,6 +195,7 @@ const Container = styled.div`
 export default function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   const [isRightPanelActive, setIsRightPanelActive] = useState(false);
 
@@ -205,12 +207,11 @@ export default function Login() {
     setIsRightPanelActive(false);
   };
 
-  const handleLogin = async (event) => {
+  const handleLogin =  (event) => {
     event.preventDefault();
     try {
-      const response = await loginApi(email, password);
-      localStorage.setItem('accessToken', response.token.access);
-      localStorage.setItem('refreshToken', response.token.refresh);
+      // const response = await loginApi(email, password);
+      dispatch(loginApi(email, password))
       alert('로그인 성공');
       setTimeout(1000);
       navigate('/', { replace: true });
@@ -235,6 +236,7 @@ export default function Login() {
               id="email"
               type="email"
               placeholder="Email"
+              autoComplete="email"
               onChange={(e) => setEmail(e.target.value)}
               required
             />
@@ -242,6 +244,7 @@ export default function Login() {
               id="password"
               type="password"
               placeholder="Password"
+              autoComplete="current-password"
               onChange={(e) => setPassword(e.target.value)}
               required
             />

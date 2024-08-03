@@ -29,7 +29,7 @@ export const ReadPostsApi = async () => {
 // 일기 하나 읽어오기 GET - Posts.js
 export const ReadPersonalPostApi = async (id) => {
   try {
-    const response = await axiosInstance.get(`${API_URL}diary/${id}`);
+    const response = await axiosInstance.get(`${API_URL}diary/${id}/`);
     return response.data;
   } catch (error) {
     throw new Error(error.response.data.message);
@@ -82,7 +82,7 @@ export const UnlikePostApi = async (id) => {
 // 내가 쓴 공유일기 GET
 export const ReadSharedPostsApi = async () => {
   try {
-    const response = await axiosInstance.get(`${API_URL}diary/my`);
+    const response = await axiosInstance.get(`${API_URL}diary/my/`);
     return response.data;
   } catch (error) {
     throw new Error(error.response.data.message);

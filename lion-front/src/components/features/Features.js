@@ -14,6 +14,8 @@ import Tooltip from '../../utils/Tooltip';
 import Tab from './Tab';
 import { isAuthenticated } from '../../utils/auth';
 import { useSearch } from '../../contexts/SearchContext';
+import { useDispatch, useSelector } from 'react-redux';
+import { checkAuthStatus } from '../../redux/reducers/authReducer';
 
 const slideUp = keyframes`
   0% {
@@ -163,6 +165,7 @@ export default function Features() {
   const [tooltip, setTooltip] = useState(null);
   const location = useLocation();
   const isPath = location.pathname.startsWith('/matching');
+  const isAuth = useSelector((state) => state.auth.isAuthenticated);
 
   const handleSearchClick = () => {
     setShowSearch((prev) => !prev);
@@ -185,7 +188,7 @@ export default function Features() {
           style={{ color: '#FF5A5A' }}
         />
       </HomeRedirect>
-      {!isPath && isAuthenticated() && (
+      {!isPath && isAuth && (
         <FilterAndWrite>
           <ModalBtn $delay={100}>
             {!showSearch ? (

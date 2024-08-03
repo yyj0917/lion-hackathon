@@ -5,6 +5,8 @@ import { HandMetal, HeartHandshake, PartyPopper, ThumbsUp } from 'lucide-react';
 import { ReadPostsApi } from '../../api/diary';
 import { isAuthenticated } from '../../utils/auth';
 import { useSearch } from '../../contexts/SearchContext';
+import { useDispatch, useSelector } from 'react-redux';
+import { checkAuthStatus } from '../../redux/reducers/authReducer';
 
 // export default Diary;
 const Wrapper = styled.div`
@@ -137,10 +139,11 @@ export default function Posts() {
   const postsPerPage = 4;
   const navigate = useNavigate();
   const { searchTerm } = useSearch();
+  // const dispatch = useDispatch();
+  const isAuth = useSelector((state) => state.auth.isAuthenticated);
 
-  // Post list 전부 가져오기
   const handlePostVerify = () => {
-    if (!isAuthenticated()) {
+    if (!isAuth) {
       alert('로그인 후 이용해주세요.');
       navigate('/login', { replace: 'true' }); // 로그인 페이지로 리디렉트
     }
@@ -149,7 +152,6 @@ export default function Posts() {
     try {
       const response = await ReadPostsApi();
       setPosts(response);
-      console.log('Diary entries:', response);
     } catch (error) {
       console.error('Error creating diary entry:', error);
     }
