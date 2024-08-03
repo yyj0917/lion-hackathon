@@ -1,7 +1,6 @@
 import styled from 'styled-components';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import '../styles/App.css';
-import { useNavigate } from 'react-router-dom';
 import { registerApi } from '../api/auth';
 
 const FormSighUp = styled.form`
@@ -64,7 +63,6 @@ export default function SignUpComponent() {
   const [phonenumber, setPhoneNumber] = useState('');
   const [username, setUsername] = useState('');
 
-  const navigate = useNavigate();
 
   const handleRegister = async (e) => {
     e.preventDefault();

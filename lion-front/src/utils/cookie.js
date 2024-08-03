@@ -9,8 +9,8 @@ export const setCookie = (name, value, minutes) => {
     return cookies.set(name, value, {
         path: '/',
         expires,
-        // secure: true,
-        sameSite: 'strict',
+        secure: true,
+        sameSite: 'Lax',
       });
   };
 

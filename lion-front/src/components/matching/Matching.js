@@ -1,7 +1,9 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Outlet, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { isAuthenticated } from '../../utils/auth';
+import { useDispatch, useSelector } from 'react-redux';
+import { checkAuthStatus } from '../../redux/reducers/authReducer';
 
 const MatchingWrapper = styled.div`
   display: flex;
@@ -79,13 +81,14 @@ const Box = styled.div`
 `;
 
 function Matching() {
+  
   const [isCounselor, setIsCounselor] = useState(false);
   const [isRecieveCounsel, setIsRecieveCounsel] = useState(false);
   const navigate = useNavigate();
-  // const location = useLocation();
+  const isAuth = useSelector((state) => state.auth.isAuthenticated);
 
   const handleCounselorClick = () => {
-    if (isAuthenticated()) {
+    if (isAuth) {
       setIsCounselor(true);
       setIsRecieveCounsel(false);
       navigate('/matching/counselor');
@@ -96,7 +99,7 @@ function Matching() {
   };
 
   const handleRecieveCounselClick = () => {
-    if (isAuthenticated()) {
+    if (isAuth) {
       setIsCounselor(false);
       setIsRecieveCounsel(true);
       navigate('/matching/randomMatching');
