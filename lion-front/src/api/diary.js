@@ -1,6 +1,6 @@
-import axiosInstance from "./axiosConfig";
+import axiosInstance from './axiosConfig';
 
-const API_URL = "http://localhost:8000/";
+const API_URL = 'http://localhost:8000/';
 
 // 일기 쓰기 POST 요청 - WritePost.js
 export const WritePostApi = async (title, body, date) => {
@@ -54,6 +54,35 @@ export const UpdatePostApi = async (id, title, body, date) => {
 export const DeletePostApi = async (id) => {
   try {
     const response = await axiosInstance.delete(`${API_URL}diary/${id}/`);
+    return response.data;
+  } catch (error) {
+    throw new Error(error.response.data.message);
+  }
+};
+// 공감하기 POST - 
+export const LikePostApi = async (id, reaction) => {
+  try {
+    const response = await axiosInstance.post(`${API_URL}diary/${id}/react/`, {
+      reaction,
+    });
+    return response.data;
+  } catch (error) {
+    throw new Error(error.response.data.message);
+  }
+} 
+// 공감 취소 POST
+export const UnlikePostApi = async (id) => {
+  try {
+    const response = await axiosInstance.delete(`${API_URL}diary/${id}/unreact/`);
+    return response.data;
+  } catch (error) {
+    throw new Error(error.response.data.message);
+  }
+}
+// 내가 쓴 공유일기 GET
+export const ReadSharedPostsApi = async () => {
+  try {
+    const response = await axiosInstance.get(`${API_URL}diary/my`);
     return response.data;
   } catch (error) {
     throw new Error(error.response.data.message);

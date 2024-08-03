@@ -5,7 +5,7 @@ const SearchContext = createContext();
 
 export const useSearch = () => useContext(SearchContext);
 
-export const SearchProvider = ({ children }) => {
+export function SearchProvider({ children }) {
   const [searchTerm, setSearchTerm] = useState('');
 
   return (
@@ -13,7 +13,7 @@ export const SearchProvider = ({ children }) => {
       {children}
     </SearchContext.Provider>
   );
-};
+}
 SearchProvider.propTypes = {
-    children: PropTypes.node.isRequired,
+  children: PropTypes.node.isRequired,
 };

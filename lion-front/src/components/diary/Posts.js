@@ -1,10 +1,10 @@
-import { useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import styled from "styled-components";
-import { ReadPostsApi } from "../../api/diary";
-import { HandMetal, HeartHandshake, PartyPopper, ThumbsUp } from "lucide-react";
-import { isAuthenticated } from "../../utils/auth";
-import { useSearch } from "../../contexts/SearchContext";
+import { useEffect, useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import styled from 'styled-components';
+import { HandMetal, HeartHandshake, PartyPopper, ThumbsUp } from 'lucide-react';
+import { ReadPostsApi } from '../../api/diary';
+import { isAuthenticated } from '../../utils/auth';
+import { useSearch } from '../../contexts/SearchContext';
 
 // export default Diary;
 const Wrapper = styled.div`
@@ -37,10 +37,9 @@ const Post = styled.div`
   box-sizing: border-box;
   border: 1px solid #ddd;
 
-
   background-color: #fff;
   border-width: 1px 0;
-    a {
+  a {
     color: #666;
     text-decoration: none;
     -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
@@ -98,7 +97,7 @@ const DateSpan = styled.div`
   text-align: center;
   border: 1px solid #ddd;
   padding: 3px;
-    border-radius: 10px;
+  border-radius: 10px;
 `;
 const PostFooter = styled.div`
   display: flex;
@@ -142,27 +141,28 @@ export default function Posts() {
   // Post list 전부 가져오기
   const handlePostVerify = () => {
     if (!isAuthenticated()) {
-      alert("로그인 후 이용해주세요.");
-      navigate("/login", {replace: 'true'}); // 로그인 페이지로 리디렉트
+      alert('로그인 후 이용해주세요.');
+      navigate('/login', { replace: 'true' }); // 로그인 페이지로 리디렉트
     }
   };
   const fetchPosts = async () => {
     try {
       const response = await ReadPostsApi();
       setPosts(response);
+      console.log('Diary entries:', response);
     } catch (error) {
-      console.error("Error creating diary entry:", error);
+      console.error('Error creating diary entry:', error);
     }
   };
   useEffect(() => {
     fetchPosts();
   }, []);
 
+  
+
   // 검색어에 따른 필터링
   const filteredPosts = posts.filter(
-    post =>
-      post.title.includes(searchTerm) ||
-      post.body.includes(searchTerm)
+    (post) => post.title.includes(searchTerm) || post.body.includes(searchTerm)
   );
 
   // 1페이지당 4개의 일기 -> 현재 페이지에 보여줄 일기 계산
@@ -182,16 +182,15 @@ export default function Posts() {
     <Wrapper>
       <PostWrapper>
         {currentPosts.map((post) => (
-          <Post key={post.id} className="diary-card"
-                onClick={handlePostVerify}>
+          <Post key={post.id} className="diary-card" onClick={handlePostVerify}>
             <Link to={`/publicDiary/${post.id}`}>
               <Desc>
                 <div>
                   <div
                     style={{
-                      display: "flex",
-                      justifyContent: "space-between",
-                      alignItems: "center",
+                      display: 'flex',
+                      justifyContent: 'space-between',
+                      alignItems: 'center',
                     }}
                   >
                     <h2>{post.title}</h2>
@@ -202,17 +201,21 @@ export default function Posts() {
                 <div className="info">
                   <IconSpan>
                     <span>
-                      <ThumbsUp size={16} style={{ color: "#0064FF" }} /> 0
+                      <ThumbsUp size={16} style={{ color: '#0064FF' }} /> 
+                      {post.reactions && post.reactions.like !== undefined ? post.reactions.like : 0}
+
                     </span>
                     <span>
-                      <PartyPopper size={16} style={{ color: "#008C8C" }} /> 2
+                      <PartyPopper size={16} style={{ color: '#008C8C' }} />
+                      {post.reactions && post.reactions.congrats !== undefined ? post.reactions.congrats : 0}
                     </span>
                     <span>
-                      <HandMetal size={16} style={{ color: "#FF8200" }} /> 0
+                      <HandMetal size={16} style={{ color: '#FF8200' }} /> 
+                      {post.reactions && post.reactions.excited !== undefined ? post.reactions.excited : 0}
                     </span>
                     <span>
-                      <HeartHandshake size={16} style={{ color: "#FF5A5A" }} />{" "}
-                      0
+                      <HeartHandshake size={16} style={{ color: '#FF5A5A' }} />
+                      {post.reactions && post.reactions.together !== undefined ? post.reactions.together : 0}
                     </span>
                   </IconSpan>
                   <DateSpan>
@@ -228,7 +231,7 @@ export default function Posts() {
         {pageNumbers.map((number) => (
           <label
             key={number}
-            className={`${currentPage === number ? "active" : ""}`}
+            className={`${currentPage === number ? 'active' : ''}`}
           >
             <input
               type="checkbox"

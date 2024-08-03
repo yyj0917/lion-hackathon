@@ -1,19 +1,19 @@
-import styled, { keyframes } from "styled-components";
-import Tab from "./Tab";
+import styled, { keyframes } from 'styled-components';
 import {
-    CircleX,
+  CircleX,
   House,
   NotebookTabs,
   Pen,
   Search,
   Undo2,
   X,
-} from "lucide-react";
-import { useEffect, useState } from "react";
-import Tooltip from "../../utils/Tooltip";
-import { useLocation, useNavigate } from "react-router-dom";
-import { isAuthenticated } from "../../utils/auth";
-import { useSearch } from "../../contexts/SearchContext";
+} from 'lucide-react';
+import { useEffect, useState } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
+import Tooltip from '../../utils/Tooltip';
+import Tab from './Tab';
+import { isAuthenticated } from '../../utils/auth';
+import { useSearch } from '../../contexts/SearchContext';
 
 const slideUp = keyframes`
   0% {
@@ -55,10 +55,12 @@ const SearchInput = styled.input`
   margin-left: 10px;
   padding: 5px 10px;
   border-radius: 20px;
-  border: 2px solid #FF5A5A;
+  border: 2px solid #ff5a5a;
   width: 0;
   opacity: 0;
-  transition: width 0.5s ease, opacity 0.5s ease;
+  transition:
+    width 0.5s ease,
+    opacity 0.5s ease;
   &:focus {
     width: 200px;
     opacity: 1;
@@ -145,7 +147,7 @@ const ModalBtn = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: #FF5A5A;
+  background-color: #ff5a5a;
   color: white;
   cursor: pointer;
   transition: transform 0.3s ease;
@@ -163,13 +165,12 @@ export default function Features() {
   const isPath = location.pathname.startsWith('/matching');
 
   const handleSearchClick = () => {
-    setShowSearch(prev => !prev);
+    setShowSearch((prev) => !prev);
   };
   const handleCancelClick = () => {
-    setShowSearch(prev => !prev);
+    setShowSearch((prev) => !prev);
     setSearchTerm('');
   };
-
 
   const handleInputChange = (e) => {
     setSearchTerm(e.target.value);
@@ -179,51 +180,63 @@ export default function Features() {
   return (
     <Wrapper>
       <HomeRedirect>
-        <House onClick={() => navigate("/", {replace: 'true'})} style={{ color: "#FF5A5A" }} />
+        <House
+          onClick={() => navigate('/', { replace: 'true' })}
+          style={{ color: '#FF5A5A' }}
+        />
       </HomeRedirect>
-      {(!isPath && isAuthenticated()) && (
+      {!isPath && isAuthenticated() && (
         <FilterAndWrite>
-            <ModalBtn $delay={100}>
-                {!showSearch ? (
-                    <Search 
-                        onClick={handleSearchClick}
-                        onMouseEnter={() => showTooltip("검색")}
-                        onMouseLeave={hideTooltip}
-                        />
-                ) : (
-                    <X
-                        onClick={handleCancelClick}
-                        onMouseEnter={() => showTooltip("취소")}
-                        onMouseLeave={hideTooltip}
-                    />
-                )}
-                {showSearch && <SearchInput type="text" onChange={handleInputChange} placeholder="검색어를 입력하세요." animate={showSearch} />}
-                {tooltip === "검색" && <Tooltip text="검색" />}
-                {tooltip === "취소" && <Tooltip text="취소" />}
-            </ModalBtn>
-            <ModalBtn 
-                $delay={200} 
-                onClick={()=>navigate('/publicDiary/writePublicDiary')}
-                onMouseEnter={() => showTooltip("일기 작성")}
+          <ModalBtn $delay={100}>
+            {!showSearch ? (
+              <Search
+                onClick={handleSearchClick}
+                onMouseEnter={() => showTooltip('검색')}
                 onMouseLeave={hideTooltip}
-                    >
-                <Pen/>
-                {tooltip === "일기 작성" && <Tooltip text="일기 작성" />}
-            </ModalBtn>
-            <ModalBtn 
-                $delay={300}
-                onClick={()=>navigate('/publicDiary/sharedDiary')}
-                onMouseEnter={() => showTooltip("내가 쓴 공유 일기")}
+              />
+            ) : (
+              <X
+                onClick={handleCancelClick}
+                onMouseEnter={() => showTooltip('취소')}
                 onMouseLeave={hideTooltip}
-                >
-                <NotebookTabs />
-                {tooltip === "내가 쓴 공유 일기" && <Tooltip text="내가 쓴 공유 일기" />}
-            </ModalBtn>
-        </FilterAndWrite>
+              />
             )}
+            {showSearch && (
+              <SearchInput
+                type="text"
+                onChange={handleInputChange}
+                placeholder="검색어를 입력하세요."
+                animate={showSearch}
+              />
+            )}
+            {tooltip === '검색' && <Tooltip text="검색" />}
+            {tooltip === '취소' && <Tooltip text="취소" />}
+          </ModalBtn>
+          <ModalBtn
+            $delay={200}
+            onClick={() => navigate('/publicDiary/writePublicDiary')}
+            onMouseEnter={() => showTooltip('일기 작성')}
+            onMouseLeave={hideTooltip}
+          >
+            <Pen />
+            {tooltip === '일기 작성' && <Tooltip text="일기 작성" />}
+          </ModalBtn>
+          <ModalBtn
+            $delay={300}
+            onClick={() => navigate('/publicDiary/sharedDiary')}
+            onMouseEnter={() => showTooltip('내가 쓴 공유 일기')}
+            onMouseLeave={hideTooltip}
+          >
+            <NotebookTabs />
+            {tooltip === '내가 쓴 공유 일기' && (
+              <Tooltip text="내가 쓴 공유 일기" />
+            )}
+          </ModalBtn>
+        </FilterAndWrite>
+      )}
       <Tab />
       <Back onClick={() => navigate(-1)}>
-        <Undo2 style={{ color: "#FF5A5A" }} />
+        <Undo2 style={{ color: '#FF5A5A' }} />
       </Back>
     </Wrapper>
   );

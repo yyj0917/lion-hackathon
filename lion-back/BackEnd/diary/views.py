@@ -1,5 +1,5 @@
 # 데이터 처리
-from .models import PublicDiary, PrivateDiary, Reaction
+from .models import PublicDiary, PrivateDiary, Reaction, Report
 from .serializers import PublicDiarySerializer, PrivateDiarySerializer
 from rest_framework import viewsets
 
@@ -118,7 +118,28 @@ class PublicDiaryViewSet(viewsets.ModelViewSet):
             return Response({"detail": "Reaction removed."}, status=status.HTTP_204_NO_CONTENT)
         except Reaction.DoesNotExist:
             return Response({"detail": "No reaction found to delete."}, status=status.HTTP_400_BAD_REQUEST)
-    
+        
+    @action(detail=True, methods=['post'], permission_classes=[IsAuthenticated])
+    def report(self, request, pk=None):
+        diary = self.get_object()
+        user = request.user
+
+        # 사용자가 이미 신고했는지 확인
+        if Report.objects.filter(user=user, diary=diary).exists():
+            return Response({"detail": "You have already reported this diary."}, status=status.HTTP_400_BAD_REQUEST)
+
+        # 신고 기록 생성 및 신고 횟수 증가
+        Report.objects.create(user=user, diary=diary)
+        diary.report_count += 1
+        diary.save()
+
+        # 신고 기록 5회 이상일 경우 게시물을 삭제
+        if diary.report_count >= 5:
+            diary.delete()
+            return Response({"detail": "Diary deleted due to multiple reports."}, status=status.HTTP_200_OK)
+        
+        return Response({"detail": "Diary reported."}, status=status.HTTP_200_OK) 
+   
 
 # Private Diary의 목록, detail 보여주기, 수정하기, 삭제하기
 class PrivateDiaryViewSet(viewsets.ModelViewSet):

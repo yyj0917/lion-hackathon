@@ -25,7 +25,9 @@ class Advisor(models.Model):
     workIn = models.TextField()
     openlink = models.URLField(blank=True, null=True)
     giveTalk = models.CharField(max_length=100, blank=True)
-    categories = models.ManyToManyField(AdvisorCategory)
+    # categories = models.ManyToManyField(AdvisorCategory)
+    categories = models.JSONField(default=list)  # 기본값으로 빈 리스트를 설정
+
 
 class Client(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=False)

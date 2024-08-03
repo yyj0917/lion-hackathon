@@ -1,6 +1,6 @@
-import styled from "styled-components";
-import "../styles/App.css";
-import Section from "../components/Section";
+import styled from 'styled-components';
+import '../styles/App.css';
+import Section from '../components/Section';
 
 const SectionWrapper = styled.div`
   display: flex;
@@ -10,11 +10,9 @@ const SectionWrapper = styled.div`
 
 function Main() {
   return (
-    <>
-      <SectionWrapper>
-        <Section />
-      </SectionWrapper>
-    </>
+    <SectionWrapper>
+      <Section />
+    </SectionWrapper>
   );
 }
 

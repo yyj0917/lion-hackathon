@@ -1,5 +1,5 @@
-import { useNavigate } from "react-router-dom";
-import styled from "styled-components";
+import { useNavigate } from 'react-router-dom';
+import styled from 'styled-components';
 
 const Btn = styled.button`
   width: 120px;
@@ -19,7 +19,7 @@ export default function SignUpBtn() {
   const navigate = useNavigate();
 
   const handleClick = () => {
-    navigate("/signup");
+    navigate('/signup');
   };
   return <Btn onClick={handleClick}>회원가입</Btn>;
 }

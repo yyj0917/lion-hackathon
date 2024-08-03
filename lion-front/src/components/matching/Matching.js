@@ -1,7 +1,7 @@
-import React, { useState } from "react";
-import { Outlet, useLocation, useNavigate } from "react-router-dom";
-import styled from "styled-components";
-import { isAuthenticated } from "../../utils/auth";
+import React, { useState } from 'react';
+import { Outlet, useNavigate } from 'react-router-dom';
+import styled from 'styled-components';
+import { isAuthenticated } from '../../utils/auth';
 
 const MatchingWrapper = styled.div`
   display: flex;
@@ -21,7 +21,7 @@ const Btn = styled.button`
   font-weight: bold;
   color: #000;
   cursor: pointer;
-  font-family: "Sunflower", sans-serif;
+  font-family: 'Sunflower', sans-serif;
 
   &:hover {
     background-color: #ff5a5a;
@@ -42,7 +42,7 @@ const IntroText = styled.div`
   margin-left: 5px;
   margin-right: 5px;
   gap: 20px;
-  font-family: "Sunflower", sans-serif;
+  font-family: 'Lato', sans-serif;
   div {
     width: 100%;
     height: 80%;
@@ -78,7 +78,7 @@ const Box = styled.div`
   padding: 20px;
 `;
 
-const Matching = () => {
+function Matching() {
   const [isCounselor, setIsCounselor] = useState(false);
   const [isRecieveCounsel, setIsRecieveCounsel] = useState(false);
   const navigate = useNavigate();
@@ -88,10 +88,10 @@ const Matching = () => {
     if (isAuthenticated()) {
       setIsCounselor(true);
       setIsRecieveCounsel(false);
-      navigate("/matching/counselor");
+      navigate('/matching/counselor');
     } else {
-      alert("로그인 후 이용해주세요.");
-      navigate("/login"); // 로그인 페이지로 리디렉트
+      alert('로그인 후 이용해주세요.');
+      navigate('/login'); // 로그인 페이지로 리디렉트
     }
   };
 
@@ -99,10 +99,10 @@ const Matching = () => {
     if (isAuthenticated()) {
       setIsCounselor(false);
       setIsRecieveCounsel(true);
-      navigate("/matching/randomMatching");
+      navigate('/matching/randomMatching');
     } else {
-      alert("로그인 후 이용해주세요.");
-      navigate("/login"); // 로그인 페이지로 리디렉트
+      alert('로그인 후 이용해주세요.');
+      navigate('/login'); // 로그인 페이지로 리디렉트
     }
   };
 
@@ -136,6 +136,6 @@ const Matching = () => {
       {isRecieveCounsel && <Outlet />}
     </MatchingWrapper>
   );
-};
+}
 
 export default Matching;

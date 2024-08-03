@@ -1,7 +1,7 @@
-import React, { useState } from "react";
-import styled from "styled-components";
-import { WritePostApi } from "../../api/diary";
-import { useNavigate } from "react-router-dom";
+import React, { useState } from 'react';
+import styled from 'styled-components';
+import { useNavigate } from 'react-router-dom';
+import { WritePostApi } from '../../api/diary';
 
 const Wrapper = styled.div`
   width: 100%;
@@ -54,24 +54,24 @@ const FormPosts = styled.form`
     box-sizing: border-box;
   }
 `;
-const WritePublicDiary = () => {
+function WritePublicDiary() {
   const navigate = useNavigate();
-  const [body, setBody] = useState("");
-  const [title, setTitle] = useState("");
-  const [date, setDate] = useState("");
+  const [body, setBody] = useState('');
+  const [title, setTitle] = useState('');
+  const [date, setDate] = useState('');
 
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
       const response = await WritePostApi(title, body, date);
-      console.log("Diary entry created:", response.data);
-      setTitle("");
-      setBody("");
-      setDate("");
-      alert("제출이 완료되었습니다.");
+      console.log('Diary entry created:', response.data);
+      setTitle('');
+      setBody('');
+      setDate('');
+      alert('제출이 완료되었습니다.');
       navigate('/');
     } catch (error) {
-      console.error("Error creating diary entry:", error);
+      console.error('Error creating diary entry:', error);
     }
   };
 
@@ -101,6 +101,6 @@ const WritePublicDiary = () => {
       </FormPosts>
     </Wrapper>
   );
-};
+}
 
 export default WritePublicDiary;

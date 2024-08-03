@@ -1,6 +1,6 @@
-import styled from "styled-components";
-import ChatBanner from "./messages/ChatBanner";
-import { Outlet } from "react-router-dom";
+import styled from 'styled-components';
+import { Outlet } from 'react-router-dom';
+import ChatBanner from './messages/ChatBanner';
 
 const Wrapper = styled.div`
   /* border: 3px solid red; */

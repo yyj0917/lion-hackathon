@@ -4,12 +4,11 @@ import {
   Notebook,
   SquarePen,
   SquareUser,
-} from "lucide-react";
-import styled from "styled-components";
-import { Outlet, useNavigate } from "react-router-dom";
-import profile from "../../assets/profileimages.png";
-import { useEffect, useState } from "react";
-import { getUserInfo } from "../../api/auth";
+} from 'lucide-react';
+import styled from 'styled-components';
+import { Outlet, useNavigate } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { getUserInfo } from '../../api/auth';
 
 const Wrapper = styled.div`
   width: 70%;
@@ -40,7 +39,7 @@ const Contents = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  
+
   /* background-color: rgba(220, 220, 220, 0.3); */
 
   position: relative;
@@ -63,7 +62,7 @@ const ImgWrapper = styled.div`
     width: 100%;
     display: flex;
     justify-content: center;
-    font-family: "Dongle", sans-serif;
+    font-family: 'Dongle', sans-serif;
     font-weight: 400;
     font-style: normal;
     font-size: 25px;
@@ -75,11 +74,11 @@ const IconWrapper = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  
+
   p {
     cursor: pointer;
     position: relative;
-    font-family: "Dongle", sans-serif;
+    font-family: 'Dongle', sans-serif;
     font-weight: 400;
     font-style: normal;
     font-size: 25px;
@@ -105,7 +104,7 @@ export default function MyPage() {
       const response = await getUserInfo();
       setUser(response);
     } catch (error) {
-      console.log("Error message", error);
+      console.log('Error message', error);
     }
   };
   useEffect(() => {
@@ -117,25 +116,26 @@ export default function MyPage() {
     <Wrapper>
       <Navbar>
         <ImgWrapper>
-          <SquareUser color="#FF5A5A" strokeWidth={1} size={100}/>
+          <SquareUser color="#FF5A5A" strokeWidth={1} size={100} />
           <div className="profile-text">
             <p>
-              {user.name}({user.age})/{user.username} <br /> {user.office}{" "}
-              <br /> {user.phonenumber}
+              {user.name}({user.age}
+              )/
+              {user.username} <br /> {user.office} <br /> {user.phonenumber}
             </p>
           </div>
         </ImgWrapper>
         <IconWrapper>
-          <p onClick={() => navigate("/mypage/privateDiary")}>
+          <p onClick={() => navigate('/mypage/privateDiary')}>
             <Notebook /> Diary
           </p>
-          <p onClick={() => navigate("/mypage/sentiment")}>
+          <p onClick={() => navigate('/mypage/sentiment')}>
             <Laugh /> Feel
           </p>
-          <p onClick={() => navigate("/mypage/sentimentResult")}>
+          <p onClick={() => navigate('/mypage/sentimentResult')}>
             <BarChart4 /> Analyze
           </p>
-          <p onClick={() => navigate("/mypage/writePrivateDiary")}>
+          <p onClick={() => navigate('/mypage/writePrivateDiary')}>
             <SquarePen /> Write
           </p>
         </IconWrapper>
