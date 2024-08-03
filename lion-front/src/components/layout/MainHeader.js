@@ -1,12 +1,11 @@
 import styled from 'styled-components';
 // import { useNavigate } from "react-router-dom";
 import { useNavigate } from 'react-router-dom';
-import LoginBtn from '../button/LoginBtn';
-import SignUpBtn from '../button/SignUpBtn';
 import redlogo from '../../assets/redlogo.png';
 import { isAuthenticated } from '../../utils/auth';
 import { logoutApi } from '../../api/auth';
 import SignINUPBtn from '../button/LoginBtn';
+import { useState } from 'react';
 
 const Wrapper = styled.header`
   display: flex;
@@ -72,6 +71,7 @@ const MyPageBtn = styled.button`
 `;
 
 export default function MainHeader() {
+  const [isLogin, setIsLogin] = useState(false);
   const navigate = useNavigate();
 
   const handleClick = () => {

@@ -26,7 +26,6 @@ from django.db.models import Avg
 
 
 
-
 # Public Diary의 목록, detail 보여주기, 수정하기, 삭제하기
 class PublicDiaryViewSet(viewsets.ModelViewSet):
 
@@ -45,7 +44,7 @@ class PublicDiaryViewSet(viewsets.ModelViewSet):
         diary = serializer.save(user=self.request.user)
         
         # 감성 분석 수행 및 결과 저장
-        sentiment, confidence, negative_contents = sentimentAnalysis(diary.body) # negative_contents 추후 감정분석에 활용 예정
+        sentiment, confidence, highlights = sentimentAnalysis(diary.body) # negative_contents 추후 감정분석에 활용 예정
         diary.sentiment = sentiment
         diary.positive = confidence['positive']
         diary.negative = confidence['negative']
@@ -65,7 +64,7 @@ class PublicDiaryViewSet(viewsets.ModelViewSet):
         updated_diary = serializer.save()
         
         # 감성 분석 수행 및 결과 저장
-        sentiment, confidence, negative_contents = sentimentAnalysis(diary.body)
+        sentiment, confidence, highlights = sentimentAnalysis(diary.body)
         updated_diary.sentiment = sentiment
         updated_diary.positive = confidence['positive']
         updated_diary.negative = confidence['negative']
@@ -130,17 +129,15 @@ class PublicDiaryViewSet(viewsets.ModelViewSet):
 
         # 신고 기록 생성 및 신고 횟수 증가
         Report.objects.create(user=user, diary=diary)
-        diary.report_count += 1
-        diary.save()
+
+        reports = Report.objects.filter(diary=diary) 
 
         # 신고 기록 5회 이상일 경우 게시물을 삭제
-        if diary.report_count >= 5:
+        if reports.count() >= 5:
             diary.delete()
             return Response({"detail": "Diary deleted due to multiple reports."}, status=status.HTTP_200_OK)
         
         return Response({"detail": "Diary reported."}, status=status.HTTP_200_OK) 
-   
-
 # Private Diary의 목록, detail 보여주기, 수정하기, 삭제하기
 class PrivateDiaryViewSet(viewsets.ModelViewSet):
 

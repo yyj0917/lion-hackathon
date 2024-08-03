@@ -88,3 +88,12 @@ export const ReadSharedPostsApi = async () => {
     throw new Error(error.response.data.message);
   }
 };
+// 일기 신고기능 유저당 1회 신고가능 + 5회 신고시 일기 디비에서 삭제
+export const ReportPostApi = async (id) => {
+  try {
+    const response = await axiosInstance.post(`${API_URL}diary/${id}/report/`);
+    return response.data;
+  } catch (error) {
+    throw new Error(error.response.data.message);
+  }
+};
