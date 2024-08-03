@@ -18,7 +18,6 @@ class AdvisorSerializer(serializers.ModelSerializer):
     age = serializers.ReadOnlyField(source = 'user.age')
     workIn = serializers.ReadOnlyField(source = 'user.office')
     matched_clients = serializers.SerializerMethodField()
-    # categories = serializers.PrimaryKeyRelatedField(queryset=AdvisorCategory.objects.all(), many=True)
     categories = serializers.SlugRelatedField(queryset=AdvisorCategory.objects.all(), many=True, slug_field='name')
 
     class Meta:
@@ -42,7 +41,6 @@ class ClientSerializer(serializers.ModelSerializer):
     user = serializers.ReadOnlyField(source = 'user.username')
     user_id = serializers.ReadOnlyField(source = 'user.id')
     age = serializers.ReadOnlyField(source = 'user.age')
-    # categories = serializers.PrimaryKeyRelatedField(queryset=ClientCategory.objects.all(), many=True)
     categories = serializers.SlugRelatedField(queryset=ClientCategory.objects.all(), many=True, slug_field='name')
     accepted = serializers.BooleanField(write_only=True, required=False)
 
