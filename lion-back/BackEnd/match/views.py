@@ -1,8 +1,6 @@
 from django.db.models import Q
-from django.shortcuts import render, redirect
 from rest_framework import viewsets, status
 from rest_framework.decorators import action
-from rest_framework import generics, permissions
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.exceptions import PermissionDenied
@@ -71,7 +69,7 @@ class AdvisorListViewSet(viewsets.ModelViewSet):
 class AdvisorViewSet(viewsets.ModelViewSet):
     queryset = Advisor.objects.all()
     serializer_class = AdvisorSerializer
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [IsAuthenticated]
 
     # def get_permissions(self):
     #     if self.action in ['list', 'retrieve']:
@@ -110,7 +108,7 @@ class AdvisorViewSet(viewsets.ModelViewSet):
 class ClientViewSet(viewsets.ModelViewSet):
     queryset = Client.objects.all()
     serializer_class = ClientSerializer
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [IsAuthenticated]
 
     # client page: 자신의 client 활동
     def perform_create(self, serializer):
