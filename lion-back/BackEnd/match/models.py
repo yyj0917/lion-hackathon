@@ -37,7 +37,6 @@ class Advisor(models.Model):
 class Client(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=False)
     created_at = models.DateTimeField(auto_now_add=True)
-    work_experience = models.IntegerField()
     categories = models.ManyToManyField(ClientCategory)
     
     matched_advisor = models.ForeignKey(Advisor, on_delete=models.CASCADE, null=True, related_name='matched_clients')
