@@ -130,11 +130,11 @@ class PublicDiaryViewSet(viewsets.ModelViewSet):
 
         # 신고 기록 생성 및 신고 횟수 증가
         Report.objects.create(user=user, diary=diary)
-        diary.report_count += 1
-        diary.save()
+
+        reports = Report.objects.filter(diary=diary) 
 
         # 신고 기록 5회 이상일 경우 게시물을 삭제
-        if diary.report_count >= 5:
+        if reports.count() >= 5:
             diary.delete()
             return Response({"detail": "Diary deleted due to multiple reports."}, status=status.HTTP_200_OK)
         
