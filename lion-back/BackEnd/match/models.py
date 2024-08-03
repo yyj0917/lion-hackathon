@@ -16,7 +16,7 @@ class ClientCategory(models.Model):
     other = models.CharField(default='',max_length=20)
 
     def __str__(self):
-        return self.no_purpose or self.ptsd or self.relationship or self.other
+        return self.mental or self.stress or self.physical or self.relationship or self.other
 
 class Advisor(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=False)
