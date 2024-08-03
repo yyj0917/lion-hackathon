@@ -13,11 +13,7 @@ export const setCookie = (name, value, minutes) => {
         sameSite: 'strict',
       });
   };
-  
-export const getCookie = (name) => {
-    return cookies.get(name);
-  };
-  
+
 export const deleteCookie = (name, option) => {
     return cookies.remove(name, {...option});
   };

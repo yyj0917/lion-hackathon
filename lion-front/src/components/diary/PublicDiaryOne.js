@@ -9,11 +9,10 @@ import {
 } from 'lucide-react';
 import { useNavigate, useParams } from 'react-router-dom';
 import {
-  DeletePostApi,
   LikePostApi,
   ReadPersonalPostApi,
+  ReportPostApi,
   UnlikePostApi,
-  UpdatePostApi,
 } from '../../api/diary';
 
 const ModalBackground = styled.div`
@@ -136,6 +135,7 @@ function PublicDiaryOne() {
     try {
       const response = await ReadPersonalPostApi(id);
       setDiary(response);
+      console.log(response);
       const reactionType = response?.user_reaction?.user_reaction_type;
       if (reactionType === null) {
         setSelectReaction({
@@ -184,33 +184,61 @@ function PublicDiaryOne() {
     fetchDiary();
   }, []);
 
-
-  const utilReaction = async (id, type, isSelect) => {
+  // 공감 눌렀을 때 함수
+  const postReaction = async (id, type) => {
     try {
-      const response = isSelect
-        ? await LikePostApi(id, type)
-        : await UnlikePostApi(id);
-      return response;
+      await LikePostApi(id, type)
+      console.log('post')
+
     } catch (error) {
-      // console.error(`Error ${isLike ? 'liking' : 'unliking'} reaction:`, error);
+      console.error('Error creating diary entry:', error);
     }
   };
+  // 공감 취소했을 때 함수
+  const cancelReaction = async (id) => {
+    try {
+      await UnlikePostApi(id);
+      console.log('cancel')
+
+    } catch (error) {
+      console.error('Error canceling reaction:', error);
+    }
+  }
   
   // 공감 누르기
   const handleReactionClick = (type) => {
     setIsSelect((prevIsSelect) => !prevIsSelect);
     setType(type);
-
+    console.log('click')
   };
   useEffect(() => {
     if (diary.id) {
       const updateReaction = async () => {
-        await utilReaction(id, type, isSelect);
+        if (isSelect === true) {
+          await postReaction(id, type);
+        } else {
+          await cancelReaction(id);
+          await postReaction(id, type);
+        }
         await fetchDiary(); // 상태 변경 후 diary를 다시 fetch
       };
       updateReaction();
-    }
+    } 
   }, [isSelect, type]);
+  const reportDiary = async () => {
+    try {
+      const confirmReport = window.confirm('이 게시글을 정말 신고하시겠습니까?');
+      if (confirmReport){
+        await ReportPostApi(id);
+        alert('신고가 완료되었습니다.');
+      } else {
+        alert('신고가 취소되었습니다.');
+      }
+    } catch (error) {
+      console.error('Error creating diary entry');
+  }
+}
+
 
   return (
     <ModalBackground>
@@ -218,7 +246,7 @@ function PublicDiaryOne() {
           <ModalHeader>
             <ModalTitle>{diary.title}</ModalTitle>
             <div style={{ display: 'flex', gap: '10px' }}>
-              <span>
+              <span onClick={reportDiary}>
                 <Siren size={24} style={{ color: 'white' }} />
               </span>
             </div>

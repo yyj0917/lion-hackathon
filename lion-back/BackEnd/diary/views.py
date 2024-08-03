@@ -26,7 +26,6 @@ from django.db.models import Avg
 
 
 
-
 # Public Diary의 목록, detail 보여주기, 수정하기, 삭제하기
 class PublicDiaryViewSet(viewsets.ModelViewSet):
 
@@ -139,8 +138,6 @@ class PublicDiaryViewSet(viewsets.ModelViewSet):
             return Response({"detail": "Diary deleted due to multiple reports."}, status=status.HTTP_200_OK)
         
         return Response({"detail": "Diary reported."}, status=status.HTTP_200_OK) 
-   
-
 # Private Diary의 목록, detail 보여주기, 수정하기, 삭제하기
 class PrivateDiaryViewSet(viewsets.ModelViewSet):
 
