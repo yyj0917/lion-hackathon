@@ -3,13 +3,15 @@ from accounts.models import User
 from django.conf import settings
 
 class AdvisorCategory(models.Model):
-    all = models.CharField(max_length=20)
-    ptsd = models.CharField(max_length=20)
+    mental = models.CharField(max_length=20)
+    stress = models.CharField(max_length=20)
+    physical = models.CharField(max_length=20)
     relationship = models.CharField(max_length=20)
     
 class ClientCategory(models.Model):
-    no_purpose = models.CharField(max_length=20)
-    ptsd = models.CharField(max_length=20)
+    mental = models.CharField(max_length=20)
+    stress = models.CharField(max_length=20)
+    physical = models.CharField(max_length=20)
     relationship = models.CharField(max_length=20)
     other = models.CharField(max_length=20)
 
@@ -18,23 +20,21 @@ class ClientCategory(models.Model):
 
 class Advisor(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=False)
+    advisor_name = models.CharField(max_length=10) # 상담사 활동명
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-    age = models.IntegerField()
+    # age = models.IntegerField()
     work_experience = models.IntegerField()
-    workIn = models.TextField()
+    # workIn = models.TextField()
     openlink = models.URLField(blank=True, null=True)
     giveTalk = models.CharField(max_length=100, blank=True)
-    # categories = models.ManyToManyField(AdvisorCategory)
-    categories = models.JSONField(default=list)  # 기본값으로 빈 리스트를 설정
-
+    categories = models.ManyToManyField(AdvisorCategory)
 
 class Client(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=False)
     created_at = models.DateTimeField(auto_now_add=True)
-    age = models.IntegerField()
+    # age = models.IntegerField()
     work_experience = models.IntegerField()
-    purpose = models.CharField(max_length=200, blank=True)
     categories = models.ManyToManyField(ClientCategory)
     
     matched_advisor = models.ForeignKey(Advisor, on_delete=models.CASCADE, null=True, related_name='matched_clients')
