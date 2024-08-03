@@ -45,7 +45,7 @@ class PublicDiaryViewSet(viewsets.ModelViewSet):
         diary = serializer.save(user=self.request.user)
         
         # 감성 분석 수행 및 결과 저장
-        sentiment, confidence, negative_contents = sentimentAnalysis(diary.body) # negative_contents 추후 감정분석에 활용 예정
+        sentiment, confidence, highlights = sentimentAnalysis(diary.body) # negative_contents 추후 감정분석에 활용 예정
         diary.sentiment = sentiment
         diary.positive = confidence['positive']
         diary.negative = confidence['negative']
@@ -65,7 +65,7 @@ class PublicDiaryViewSet(viewsets.ModelViewSet):
         updated_diary = serializer.save()
         
         # 감성 분석 수행 및 결과 저장
-        sentiment, confidence, negative_contents = sentimentAnalysis(diary.body)
+        sentiment, confidence, highlights = sentimentAnalysis(diary.body)
         updated_diary.sentiment = sentiment
         updated_diary.positive = confidence['positive']
         updated_diary.negative = confidence['negative']
@@ -158,12 +158,12 @@ class PrivateDiaryViewSet(viewsets.ModelViewSet):
         diary = serializer.save(user=self.request.user)
 
         # 감성 분석 수행 및 결과 저장
-        sentiment, confidence, negative_contents = sentimentAnalysis(diary.body)
+        sentiment, confidence, highlights = sentimentAnalysis(diary.body)
         diary.sentiment = sentiment
         diary.positive = confidence['positive']
         diary.negative = confidence['negative']
         diary.neutral = confidence['neutral']
-        diary.highlights = negative_contents
+        diary.highlights = highlights
         diary.save()
     
 
@@ -178,12 +178,12 @@ class PrivateDiaryViewSet(viewsets.ModelViewSet):
         updated_diary = serializer.save()
         
         # 감성 분석 수행 및 결과 저장
-        sentiment, confidence, negative_contents = sentimentAnalysis(diary.body)
+        sentiment, confidence, highlights = sentimentAnalysis(diary.body)
         updated_diary.sentiment = sentiment
         updated_diary.positive = confidence['positive']
         updated_diary.negative = confidence['negative']
         updated_diary.neutral = confidence['neutral']
-        updated_diary.highlights = negative_contents
+        updated_diary.highlights = highlights
         updated_diary.save()
         
         return super().perform_update(serializer)
