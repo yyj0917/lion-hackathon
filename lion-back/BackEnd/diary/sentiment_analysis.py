@@ -6,6 +6,7 @@ from django.utils import timezone
 from datetime import timedelta
 from .models import PrivateDiary
 
+# Naver 감정분석 API 적용 함수
 def sentimentAnalysis(content) :
 
     client_id = "si864t2no6"
@@ -19,20 +20,20 @@ def sentimentAnalysis(content) :
     }
 
     data = {
-    "content": content
+        "content": content
     }
 
-    # print(json.dumps(data, indent=4, sort_keys=True))
-    response = requests.post(url, data=json.dumps(data), headers=headers) # 감정 분석 실행
+    response = requests.post(url, data=json.dumps(data), headers=headers) # 감정 분석 적용
     result = json.loads(response.text) # 분석 결과를 python dictionary 형태로 변환
     rescode = response.status_code
 
+    # 감정분석 API 결과값 중 필요한 데이터만 선별해서 반환
     if(rescode == 200):
 
         sentiment = result['document']['sentiment']
         confidence = result['document']['confidence']
 
-        negative_contents = []
+        highlights = []
         for sentence in result['sentences'] :
             
             sentence_result = {
@@ -41,23 +42,31 @@ def sentimentAnalysis(content) :
                 'confidence': sentence['confidence']
             }
 
-            negative_contents.append(sentence_result)
+            highlights.append(sentence_result)
 
-        return sentiment, confidence, negative_contents
+        return sentiment, confidence, highlights 
     
     else:
         print("Error occured during sentiment analysis")
 
 
+# Private Diary에 저장된 하이라이트 기반, 부정적 문장을 수집하여 반환
 def collect_negative_sentences(user):
-    end_date = timezone.now().date()
+
+    # 최근 30일에 해당하는 데이터만 수집 대상으로 함
+    end_date = timezone.now().date() 
     start_date = end_date - timedelta(days=30)
+
+    # PrivateDiary 중 요청을 보낸 사용자의 최근 30일 일기만 불러옴  
     diaries = PrivateDiary.objects.filter(user=user, date__range=[start_date, end_date])
+    
+    # 하이라이트 분석 결과값 활용 부정적 수치가 높은 문장만 수집
     negative_sentences = []
     for diary in diaries:
         for sentence in diary.highlights['sentences']:
             if sentence['confidence']['negative'] > sentence['confidence']['positive'] and sentence['confidence']['negative'] > sentence['confidence']['neutral']:
                 negative_sentences.append(sentence['content'])
+    
     return negative_sentences
 
 
