@@ -134,17 +134,17 @@ class AdvisorCreateViewSet(viewsets.ModelViewSet):
     permission_classes = [IsAuthenticated]
 
     def perform_create(self, serializer):
-        access_token = self.request.COOKIES.get('access')
-        if not access_token:
-            raise PermissionDenied("Authentication credentials were not provided.")
+        # access_token = self.request.COOKIES.get('access')
+        # if not access_token:
+        #     raise PermissionDenied("Authentication credentials were not provided.")
         
-        try:
-            payload = jwt.decode(access_token, settings.SECRET_KEY, algorithms=['HS256'])
-            user_id = payload.get('user_id')
-            user = User.objects.get(id=user_id)
-            self.request.user = user
-        except (jwt.ExpiredSignatureError, jwt.InvalidTokenError, User.DoesNotExist):
-            raise PermissionDenied("Invalid or expired token.")
+        # try:
+        #     payload = jwt.decode(access_token, settings.SECRET_KEY, algorithms=['HS256'])
+        #     user_id = payload.get('user_id')
+        #     user = User.objects.get(id=user_id)
+        #     self.request.user = user
+        # except (jwt.ExpiredSignatureError, jwt.InvalidTokenError, User.DoesNotExist):
+        #     raise PermissionDenied("Invalid or expired token.")
         
         serializer.save(user=self.request.user)
 
@@ -155,17 +155,17 @@ class ClientViewSet(viewsets.ModelViewSet):
 
     # 이미 post 해놓은 내역이 있을 경우 추가 post
     def perform_create(self, serializer):
-        access_token = self.request.COOKIES.get('access')
-        if not access_token:
-            raise PermissionDenied("Authentication credentials were not provided.")
+        # access_token = self.request.COOKIES.get('access')
+        # if not access_token:
+        #     raise PermissionDenied("Authentication credentials were not provided.")
         
-        try:
-            payload = jwt.decode(access_token, settings.SECRET_KEY, algorithms=['HS256'])
-            user_id = payload.get('user_id')
-            user = User.objects.get(id=user_id)
-            self.request.user = user
-        except (jwt.ExpiredSignatureError, jwt.InvalidTokenError, User.DoesNotExist):
-            raise PermissionDenied("Invalid or expired token.")
+        # try:
+        #     payload = jwt.decode(access_token, settings.SECRET_KEY, algorithms=['HS256'])
+        #     user_id = payload.get('user_id')
+        #     user = User.objects.get(id=user_id)
+        #     self.request.user = user
+        # except (jwt.ExpiredSignatureError, jwt.InvalidTokenError, User.DoesNotExist):
+        #     raise PermissionDenied("Invalid or expired token.")
         
         serializer.save(user=self.request.user)
 
@@ -265,17 +265,17 @@ class ClientCreateViewSet(viewsets.ModelViewSet):
     permission_classes = [IsAuthenticated]
 
     def perform_create(self, serializer):
-        access_token = self.request.COOKIES.get('access')
-        if not access_token:
-            raise PermissionDenied("Authentication credentials were not provided.")
+        # access_token = self.request.COOKIES.get('access')
+        # if not access_token:
+        #     raise PermissionDenied("Authentication credentials were not provided.")
         
-        try:
-            payload = jwt.decode(access_token, settings.SECRET_KEY, algorithms=['HS256'])
-            user_id = payload.get('user_id')
-            user = User.objects.get(id=user_id)
-            self.request.user = user
-        except (jwt.ExpiredSignatureError, jwt.InvalidTokenError, User.DoesNotExist):
-            raise PermissionDenied("Invalid or expired token.")
+        # try:
+        #     payload = jwt.decode(access_token, settings.SECRET_KEY, algorithms=['HS256'])
+        #     user_id = payload.get('user_id')
+        #     user = User.objects.get(id=user_id)
+        #     self.request.user = user
+        # except (jwt.ExpiredSignatureError, jwt.InvalidTokenError, User.DoesNotExist):
+        #     raise PermissionDenied("Invalid or expired token.")
         
         serializer.save(user=self.request.user)
     
