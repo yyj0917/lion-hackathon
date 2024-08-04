@@ -5,7 +5,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { loginApi } from '../api/auth';
 import SignUp from '../components/SignUpComponent';
 import { useDispatch } from 'react-redux';
-import { login } from '../redux/reducers/authReducer';
+import { checkAuthStatus, login, setAuth } from '../redux/reducers/authReducer';
 
 const Wrapper = styled.div`
   height: calc(100vh - 100px - 40px);
@@ -44,6 +44,7 @@ const Wrapper = styled.div`
   h1 {
     font-weight: bold;
     margin: 0;
+    margin-bottom: 3px;
   }
   h2 {
     text-align: center;
@@ -63,6 +64,8 @@ const Wrapper = styled.div`
   }
   span {
     font-size: 12px;
+    margin-bottom: 3px;
+
   }
   button {
     border-radius: 20px;
@@ -134,9 +137,17 @@ const OverlayContainer = styled.div`
   overflow: hidden;
   transition: transform 0.6s ease-in-out;
   z-index: 100;
+  h1 {
+    font-weight: bold;
+    margin: 0;
+    margin-bottom: 3px;
+    font-size: 24px;
+    border-bottom: 1px solid white;
+    border-radius: 3px;
+  }
   p {
     font-size: 14px;
-    font-weight: 100;
+    font-weight: 500;
     line-height: 20px;
     letter-spacing: 0.5px;
     margin: 20px 0 30px;
@@ -208,19 +219,16 @@ export default function Login() {
     setIsRightPanelActive(false);
   };
 
-  const handleLogin =  async (event) => {
+  const handleLogin = async (event) => {
     event.preventDefault();
     try {
-      
-      const response = await loginApi(email, password );
+      await loginApi(email, password);
       dispatch(login());
       alert('로그인 성공');
       navigate('/', { replace: true });
-
     } catch (error) {
       alert('로그인 실패');
       console.error('Login failed', error);
-      alert('로그인 실패');
     }
   };
 
@@ -233,7 +241,7 @@ export default function Login() {
         <FormContainer className="sign-in-container">
           <FormLogin onSubmit={handleLogin}>
             <h1>Sign in</h1>
-            <span>or use your account</span>
+            <span>email은 @korea.kr만 가능합니다</span>
             <input
               id="email"
               type="email"
@@ -250,7 +258,6 @@ export default function Login() {
               onChange={(e) => setPassword(e.target.value)}
               required
             />
-            <Link href="#">Forgot your password?</Link>
             <button className="btn" type="submit">
               로그인
             </button>
@@ -259,19 +266,23 @@ export default function Login() {
         <OverlayContainer className="overlay-container">
           <div className="overlay">
             <div className="overlay-panel overlay-left">
-              <h1>Welcome Back!</h1>
-              <p>
-                To keep connected with us please login with your personal info
+              <h1>FORHERO 로그인하기</h1>
+              <p>FORHERO는 소방관들을 위한 커뮤니티로 
+                <br/>자신의 하루를 공유하고, 동료와 소통할 수 있는 공간입니다.
+                <br/>값진 오늘을 기록하고, 하루를 마무리하세요.
               </p>
               <button className="ghost" onClick={handleSignInClick} id="signIn">
-                Sign In
+                로그인
               </button>
             </div>
             <div className="overlay-panel overlay-right">
-              <h1>Hello, Friend!</h1>
-              <p>Enter your personal details and start journey with us</p>
+              <h1>FORHERO 회원가입하기</h1>
+              <p>함께할 동료들이 기다리고 있습니다.
+                <br/>회원가입을 통해 FORHERO와 함께하세요.
+                
+              </p>
               <button className="ghost" onClick={handleSignUpClick} id="signUp">
-                Sign Up
+                회원가입
               </button>
             </div>
           </div>

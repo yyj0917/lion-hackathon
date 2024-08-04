@@ -18,7 +18,7 @@ const FormPosts = styled.form`
   flex-direction: column;
   width: 90%;
   min-height: 300px; /* 고정된 높이 설정 */
-  height: 80%;
+  height: 70%;
   padding: 20px;
   box-sizing: border-box;
   /* align-items: center; */
@@ -46,7 +46,7 @@ const FormPosts = styled.form`
   button {
     padding: 10px;
     font-size: 16px;
-    background-color: #4285f4;
+    background-color: #FF5A5A;
     color: white;
     border: none;
     cursor: pointer;
@@ -56,27 +56,6 @@ const FormPosts = styled.form`
       background-color: #357ae8;
     }
     box-sizing: border-box;
-  }
-`;
-const WorkInput = styled.div`
-  display: flex;
-  align-items: center;
-  width: 100%;
-  gap: 2px;
-  input {
-    width: 50%;
-    margin-bottom: 10px;
-    padding: 10px;
-    font-size: 16px;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    box-sizing: border-box;
-    transition: all 0.3s ease;
-
-    &:focus {
-      border-color: #4285f4;
-      box-shadow: 0 0 5px rgba(66, 133, 244, 0.5);
-    }
   }
 `;
 
@@ -98,28 +77,28 @@ const CheckBoxInput = styled.input.attrs({ type: 'checkbox' })`
   margin-right: 10px;
 
   &:checked + span {
-    /* background-color: #007BFF; */
     color: #007bff;
     border-radius: 4px;
-    /* padding: 2px 6px; */
   }
 `;
 const TextCard = styled.div`
-  /* background-color: #f9f9f9; 배경색 */
   border: 1px solid #e0e0e0; /* 테두리 */
   display: flex;
   width: 80%;
-  height: 20%;
+  height: 30%;
   border-radius: 8px;
   box-shadow: 0px 4px 6px 0px rgba(0, 0, 0, 0.1);
   margin-top: 10px;
   padding: 20px;
+  justify-content: center;
+  align-items: center;
   p {
     font-family: 'Sunflower', sans-serif;
     font-size: 16px; /* 글자 크기 */
     color: #333; /* 글자 색상 */
     margin: 0; /* 마진 제거 */
     line-height: 1.5; /* 줄 간격 */
+    
   }
 `;
 
@@ -128,9 +107,7 @@ function Counselor() {
   const inputRef = useRef(null);
 
   // const [formWrite, setFormWrite] = useState(false);
-  const [name, setName] = useState('');
-  const [age, setAge] = useState(null);
-  const [workIn, setWorkIn] = useState('');
+  const [advisor_name, setAdvisor_name] = useState('');
   const [work_experience, setWork_experience] = useState('');
   const [openlink, setOpenlink] = useState('');
   const [giveTalk, setGiveTalk] = useState('');
@@ -140,18 +117,14 @@ function Counselor() {
     event.preventDefault();
     try {
       const response = await WriteCounselorApi(
-        name,
-        age,
-        workIn,
+        advisor_name,
         work_experience,
         openlink,
         giveTalk,
         categories
       );
-      console.log('Diary entry created:', response.data);
-      setName('');
-      setAge();
-      setWorkIn('');
+      console.log(categories);
+      setAdvisor_name('');
       setOpenlink('');
       setGiveTalk('');
       setWork_experience('');
@@ -175,39 +148,28 @@ function Counselor() {
   return (
     <Wrapper>
       <TextCard>
-        <p>Form 작성관련 필수 사항</p>
+        <p>**Gate Keeper 신청 주의사항**
+          <br/>
+          <br/> 1. Gate Keeper는 익명으로 오픈채팅방을 개설한 뒤 하단의 폼을 작성합니다.
+          <br/> 2. 닉네임은 자유이며, 카테고리는 복수선택이 가능합니다. 
+          <br/> 3. Gate Keeper가 되어 어려움을 겪고 있는 동료에게 힘이 되어주세요.
+        </p>
       </TextCard>
       <FormPosts onSubmit={handleSubmit}>
         <input
           type="text"
-          placeholder="이름"
-          defaultValue={name}
-          onChange={(e) => setName(e.target.value)}
+          placeholder="원하는 닉네임"
+          defaultValue={advisor_name}
+          onChange={(e) => setAdvisor_name(e.target.value)}
           required
         />
         <input
-          type="integer"
-          placeholder="나이"
-          defaultValue={age}
-          onChange={(e) => setAge(e.target.value)}
+          type="text"
+          placeholder="근무기간"
+          defaultValue={work_experience}
+          onChange={(e) => setWork_experience(e.target.value)}
           required
         />
-        <WorkInput>
-          <input
-            type="text"
-            placeholder="근무위치"
-            defaultValue={workIn}
-            onChange={(e) => setWorkIn(e.target.value)}
-            required
-          />
-          <input
-            type="text"
-            placeholder="근무기간"
-            defaultValue={work_experience}
-            onChange={(e) => setWork_experience(e.target.value)}
-            required
-          />
-        </WorkInput>
         <input
           type="text"
           placeholder="오픈채팅방 링크"
@@ -255,6 +217,14 @@ function Counselor() {
             />
             <span>대인관계</span>
           </label>
+          {/* <label>
+            <CheckBoxInput
+              type="checkbox"
+              value="기타"
+              onChange={handleCategoryChange}
+            />
+            <span>기타</span>
+          </label> */}
         </CheckBoxGroup>
         <button type="submit">Submit</button>
       </FormPosts>

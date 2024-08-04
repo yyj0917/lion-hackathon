@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Outlet, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
-import { isAuthenticated } from '../../utils/auth';
 import { useDispatch, useSelector } from 'react-redux';
 import { checkAuthStatus } from '../../redux/reducers/authReducer';
 
@@ -78,10 +77,14 @@ const Box = styled.div`
   box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.1);
   box-sizing: border-box;
   padding: 20px;
+  h2 {
+    width: auto;
+    border-bottom: 3px solid #f5f5f5;
+    margin-bottom: 10px;
+  }
 `;
 
 function Matching() {
-  
   const [isCounselor, setIsCounselor] = useState(false);
   const [isRecieveCounsel, setIsRecieveCounsel] = useState(false);
   const navigate = useNavigate();
@@ -116,8 +119,8 @@ function Matching() {
           <IntroText>
             <Box>
               <div>
-                <h2>Gate Keeper가 되는 방법</h2>
-                <p>어떻게어떻게 하세요</p>
+                <h2>Gate Keeper로 지원하기</h2>
+                <p>Gate Keeper는 주변을 도와주는 사람입니다. <br/> FORHERO에서 동료 소방관을 위한 Gate Keeper가 되어 도움이 필요한 동료에게 다가가 힘이 되어주세요.</p>
               </div>
               <span>
                 <Btn onClick={handleCounselorClick}>지원하기</Btn>
@@ -126,7 +129,7 @@ function Matching() {
             <Box>
               <div>
                 <h2>Gate Keeper와 얘기하기</h2>
-                <p>어떻게 어떻게 하세요</p>
+                <p>동료를 위한 Gate Keeper들이 기다리고 있습니다. <br/> 평소 고민이나 어려움이 있다면 가장 먼저 동료 Gate Keeper와 함께 해결해보세요.</p>
               </div>
               <span>
                 <Btn onClick={handleRecieveCounselClick}>요청하기</Btn>

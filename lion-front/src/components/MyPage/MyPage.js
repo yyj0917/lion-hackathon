@@ -119,9 +119,9 @@ export default function MyPage() {
           <SquareUser color="#FF5A5A" strokeWidth={1} size={100} />
           <div className="profile-text">
             <p>
-              {user.name}({user.age})/ {user.username} 
+              {user.name}({user.age})/ {user.username}
               <br /> {user.office} / {user.position}
-               <br /> {user.phonenumber}
+              <br /> {user.phonenumber}
             </p>
           </div>
         </ImgWrapper>

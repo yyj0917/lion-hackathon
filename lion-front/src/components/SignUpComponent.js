@@ -63,7 +63,6 @@ export default function SignUpComponent() {
   const [phonenumber, setPhoneNumber] = useState('');
   const [username, setUsername] = useState('');
 
-
   const handleRegister = async (e) => {
     e.preventDefault();
     try {
@@ -88,65 +87,65 @@ export default function SignUpComponent() {
   return (
     <FormSighUp onSubmit={handleRegister}>
       <h1>Create Account</h1>
-      <span>use your email for registration</span>
+      <span>* @korea.kr 이메일로만 회원가입이 가능합니다.</span>
       <input
         id="signup-email"
         type="email"
-        placeholder="Email"
+        placeholder="이메일"
         onChange={(e) => setEmail(e.target.value)}
         required
       />
       <input
         id="signup-password"
         type="password"
-        placeholder="Password"
+        placeholder="비밀번호"
         onChange={(e) => setPassword(e.target.value)}
         required
       />
       <input
         id="name"
         type="text"
-        placeholder="Name"
+        placeholder="이름"
         onChange={(e) => setName(e.target.value)}
         required
       />
       <input
         id="age"
         type="integer"
-        placeholder="Age"
+        placeholder="나이"
         onChange={(e) => setAge(parseInt(e.target.value))}
         required
       />
       <input
         id="position"
         type="text"
-        placeholder="Position"
+        placeholder="직위"
         onChange={(e) => setPosition(e.target.value)}
         required
       />
       <input
         id="office"
         type="text"
-        placeholder="Office"
+        placeholder="근무지"
         onChange={(e) => setOffice(e.target.value)}
         required
       />
       <input
         id="phonenumber"
         type="text"
-        placeholder="PhoneNumber"
+        placeholder="휴대폰번호"
         onChange={(e) => setPhoneNumber(e.target.value)}
         required
       />
       <input
         id="username"
         type="text"
-        placeholder="Username"
+        placeholder="닉네임"
         onChange={(e) => setUsername(e.target.value)}
         required
       />
       <button className="btn" type="submit">
-        SIGN UP
+        회원가입
       </button>
     </FormSighUp>
   );
