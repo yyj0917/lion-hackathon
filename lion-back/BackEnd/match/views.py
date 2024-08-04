@@ -8,7 +8,6 @@ from django.urls import reverse
 
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.exceptions import PermissionDenied
-from accounts.permissions import TokenAuthentication
 
 import random
 import jwt
@@ -44,7 +43,6 @@ class AdvisorListViewSet(viewsets.ModelViewSet):
     serializer_class = AdvisorSerializer
     filter_backends = [DjangoFilterBackend]
     filterset_class = AdvisorFilter
-    authentication_classes = [TokenAuthentication]
     permission_classes = [IsAuthenticated]
 
     # 자기 자신을 제외한 Advisor 전체 목록
@@ -102,7 +100,6 @@ class AdvisorListViewSet(viewsets.ModelViewSet):
 class AdvisorViewSet(viewsets.ModelViewSet):
     queryset = Advisor.objects.all()
     serializer_class = AdvisorSerializer
-    authentication_classes = [TokenAuthentication]
     permission_classes = [IsAuthenticated]
 
     # user id로 자신이 쓴 post get 요청
@@ -134,8 +131,6 @@ class AdvisorViewSet(viewsets.ModelViewSet):
 # Advisor post 내역이 없는 경우 첫 create viewset
 class AdvisorCreateViewSet(viewsets.ModelViewSet):
     queryset = Advisor.objects.all()
-    serializer_class = AdvisorSerializer
-    authentication_classes = [TokenAuthentication]
     permission_classes = [IsAuthenticated]
 
     def perform_create(self, serializer):
@@ -156,22 +151,21 @@ class AdvisorCreateViewSet(viewsets.ModelViewSet):
 class ClientViewSet(viewsets.ModelViewSet):
     queryset = Client.objects.all()
     serializer_class = ClientSerializer
-    authentication_classes = [TokenAuthentication]
     permission_classes = [IsAuthenticated]
 
     # 이미 post 해놓은 내역이 있을 경우 추가 post
     def perform_create(self, serializer):
-        # access_token = self.request.COOKIES.get('access')
-        # if not access_token:
-        #     raise PermissionDenied("Authentication credentials were not provided.")
+        access_token = self.request.COOKIES.get('access')
+        if not access_token:
+            raise PermissionDenied("Authentication credentials were not provided.")
         
-        # try:
-        #     payload = jwt.decode(access_token, settings.SECRET_KEY, algorithms=['HS256'])
-        #     user_id = payload.get('user_id')
-        #     user = User.objects.get(id=user_id)
-        #     self.request.user = user
-        # except (jwt.ExpiredSignatureError, jwt.InvalidTokenError, User.DoesNotExist):
-        #     raise PermissionDenied("Invalid or expired token.")
+        try:
+            payload = jwt.decode(access_token, settings.SECRET_KEY, algorithms=['HS256'])
+            user_id = payload.get('user_id')
+            user = User.objects.get(id=user_id)
+            self.request.user = user
+        except (jwt.ExpiredSignatureError, jwt.InvalidTokenError, User.DoesNotExist):
+            raise PermissionDenied("Invalid or expired token.")
         
         serializer.save(user=self.request.user)
 
@@ -268,7 +262,6 @@ class ClientViewSet(viewsets.ModelViewSet):
 class ClientCreateViewSet(viewsets.ModelViewSet):
     queryset = Client.objects.all()
     serializer_class = ClientSerializer
-    authentication_classes = [TokenAuthentication]
     permission_classes = [IsAuthenticated]
 
     def perform_create(self, serializer):
