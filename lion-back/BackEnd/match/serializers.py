@@ -22,7 +22,7 @@ class AdvisorSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Advisor
-        fields = ['id','user_id','advisor_name','created_at','updated_at','age','work_experience','workIn','openlink','giveTalk','categories','matched_clients']
+        fields = ['id','user','advisor_name','created_at','updated_at','age','work_experience','workIn','openlink','giveTalk','categories','matched_clients']
     
     def get_matched_clients(self, objects):
         clients = objects.matched_clients.all()
@@ -67,8 +67,11 @@ class ClientSerializer(serializers.ModelSerializer):
         read_only_fields = ['matched_advisor']
     
     def create(self, validated_data):
+        request = self.context.get('request')
+        user = request.user
+        validated_data.pop('user', None)
         categories_data = validated_data.pop('categories')
-        client = Client.objects.create(**validated_data)
+        client = Client.objects.create(user=user,**validated_data)
         client.categories.set(categories_data)
         return client
     

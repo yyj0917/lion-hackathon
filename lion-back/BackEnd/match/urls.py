@@ -1,38 +1,17 @@
-from django.urls import path, include
-from rest_framework.routers import DefaultRouter
+from django.urls import path
 
 from .views import *
 
-
-advisor_list = AdvisorListViewSet.as_view({
-    'get' : 'list',
-})
-
-advisor_info = AdvisorViewSet.as_view({
-    'get' : 'list', # 모르겠삼
-    'post' : 'create'
-})
-
-advisor_info_detail = AdvisorViewSet.as_view({
-    'get' : 'retrieve',
-    'put' : 'update',
-    'delete' : 'destroy'
-})
-
-client_info = ClientViewSet.as_view({
-    'get' : 'list',
-    'post' : 'create',
-    'delete' : 'destroy'
-}) # 이것도 모르겠삼
-
-router = DefaultRouter()
-router.register(r'advisors', AdvisorViewSet, basename='advisor')
-router.register(r'clients', ClientViewSet, basename='client')
-
 urlpatterns = [
-    path('advisor-list', advisor_list),
-    path('advisor/', advisor_info),
-    path('advisor/<int:pk>/', advisor_info_detail),
-    path('client/', client_info),
-    path('', include(router.urls)),
+    path('advisor/', AdvisorViewSet.as_view({'get' : 'retrieve', 'put' : 'update', 'delete' : 'destroy'}), name='advisor'),
+    path('advisor/list/',AdvisorListViewSet.as_view({'get':'list'}), name='advisor-list'),
+    path('advisor/create/',AdvisorCreateViewSet.as_view({'post':'create'}),name='advisor-create'),
+    # advisor post history
+    path('<str:pk>/advisor-history/', AdvisorHistoryView.as_view({'get':'retrieve'}), name='advisor_history'),
+    
+    path('client/', ClientViewSet.as_view({'get' : 'retrieve', 'post':'create', 'delete' : 'destroy'}), name='client'),
+    # client first post
+    path('client/create/',ClientCreateViewSet.as_view({'post':'create'}),name='client-create'),
+    # client post history
+    path('<str:pk>/client-history/', ClientHistoryView.as_view({'get':'retrieve'}), name='client_history'),
 ]
