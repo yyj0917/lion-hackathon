@@ -99,6 +99,7 @@ export default function MyPage() {
   const [user, setUser] = useState({});
   const navigate = useNavigate();
 
+  // 유저 정보 가져오기
   const fetchUserInfo = async () => {
     try {
       const response = await getUserInfo();
@@ -110,8 +111,7 @@ export default function MyPage() {
   useEffect(() => {
     fetchUserInfo();
   }, []);
-  // 여기서 토큰검증 및 유저정보를 가져오는 로직을 한번 해야함 -> 그렇게 받은 유저 정보들을
-  // 각 컴포넌트에 넘겨줘서 사용할 수 있게 하는 거 짜야 함.
+
   return (
     <Wrapper>
       <Navbar>
@@ -119,9 +119,9 @@ export default function MyPage() {
           <SquareUser color="#FF5A5A" strokeWidth={1} size={100} />
           <div className="profile-text">
             <p>
-              {user.name}({user.age}
-              )/
-              {user.username} <br /> {user.office} <br /> {user.phonenumber}
+              {user.name}({user.age})/ {user.username} 
+              <br /> {user.office} / {user.position}
+               <br /> {user.phonenumber}
             </p>
           </div>
         </ImgWrapper>

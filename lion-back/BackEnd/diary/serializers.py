@@ -7,11 +7,12 @@ class PublicDiarySerializer(serializers.ModelSerializer):
     
     reactions = serializers.SerializerMethodField()
     user_reaction = serializers.SerializerMethodField()
+    username = serializers.ReadOnlyField(source='user.username')  # 사용자 이름 추가
 
     class Meta:
         model = PublicDiary
         fields = '__all__'
-        read_only_fields = ['user', 'created_at', 'updated_at', 'report_count']
+        read_only_fields = ['user', 'created_at', 'updated_at']
 
     def create(self, validated_data):
         validated_data['user'] = self.context['request'].user

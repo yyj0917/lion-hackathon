@@ -24,8 +24,14 @@ from django.utils import timezone
 from datetime import timedelta
 from django.db.models import Avg
 
+# 유저 모델
+from django.contrib.auth import get_user_model
+import jwt
+from django.conf import settings
+from accounts.permissions import TokenAuthentication
 
 
+User = get_user_model()
 
 # Public Diary의 목록, detail 보여주기, 수정하기, 삭제하기
 class PublicDiaryViewSet(viewsets.ModelViewSet):
@@ -37,15 +43,25 @@ class PublicDiaryViewSet(viewsets.ModelViewSet):
     def get_permissions(self):
         if self.action in ['list', 'retrieve']:
             return [AllowAny()]
-        return [IsAuthenticated()]
+        return [TokenAuthentication()]
 
     def perform_create(self, serializer):
-
+        access_token = self.request.COOKIES.get('access')
+        if not access_token:
+            raise PermissionDenied("Authentication credentials were not provided.")
+        
+        try:
+            payload = jwt.decode(access_token, settings.SECRET_KEY, algorithms=['HS256'])
+            user_id = payload.get('user_id')
+            user = User.objects.get(id=user_id)
+            self.request.user = user
+        except (jwt.ExpiredSignatureError, jwt.InvalidTokenError, User.DoesNotExist):
+            raise PermissionDenied("Invalid or expired token.")
         # 현재 로그인한 사용자를 user로 설정하여 일기 저장
         diary = serializer.save(user=self.request.user)
         
         # 감성 분석 수행 및 결과 저장
-        sentiment, confidence, negative_contents = sentimentAnalysis(diary.body) # negative_contents 추후 감정분석에 활용 예정
+        sentiment, confidence, highlights = sentimentAnalysis(diary.body) # negative_contents 추후 감정분석에 활용 예정
         diary.sentiment = sentiment
         diary.positive = confidence['positive']
         diary.negative = confidence['negative']
@@ -65,7 +81,7 @@ class PublicDiaryViewSet(viewsets.ModelViewSet):
         updated_diary = serializer.save()
         
         # 감성 분석 수행 및 결과 저장
-        sentiment, confidence, negative_contents = sentimentAnalysis(diary.body)
+        sentiment, confidence, highlights = sentimentAnalysis(diary.body)
         updated_diary.sentiment = sentiment
         updated_diary.positive = confidence['positive']
         updated_diary.negative = confidence['negative']
@@ -81,14 +97,14 @@ class PublicDiaryViewSet(viewsets.ModelViewSet):
         instance.delete()
 
 
-    @action(detail=False, methods=['get'], permission_classes=[IsAuthenticated])
+    @action(detail=False, methods=['get'], permissions_classes=[TokenAuthentication])
     def my_diaries(self, request):
         user = request.user
         diaries = PublicDiary.objects.filter(user=user)
         serializer = self.get_serializer(diaries, many=True)
         return Response(serializer.data)    
     
-    @action(detail=True, methods=['post'], permission_classes=[IsAuthenticated])
+    @action(detail=True, methods=['post'], permissions_classes=[TokenAuthentication])
     def react(self, request, pk=None):
         diary = self.get_object()
         user = request.user
@@ -108,7 +124,7 @@ class PublicDiaryViewSet(viewsets.ModelViewSet):
             return Response({"detail": "Reaction updated."}, status=status.HTTP_200_OK)
         return Response({"detail": "Reaction created."}, status=status.HTTP_201_CREATED)
 
-    @action(detail=True, methods=['delete'], permission_classes=[IsAuthenticated])
+    @action(detail=True, methods=['delete'], permissions_classes=[TokenAuthentication])
     def unreact(self, request, pk=None):
         diary = self.get_object()
         user = request.user
@@ -119,7 +135,7 @@ class PublicDiaryViewSet(viewsets.ModelViewSet):
         except Reaction.DoesNotExist:
             return Response({"detail": "No reaction found to delete."}, status=status.HTTP_400_BAD_REQUEST)
         
-    @action(detail=True, methods=['post'], permission_classes=[IsAuthenticated])
+    @action(detail=True, methods=['post'], permissions_classes=[TokenAuthentication])
     def report(self, request, pk=None):
         diary = self.get_object()
         user = request.user
@@ -130,23 +146,21 @@ class PublicDiaryViewSet(viewsets.ModelViewSet):
 
         # 신고 기록 생성 및 신고 횟수 증가
         Report.objects.create(user=user, diary=diary)
-        diary.report_count += 1
-        diary.save()
+
+        reports = Report.objects.filter(diary=diary) 
 
         # 신고 기록 5회 이상일 경우 게시물을 삭제
-        if diary.report_count >= 5:
+        if reports.count() >= 5:
             diary.delete()
             return Response({"detail": "Diary deleted due to multiple reports."}, status=status.HTTP_200_OK)
         
         return Response({"detail": "Diary reported."}, status=status.HTTP_200_OK) 
-   
-
 # Private Diary의 목록, detail 보여주기, 수정하기, 삭제하기
 class PrivateDiaryViewSet(viewsets.ModelViewSet):
 
     queryset = PrivateDiary.objects.all()
     serializer_class = PrivateDiarySerializer
-    permission_classes = [IsAuthenticated]
+    permission_classes = [TokenAuthentication]
 
     def get_queryset(self):
         return PrivateDiary.objects.filter(user=self.request.user)
@@ -158,12 +172,12 @@ class PrivateDiaryViewSet(viewsets.ModelViewSet):
         diary = serializer.save(user=self.request.user)
 
         # 감성 분석 수행 및 결과 저장
-        sentiment, confidence, negative_contents = sentimentAnalysis(diary.body)
+        sentiment, confidence, highlights = sentimentAnalysis(diary.body)
         diary.sentiment = sentiment
         diary.positive = confidence['positive']
         diary.negative = confidence['negative']
         diary.neutral = confidence['neutral']
-        diary.highlights = negative_contents
+        diary.highlights = highlights
         diary.save()
     
 
@@ -178,12 +192,12 @@ class PrivateDiaryViewSet(viewsets.ModelViewSet):
         updated_diary = serializer.save()
         
         # 감성 분석 수행 및 결과 저장
-        sentiment, confidence, negative_contents = sentimentAnalysis(diary.body)
+        sentiment, confidence, highlights = sentimentAnalysis(diary.body)
         updated_diary.sentiment = sentiment
         updated_diary.positive = confidence['positive']
         updated_diary.negative = confidence['negative']
         updated_diary.neutral = confidence['neutral']
-        updated_diary.highlights = negative_contents
+        updated_diary.highlights = highlights
         updated_diary.save()
         
         return super().perform_update(serializer)
@@ -211,7 +225,7 @@ class PrivateDiaryViewSet(viewsets.ModelViewSet):
 
 # 30일간 Naver API 감정분석 결과 평균을 계산 -> 부정이 가장 높으면 추가 분석 진행한 것을 포함한 결과값 반환 / 아닐경우 기존 30일간의 분석 결과만 반환
 class DiarySentimentSummaryView(APIView):
-    permission_classes = [IsAuthenticated]
+    permission_classes = [TokenAuthentication]
 
     def get(self, request, *args, **kwargs):
         end_date = timezone.now().date()

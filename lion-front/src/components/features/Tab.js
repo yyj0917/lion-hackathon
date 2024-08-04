@@ -63,7 +63,6 @@ const TabContent = styled.div`
   display: flex;
   flex-direction: column;
   position: relative;
-  /* background-color: aliceblue; */
 `;
 
 function Tabs() {

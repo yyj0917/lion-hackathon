@@ -1,7 +1,6 @@
 import styled from 'styled-components';
 import React, { useState } from 'react';
 import '../styles/App.css';
-import { useNavigate } from 'react-router-dom';
 import { registerApi } from '../api/auth';
 
 const FormSighUp = styled.form`
@@ -64,7 +63,6 @@ export default function SignUpComponent() {
   const [phonenumber, setPhoneNumber] = useState('');
   const [username, setUsername] = useState('');
 
-  const navigate = useNavigate();
 
   const handleRegister = async (e) => {
     e.preventDefault();
@@ -81,7 +79,6 @@ export default function SignUpComponent() {
       );
       console.log(response);
       alert('회원가입 성공! 이메일을 확인하여 계정을 활성화하세요.');
-      navigate('/login');
     } catch (error) {
       console.error('Registration failed', error);
       alert('회원가입 실패. 다시 시도하세요.');

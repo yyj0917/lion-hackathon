@@ -1,3 +1,4 @@
+import axios from 'axios';
 import axiosInstance from './axiosConfig';
 
 const API_URL = 'http://localhost:8000/';
@@ -19,7 +20,7 @@ export const WritePostApi = async (title, body, date) => {
 // 일기 전체 읽어오기 GET - Posts.js
 export const ReadPostsApi = async () => {
   try {
-    const response = await axiosInstance.get(`${API_URL}diary/`);
+    const response = await axios.get(`${API_URL}diary/`);
     return response.data;
   } catch (error) {
     throw new Error(error.response.data.message);
@@ -29,7 +30,7 @@ export const ReadPostsApi = async () => {
 // 일기 하나 읽어오기 GET - Posts.js
 export const ReadPersonalPostApi = async (id) => {
   try {
-    const response = await axiosInstance.get(`${API_URL}diary/${id}`);
+    const response = await axiosInstance.get(`${API_URL}diary/${id}/`);
     return response.data;
   } catch (error) {
     throw new Error(error.response.data.message);
@@ -82,7 +83,16 @@ export const UnlikePostApi = async (id) => {
 // 내가 쓴 공유일기 GET
 export const ReadSharedPostsApi = async () => {
   try {
-    const response = await axiosInstance.get(`${API_URL}diary/my`);
+    const response = await axiosInstance.get(`${API_URL}diary/my/`);
+    return response.data;
+  } catch (error) {
+    throw new Error(error.response.data.message);
+  }
+};
+// 일기 신고기능 유저당 1회 신고가능 + 5회 신고시 일기 디비에서 삭제
+export const ReportPostApi = async (id) => {
+  try {
+    const response = await axiosInstance.post(`${API_URL}diary/${id}/report/`);
     return response.data;
   } catch (error) {
     throw new Error(error.response.data.message);

@@ -1,12 +1,10 @@
 import styled from 'styled-components';
-// import { useNavigate } from "react-router-dom";
 import { useNavigate } from 'react-router-dom';
-import LoginBtn from '../button/LoginBtn';
-import SignUpBtn from '../button/SignUpBtn';
 import redlogo from '../../assets/redlogo.png';
-import { isAuthenticated } from '../../utils/auth';
 import { logoutApi } from '../../api/auth';
-import SignINUPBtn from '../button/LoginBtn';
+import SignINUPBtn from './SignBtn';
+import { useDispatch, useSelector } from 'react-redux';
+import { logout } from '../../redux/reducers/authReducer';
 
 const Wrapper = styled.header`
   display: flex;
@@ -72,21 +70,27 @@ const MyPageBtn = styled.button`
 `;
 
 export default function MainHeader() {
+  const dispatch = useDispatch();
+  const isAuth = useSelector((state) => state.auth.isAuthenticated);
   const navigate = useNavigate();
 
-  const handleClick = () => {
+  // Home Route
+  const handleRouteHome = () => {
     navigate('/', { replace: true });
   };
+  // Logout
   const handleLogout = async () => {
     try {
       await logoutApi();
       alert('로그아웃 되었습니다.');
+      dispatch(logout());
       setTimeout(1000);
       navigate('/');
     } catch (error) {
       console.error('Logout failed', error);
     }
   };
+  // MyPage Route
   const handleMyPage = () => {
     navigate('/mypage');
   };
@@ -98,13 +102,14 @@ export default function MainHeader() {
           alignItems: 'center',
           cursor: 'pointer',
           gap: '5px',
-        }}
+        }} 
+        onClick={handleRouteHome}
       >
-        <img src={redlogo} alt="logo" onClick={handleClick} />
-        <LogoText onClick={handleClick}>FORHERO</LogoText>
+        <img src={redlogo} alt="logo"  />
+        <LogoText>FORHERO</LogoText>
       </div>
       <Auth>
-        {!isAuthenticated() ? (
+        {!isAuth ? (
           <SignINUPBtn />
         ) : (
           <>

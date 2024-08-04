@@ -193,12 +193,6 @@ function Counselor() {
           required
         />
         <WorkInput>
-          {/* <input
-            type="text"
-            placeholder="현재직위"
-            value={workIn}
-            onChange={(e) => setWorkIn(e.target.value)}
-          /> */}
           <input
             type="text"
             placeholder="근무위치"

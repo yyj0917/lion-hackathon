@@ -184,6 +184,8 @@ function PublicDiaryOne() {
   const [isEditing, setIsEditing] = useState(false);
   const [editedTitle, setEditedTitle] = useState('');
   const [editedBody, setEditedBody] = useState('');
+  const [isSelect, setIsSelect] = useState(false);
+  const [type, setType] = useState('');
   const [selectReaction, setSelectReaction] = useState(false);
 
   // Public 일기 id에 맞는 거 하나 불러오기
@@ -191,13 +193,53 @@ function PublicDiaryOne() {
     try {
       const response = await ReadPersonalPostApi(id);
       setDiary(response);
-      console.log('detail',response);
-      setEditedTitle(response.title);
-      setEditedBody(response.body);
+      const reactionType = response?.user_reaction?.user_reaction_type;
+      if (reactionType === null) {
+        setSelectReaction({
+          like: false,
+          congrats: false,
+          excited: false,
+          together: false,
+        });
+        setIsSelect(false);
+      } else {
+          if (reactionType === 'like') {
+            setSelectReaction({
+              like: true,
+              congrats: false,
+              excited: false,
+              together: false,
+            });
+          } else if (reactionType === 'congrats') {
+            setSelectReaction({
+              like: false,
+              congrats: true,
+              excited: false,
+              together: false,
+            });
+          } else if (reactionType === 'excited') {
+            setSelectReaction({
+              like: false,
+              congrats: false,
+              excited: true,
+              together: false,
+            });
+          } else if (reactionType === 'together') {
+            setSelectReaction({
+              like: false,
+              congrats: false,
+              excited: false,
+              together: true,
+            });
+          }
+      }
     } catch (error) {
       console.error('Error creating diary entry:', error);
     }
   };
+  useEffect(() => {
+    fetchDiary();
+  }, []);
 
   // Public 일기 수정버튼 클릭
   const handleEditClick = () => {
@@ -243,54 +285,47 @@ function PublicDiaryOne() {
     setEditedTitle(diary.title);
     setEditedBody(diary.body);
   };
-  useEffect(() => {
-    fetchDiary();
-  }, [id]);
+  // 공감 눌렀을 때 함수
+  const postReaction = async (id, type) => {
+    try {
+      await LikePostApi(id, type)
+      console.log('post')
 
+    } catch (error) {
+      console.error('Error creating diary entry:', error);
+    }
+  };
+  // 공감 취소했을 때 함수
+  const cancelReaction = async (id) => {
+    try {
+      await UnlikePostApi(id);
+      console.log('cancel')
+
+    } catch (error) {
+      console.error('Error canceling reaction:', error);
+    }
+  }
+  
   // 공감 누르기
-  const handleLike = async () => {
-    try {
-      await LikePostApi(id, 'like');
-      console.log(diary.reactions.like)
-      setSelectReaction(true);
-    } catch (error) {
-      console.error('Error liking post:', error);
-    }
-  };
-  // 공감 취소
-  const handleUnlike = async () => {
-    try {
-      await UnlikePostApi(id, 'like');
-      setSelectReaction(false);
-      console.log(diary);
-
-    } catch (error) {
-      console.error('Error unliking post:', error);
-    }
-  };
-  const handleLike2 = async () => {
-    try {
-      await LikePostApi(id, 'congrats');
-      console.log('congrats:', diary.reactions.congrats)
-      setSelectReaction(true);
-    } catch (error) {
-      console.error('Error liking post:', error);
-    }
-  };
-  // 공감 취소
-  const handleUnlike2 = async () => {
-    try {
-      await UnlikePostApi(id, 'congrats');
-      setSelectReaction(false);
-      console.log('congrats:', diary.reactions.congrats)
-
-    } catch (error) {
-      console.error('Error unliking post:', error);
-    }
+  const handleReactionClick = (type) => {
+    setIsSelect((prevIsSelect) => !prevIsSelect);
+    setType(type);
+    console.log('click')
   };
   useEffect(() => {
-    fetchDiary();
-  }, [selectReaction]);
+    if (diary.id) {
+      const updateReaction = async () => {
+        if (isSelect === true) {
+          await postReaction(id, type);
+        } else {
+          await cancelReaction(id);
+          await postReaction(id, type);
+        }
+        await fetchDiary(); // 상태 변경 후 diary를 다시 fetch
+      };
+      updateReaction();
+    } 
+  }, [isSelect, type]);
 
   return (
     <ModalBackground>
@@ -331,39 +366,35 @@ function PublicDiaryOne() {
           </ModalContent>
           <ModalFooter>
             <IconSpan>
-              {!selectReaction ? (
-                <span onClick={handleLike} style={{backgroundColor: 'white', color: '#0064FF'}}>
-                  <ThumbsUp size={16} />               
-                  {diary.reactions && diary.reactions.like !== undefined ? diary.reactions.like : 0}
+                <span onClick={()=>handleReactionClick('like')} style={{
+                    backgroundColor: selectReaction.like ? "#0064FF" : "white",
+                    color: selectReaction.like ? "white" : "#0064FF",
+                    }}>
+                    <ThumbsUp size={16} />               
+                    {diary.reactions && diary.reactions.like !== undefined ? diary.reactions.like : 0}
                 </span>
-
-              ) : (
-                <span onClick={handleUnlike} style={{backgroundColor: '#0064FF', color: 'white'}}>
-                  <ThumbsUp size={16} /> 
-                  {diary.reactions && diary.reactions.like !== undefined ? diary.reactions.like : 0}
+                
+                <span onClick={()=>handleReactionClick('congrats')} style={{
+                    backgroundColor: selectReaction.congrats ? "#008C8C" : "white", 
+                    color: selectReaction.congrats ? "white" : "#008C8C",
+                    }}>
+                    <PartyPopper size={16} />               
+                    {diary.reactions && diary.reactions.congrats !== undefined ? diary.reactions.congrats : 0}
                 </span>
-              )}
-              {!selectReaction ? (
-                <span onClick={handleLike2} style={{backgroundColor: 'white', color: '#0064FF'}}>
-                  <PartyPopper size={16} />               
-                  {diary.reactions && diary.reactions.congrats !== undefined ? diary.reactions.congrats : 0}
+                <span onClick={()=>handleReactionClick('excited')} style={{ 
+                    backgroundColor: selectReaction.excited ? "#FF8200" : "white",
+                    color: selectReaction.excited ? "white" : "#FF8200",
+                    }} >
+                    <HandMetal size={16} /> 
+                    {diary.reactions && diary.reactions.excited !== undefined ? diary.reactions.excited : 0}
                 </span>
-
-              ) : (
-                <span onClick={handleUnlike2} style={{backgroundColor: '#0064FF', color: 'white'}}>
-                  <PartyPopper size={16} /> 
-                  {diary.reactions && diary.reactions.congrats !== undefined ? diary.reactions.congrats : 0}
+                <span onClick={()=>handleReactionClick('together')} style={{ 
+                    backgroundColor: selectReaction.together ? "#FF5A5A" : "white",
+                    color: selectReaction.together ? "white" : "#FF5A5A",
+                    }} >
+                    <HeartHandshake size={16} />
+                    {diary.reactions && diary.reactions.together !== undefined ? diary.reactions.together : 0}
                 </span>
-              )}
-              {/* <span onClick={handleLike}>
-                <PartyPopper size={16} style={{ color: '#008C8C' }} /> 2
-              </span> */}
-              <span onClick={handleLike}>
-                <HandMetal size={16} style={{ color: '#FF8200' }} /> 0
-              </span>
-              <span onClick={handleLike}>
-                <HeartHandshake size={16} style={{ color: '#FF5A5A' }} /> 0
-              </span>
             </IconSpan>
             <div style={{ display: 'flex', justifyContent: 'end' }}>
               <EditButton onClick={handleEditClick}>수정하기</EditButton>
