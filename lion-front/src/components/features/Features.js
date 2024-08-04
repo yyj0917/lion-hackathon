@@ -12,10 +12,8 @@ import { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import Tooltip from '../../utils/Tooltip';
 import Tab from './Tab';
-import { isAuthenticated } from '../../utils/auth';
 import { useSearch } from '../../contexts/SearchContext';
 import { useDispatch, useSelector } from 'react-redux';
-import { checkAuthStatus } from '../../redux/reducers/authReducer';
 
 const slideUp = keyframes`
   0% {

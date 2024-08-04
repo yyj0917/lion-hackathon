@@ -46,7 +46,7 @@ const FormPosts = styled.form`
   button {
     padding: 10px;
     font-size: 16px;
-    background-color: #4285f4;
+    background-color: #FF5A5A;
     color: white;
     border: none;
     cursor: pointer;
@@ -98,14 +98,11 @@ const CheckBoxInput = styled.input.attrs({ type: 'checkbox' })`
   margin-right: 10px;
 
   &:checked + span {
-    /* background-color: #007BFF; */
     color: #007bff;
     border-radius: 4px;
-    /* padding: 2px 6px; */
   }
 `;
 const TextCard = styled.div`
-  /* background-color: #f9f9f9; 배경색 */
   border: 1px solid #e0e0e0; /* 테두리 */
   display: flex;
   width: 80%;
@@ -128,9 +125,7 @@ function Counselor() {
   const inputRef = useRef(null);
 
   // const [formWrite, setFormWrite] = useState(false);
-  const [name, setName] = useState('');
-  const [age, setAge] = useState(null);
-  const [workIn, setWorkIn] = useState('');
+  const [advisor_name, setAdvisor_name] = useState('');
   const [work_experience, setWork_experience] = useState('');
   const [openlink, setOpenlink] = useState('');
   const [giveTalk, setGiveTalk] = useState('');
@@ -140,18 +135,14 @@ function Counselor() {
     event.preventDefault();
     try {
       const response = await WriteCounselorApi(
-        name,
-        age,
-        workIn,
+        advisor_name,
         work_experience,
         openlink,
         giveTalk,
         categories
       );
-      console.log('Diary entry created:', response.data);
-      setName('');
-      setAge();
-      setWorkIn('');
+      console.log(categories);
+      setAdvisor_name('');
       setOpenlink('');
       setGiveTalk('');
       setWork_experience('');
@@ -180,34 +171,18 @@ function Counselor() {
       <FormPosts onSubmit={handleSubmit}>
         <input
           type="text"
-          placeholder="이름"
-          defaultValue={name}
-          onChange={(e) => setName(e.target.value)}
+          placeholder="원하는 닉네임"
+          defaultValue={advisor_name}
+          onChange={(e) => setAdvisor_name(e.target.value)}
           required
         />
         <input
-          type="integer"
-          placeholder="나이"
-          defaultValue={age}
-          onChange={(e) => setAge(e.target.value)}
+          type="text"
+          placeholder="근무기간"
+          defaultValue={work_experience}
+          onChange={(e) => setWork_experience(e.target.value)}
           required
         />
-        <WorkInput>
-          <input
-            type="text"
-            placeholder="근무위치"
-            defaultValue={workIn}
-            onChange={(e) => setWorkIn(e.target.value)}
-            required
-          />
-          <input
-            type="text"
-            placeholder="근무기간"
-            defaultValue={work_experience}
-            onChange={(e) => setWork_experience(e.target.value)}
-            required
-          />
-        </WorkInput>
         <input
           type="text"
           placeholder="오픈채팅방 링크"
@@ -255,6 +230,14 @@ function Counselor() {
             />
             <span>대인관계</span>
           </label>
+          {/* <label>
+            <CheckBoxInput
+              type="checkbox"
+              value="기타"
+              onChange={handleCategoryChange}
+            />
+            <span>기타</span>
+          </label> */}
         </CheckBoxGroup>
         <button type="submit">Submit</button>
       </FormPosts>

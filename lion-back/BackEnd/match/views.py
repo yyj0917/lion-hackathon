@@ -8,7 +8,6 @@ from django_filters.rest_framework import DjangoFilterBackend
 from django.contrib.auth import get_user_model
 import jwt
 from django.conf import settings
-from accounts.permissions import TokenAuthentication
 import random
 
 from .models import *
@@ -19,7 +18,6 @@ class AdvisorListViewSet(viewsets.ModelViewSet):
     serializer_class = AdvisorSerializer
     filter_backends = [DjangoFilterBackend]
     filterset_class = AdvisorFilter
-    authentication_classes = [TokenAuthentication]
 
     def get_permissions(self):
         return [IsAuthenticated()]
@@ -77,23 +75,22 @@ class AdvisorListViewSet(viewsets.ModelViewSet):
 class AdvisorViewSet(viewsets.ModelViewSet):
     queryset = Advisor.objects.all()
     serializer_class = AdvisorSerializer
-    authentication_classes = [TokenAuthentication]
 
     def get_permissions(self):
         return [IsAuthenticated()]
 
     def perform_create(self, serializer):
-        access_token = self.request.COOKIES.get('access')
-        if not access_token:
-            raise PermissionDenied("Authentication credentials were not provided.")
+        # access_token = self.request.COOKIES.get('access')
+        # if not access_token:
+        #     raise PermissionDenied("Authentication credentials were not provided.")
         
-        try:
-            payload = jwt.decode(access_token, settings.SECRET_KEY, algorithms=['HS256'])
-            user_id = payload.get('user_id')
-            user = User.objects.get(id=user_id)
-            self.request.user = user
-        except (jwt.ExpiredSignatureError, jwt.InvalidTokenError, User.DoesNotExist):
-            raise PermissionDenied("Invalid or expired token.")
+        # try:
+        #     payload = jwt.decode(access_token, settings.SECRET_KEY, algorithms=['HS256'])
+        #     user_id = payload.get('user_id')
+        #     user = User.objects.get(id=user_id)
+        #     self.request.user = user
+        # except (jwt.ExpiredSignatureError, jwt.InvalidTokenError, User.DoesNotExist):
+        #     raise PermissionDenied("Invalid or expired token.")
         
         serializer.save(user=self.request.user)
 
@@ -126,24 +123,23 @@ class AdvisorViewSet(viewsets.ModelViewSet):
 class ClientViewSet(viewsets.ModelViewSet):
     queryset = Client.objects.all()
     serializer_class = ClientSerializer
-    authentication_classes = [TokenAuthentication]
 
     def get_permissions(self):
         return [IsAuthenticated()]
 
     # client page: 자신의 client 활동
     def perform_create(self, serializer):
-        access_token = self.request.COOKIES.get('access')
-        if not access_token:
-            raise PermissionDenied("Authentication credentials were not provided.")
+        # access_token = self.request.COOKIES.get('access')
+        # if not access_token:
+        #     raise PermissionDenied("Authentication credentials were not provided.")
         
-        try:
-            payload = jwt.decode(access_token, settings.SECRET_KEY, algorithms=['HS256'])
-            user_id = payload.get('user_id')
-            user = User.objects.get(id=user_id)
-            self.request.user = user
-        except (jwt.ExpiredSignatureError, jwt.InvalidTokenError, User.DoesNotExist):
-            raise PermissionDenied("Invalid or expired token.")
+        # try:
+        #     payload = jwt.decode(access_token, settings.SECRET_KEY, algorithms=['HS256'])
+        #     user_id = payload.get('user_id')
+        #     user = User.objects.get(id=user_id)
+        #     self.request.user = user
+        # except (jwt.ExpiredSignatureError, jwt.InvalidTokenError, User.DoesNotExist):
+        #     raise PermissionDenied("Invalid or expired token.")
         
         serializer.save(user=self.request.user)
     

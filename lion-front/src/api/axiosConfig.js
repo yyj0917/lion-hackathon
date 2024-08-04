@@ -1,9 +1,8 @@
 import axios from 'axios';
-import { setCookie } from '../utils/cookie';
-import store from '../redux/store';
 import { logout } from '../redux/reducers/authReducer';
+import store from '../redux/store';
 
-const API_URL = 'http://localhost:8000/user/';
+const API_URL = 'http://localhost:8000/user';
 
 const axiosInstance = axios.create({
   baseURL: API_URL,
@@ -11,51 +10,51 @@ const axiosInstance = axios.create({
   headers: {
     'Content-Type': 'application/json',
   },
-  withCredentials: true,
 });
+
 // Request interceptor for adding the access token to requests
 axiosInstance.interceptors.request.use(
   async (config) => {
-    try {
-      const response = await axios.get(`${API_URL}auth/verify/`, {
-        withCredentials: true,
-      });
-
-      // 토큰이 유효하다면 요청을 계속 진행
-      return config;
-    } catch (error) {
-      if (error.response && error.response.status === 401 && !config._retry) {
-        config._retry = true;
-        try {
-          const response = await axios.post(`${API_URL}auth/refresh/`, {}, {
-            withCredentials: true,
-          });
-          const newAccessToken = response.data.access;
-          console.log('New access token', newAccessToken);
-
-          // 새로운 액세스 토큰을 쿠키에 설정
-          setCookie('access', newAccessToken, 10); // 10분 동안 유효
-
-          // 새로운 액세스 토큰을 헤더에 설정
-          config.headers['Authorization'] = `Bearer ${newAccessToken}`;
-
-          // 새로 갱신된 토큰이 반영된 요청을 다시 시도
-          return axiosInstance(config);
-        } catch (err) {
-          console.error('Token refresh failed', err);
-          // 토큰 만료되었을 때 isAuthenticated = false로 바꿔서 인증판단오류검열
-          // store.dispatch(logout());
-          // 만약 토큰 갱신에 실패하면 로그인 페이지로 리디렉션
-          window.location.href = '/login';
-        }
-      }
-      return Promise.reject(error);
+    const accessToken = localStorage.getItem('accessToken');
+    console.log('accessToken', accessToken);
+    if (accessToken) {
+      config.headers.Authorization = `Bearer ${accessToken}`;
     }
+    return config;
   },
   (error) => Promise.reject(error)
 );
 
-
-
+// Response interceptor for handling token refresh
+axiosInstance.interceptors.response.use(
+  (response) => response,
+  async (error) => {
+    const originalRequest = error.config;
+    if (error.response.status === 401 && !originalRequest._retry) {
+      originalRequest._retry = true;
+      try {
+        const refreshToken = localStorage.getItem('refreshToken');
+        if (!refreshToken) {
+          // No refresh token, redirect to login
+          window.location.href = '/login';
+          return Promise.reject();
+        }
+        const response = await axios.post(`${API_URL}auth/refresh/`, {
+          refresh: refreshToken,
+        });
+        localStorage.setItem('accessToken', response.data.access);
+        axiosInstance.defaults.headers.common.Authorization = `Bearer ${response.data.access}`;
+        return axiosInstance(originalRequest);
+      } catch (err) {
+        console.error('Token refresh failed', err);
+        localStorage.removeItem('accessToken');
+        localStorage.removeItem('refreshToken');
+        store.dispatch(logout());
+        window.location.href = '/login'; // Redirect to login page
+      }
+    }
+    return Promise.reject(error);
+  }
+);
 
 export default axiosInstance;

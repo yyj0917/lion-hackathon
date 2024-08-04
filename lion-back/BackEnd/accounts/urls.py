@@ -13,7 +13,7 @@ urlpatterns =[
     path('auth/register/', RegisterAPIView.as_view()),
     path('auth/login/', LogInAPIView.as_view()),
     path('auth/logout/', LogOutView.as_view()),
-    path('auth/refresh/', TokenRefreshView.as_view()),
+    path("auth/refresh", TokenRefreshView.as_view()),
     path('auth/verify/', VerifyTokenView.as_view()),
     path('auth/user/', UserDetailView.as_view()),
     path("", include(router.urls))

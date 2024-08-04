@@ -48,7 +48,10 @@ function App() {
                   element={<SharedDiary />}
                 />
                 <Route path="/publicDiary/:id" element={<PublicDiaryOne />} />
-                <Route path="/publicDiary/mypublic/:id" element={<MyPublicDiary />} />
+                <Route
+                  path="/publicDiary/mypublic/:id"
+                  element={<MyPublicDiary />}
+                />
                 <Route path="/matching" element={<Matching />} />
                 <Route path="/matching/counselor" element={<Counselor />} />
                 <Route
