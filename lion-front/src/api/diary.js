@@ -27,8 +27,6 @@ export const WritePostApi = async (title, body, date) => {
   }
 };
 
-
-
 // 일기 하나 읽어오기 GET - Posts.js
 export const ReadPersonalPostApi = async (id) => {
   try {
@@ -62,7 +60,7 @@ export const DeletePostApi = async (id) => {
     throw new Error(error.response.data.message);
   }
 };
-// 공감하기 POST - 
+// 공감하기 POST -
 export const LikePostApi = async (id, reaction) => {
   try {
     const response = await axiosInstance.post(`${API_URL}diary/${id}/react/`, {
@@ -72,16 +70,18 @@ export const LikePostApi = async (id, reaction) => {
   } catch (error) {
     throw new Error(error.response.data.message);
   }
-} 
+};
 // 공감 취소 POST
 export const UnlikePostApi = async (id) => {
   try {
-    const response = await axiosInstance.delete(`${API_URL}diary/${id}/unreact/`);
+    const response = await axiosInstance.delete(
+      `${API_URL}diary/${id}/unreact/`
+    );
     return response.data;
   } catch (error) {
     throw new Error(error.response.data.message);
   }
-}
+};
 // 내가 쓴 공유일기 GET
 export const ReadSharedPostsApi = async () => {
   try {

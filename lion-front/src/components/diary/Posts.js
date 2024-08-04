@@ -160,8 +160,6 @@ export default function Posts() {
     fetchPosts();
   }, []);
 
-  
-
   // 검색어에 따른 필터링
   const filteredPosts = posts.filter(
     (post) => post.title.includes(searchTerm) || post.body.includes(searchTerm)
@@ -196,34 +194,45 @@ export default function Posts() {
                     }}
                   >
                     <h2>{post.title}</h2>
-                    <h2 style={{
-                      color: '#666',
-                      fontSize: '12px',
-                      fontWeight: 'bold',
-                      marginRight: '10px',
-                      borderBottom: '1px solid #666',
-                    }}>작성자: {post.username}</h2>
+                    <h2
+                      style={{
+                        color: '#666',
+                        fontSize: '12px',
+                        fontWeight: 'bold',
+                        marginRight: '10px',
+                        borderBottom: '1px solid #666',
+                      }}
+                    >
+                      작성자: {post.username}
+                    </h2>
                   </div>
                   <p>{post.body}</p>
                 </div>
                 <div className="info">
                   <IconSpan>
                     <span>
-                      <ThumbsUp size={16} style={{ color: '#0064FF' }} /> 
-                      {post.reactions && post.reactions.like !== undefined ? post.reactions.like : 0}
-
+                      <ThumbsUp size={16} style={{ color: '#0064FF' }} />
+                      {post.reactions && post.reactions.like !== undefined
+                        ? post.reactions.like
+                        : 0}
                     </span>
                     <span>
                       <PartyPopper size={16} style={{ color: '#008C8C' }} />
-                      {post.reactions && post.reactions.congrats !== undefined ? post.reactions.congrats : 0}
+                      {post.reactions && post.reactions.congrats !== undefined
+                        ? post.reactions.congrats
+                        : 0}
                     </span>
                     <span>
-                      <HandMetal size={16} style={{ color: '#FF8200' }} /> 
-                      {post.reactions && post.reactions.excited !== undefined ? post.reactions.excited : 0}
+                      <HandMetal size={16} style={{ color: '#FF8200' }} />
+                      {post.reactions && post.reactions.excited !== undefined
+                        ? post.reactions.excited
+                        : 0}
                     </span>
                     <span>
                       <HeartHandshake size={16} style={{ color: '#FF5A5A' }} />
-                      {post.reactions && post.reactions.together !== undefined ? post.reactions.together : 0}
+                      {post.reactions && post.reactions.together !== undefined
+                        ? post.reactions.together
+                        : 0}
                     </span>
                   </IconSpan>
                   <DateSpan>

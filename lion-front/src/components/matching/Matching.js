@@ -81,7 +81,6 @@ const Box = styled.div`
 `;
 
 function Matching() {
-  
   const [isCounselor, setIsCounselor] = useState(false);
   const [isRecieveCounsel, setIsRecieveCounsel] = useState(false);
   const navigate = useNavigate();

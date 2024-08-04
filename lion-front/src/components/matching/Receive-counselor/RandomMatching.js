@@ -155,11 +155,11 @@ function RandomMatching() {
   const navigate = useNavigate();
 
   const categories = [
-    { id: 'category1', name: '정신건강' },
-    { id: 'category2', name: '직업적 스트레스' },
-    { id: 'category3', name: '신체건강' },
-    { id: 'category4', name: '대인관계' },
-    { id: 'category5', name: '기타' },
+    { id: 'category1', name: 'mental' },
+    { id: 'category2', name: 'stress' },
+    { id: 'category3', name: 'physical' },
+    { id: 'category4', name: 'relationship' },
+    { id: 'category5', name: 'other' },
   ];
 
   const handleCategoryChange = (e) => {

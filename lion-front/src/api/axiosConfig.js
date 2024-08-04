@@ -27,9 +27,13 @@ axiosInstance.interceptors.request.use(
       if (error.response && error.response.status === 401 && !config._retry) {
         config._retry = true;
         try {
-          const response = await axios.post(`${API_URL}auth/refresh/`, {}, {
-            withCredentials: true,
-          });
+          const response = await axios.post(
+            `${API_URL}auth/refresh/`,
+            {},
+            {
+              withCredentials: true,
+            }
+          );
           const newAccessToken = response.data.access;
           console.log('New access token', newAccessToken);
 
@@ -54,8 +58,5 @@ axiosInstance.interceptors.request.use(
   },
   (error) => Promise.reject(error)
 );
-
-
-
 
 export default axiosInstance;
