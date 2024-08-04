@@ -193,6 +193,8 @@ function PublicDiaryOne() {
     try {
       const response = await ReadPersonalPostApi(id);
       setDiary(response);
+      setEditedTitle(response.title);
+      setEditedBody(response.body);
       const reactionType = response?.user_reaction?.user_reaction_type;
       if (reactionType === null) {
         setSelectReaction({

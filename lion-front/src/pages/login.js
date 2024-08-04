@@ -214,11 +214,9 @@ export default function Login() {
       
       const response = await loginApi(email, password );
       dispatch(login());
-
       alert('로그인 성공');
-      setTimeout(() => {
-        navigate('/', { replace: true });
-      }, 1000);
+      navigate('/', { replace: true });
+
     } catch (error) {
       alert('로그인 실패');
       console.error('Login failed', error);

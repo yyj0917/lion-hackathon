@@ -1,7 +1,9 @@
 import axios from "axios";
-import { login } from "../redux/reducers/authReducer";
 import { deleteCookie, setCookie } from "../utils/cookie";
 import axiosInstance from "./axiosConfig";
+
+// login, register은 맨 처음에 보내는 요청이라 토큰이 없음
+// 그렇기 때문에 axiosInstance를 사용하지 않고 axios를 사용합니다.
 
 // 인증 관련 API 호출을 담당하는 모듈입니다.
 const API_URL = 'http://localhost:8000/user/auth/';
@@ -16,7 +18,7 @@ export const loginApi = async (email, password) => {
     });
     console.log(response.data)
     if (response.data.token) {
-      setCookie("access", response.data.token.access, 5);
+      setCookie("access", response.data.token.access, 15);
       setCookie("refresh", response.data.token.refresh, 1400);
       console.log('login success', response.data);
     }
@@ -47,6 +49,8 @@ export const registerApi = async (
       office,
       phonenumber,
       username,
+    }, {
+      withCredentials: true,
     });
     return response.data;
   } catch (error) {
