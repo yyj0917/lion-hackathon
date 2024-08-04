@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Outlet, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
-import { isAuthenticated } from '../../utils/auth';
 import { useDispatch, useSelector } from 'react-redux';
 import { checkAuthStatus } from '../../redux/reducers/authReducer';
 

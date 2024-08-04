@@ -1,5 +1,4 @@
 import axios from 'axios';
-import { deleteCookie, setCookie } from '../utils/cookie';
 import axiosInstance from './axiosConfig';
 
 // login, register은 맨 처음에 보내는 요청이라 토큰이 없음
@@ -10,13 +9,7 @@ const API_URL = 'http://localhost:8000/user/auth/';
 // 로그인 API 호출
 export const loginApi = async (email, password) => {
   try {
-    const response = await axios.post(
-      `${API_URL}login/`,
-      {
-        email,
-        password,
-      }
-    );
+    const response = await axios.post(`${API_URL}login/`,{ email, password });
     if (response.data.token) {
       localStorage.setItem("accessToken", response.data.token.access);
       localStorage.setItem("refreshToken", response.data.token.refresh);

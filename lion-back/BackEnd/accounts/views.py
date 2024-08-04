@@ -13,7 +13,6 @@ from rest_framework.permissions import AllowAny
 from BackEnd import settings 
 from datetime import datetime, timezone
 from django.contrib.auth import get_user_model
-from .permissions import TokenAuthentication
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework_simplejwt.views import TokenRefreshView
@@ -23,21 +22,21 @@ from rest_framework_simplejwt.serializers import TokenRefreshSerializer
 utc_now = datetime.now(timezone.utc)
 
 # 리프레시토큰을 이용한 액세스토큰 재발급 - 쿠키를 까서 해주는
-class RefreshTokenView(TokenRefreshView):
-    def get(self, request):
-        refresh_in_cookie = request.COOKIES.get("refresh")
-        if not refresh_in_cookie:
-            return Response({"detail": "Refresh token not provided"}, status=status.HTTP_400_BAD_REQUEST)
+# class RefreshTokenView(TokenRefreshView):
+#     def get(self, request):
+#         refresh_in_cookie = request.COOKIES.get("refresh")
+#         if not refresh_in_cookie:
+#             return Response({"detail": "Refresh token not provided"}, status=status.HTTP_400_BAD_REQUEST)
         
-        try:
-            refresh = TokenRefreshSerializer.token_class(refresh_in_cookie)
-            new_access_token = {"access": str(refresh.access_token)}
-            return Response(new_access_token, status=status.HTTP_200_OK)
-        except (TokenError, InvalidToken):
-            # Delete the expired refresh token from the cookie
-            response = Response({"detail": "Invalid refresh token"}, status=status.HTTP_401_UNAUTHORIZED)
-            response.delete_cookie("refresh")
-            return response
+#         try:
+#             refresh = TokenRefreshSerializer.token_class(refresh_in_cookie)
+#             new_access_token = {"access": str(refresh.access_token)}
+#             return Response(new_access_token, status=status.HTTP_200_OK)
+#         except (TokenError, InvalidToken):
+#             # Delete the expired refresh token from the cookie
+#             response = Response({"detail": "Invalid refresh token"}, status=status.HTTP_401_UNAUTHORIZED)
+#             response.delete_cookie("refresh")
+#             return response
 #로그인 API
 class LogInAPIView(APIView):
     permission_classes = [AllowAny] #누구나 접근 가능?
@@ -104,9 +103,6 @@ class RegisterAPIView(APIView):
 
 #유저 정보 API
 class UserDetailView(APIView):
-    # permission_classes = [TokenAuthentication] #로그인 된 사람만 접근 가능
-    # permission_classes = [IsAuthenticated] #로그인 된 사람만 접근 가능
-    authentication_classes = [TokenAuthentication]
     permission_classes = [IsAuthenticated]
 
     def get(self, request): #요청이 들어오면 user의 데이터를 가져옴.
@@ -116,9 +112,7 @@ class UserDetailView(APIView):
 
 #로그아웃 API
 class LogOutView(APIView):
-    # permission_classes = [TokenAuthentication] #로그인 된 사람만 접근 가능
-    # authentication_classes = [TokenAuthentication]
-    # permission_classes = [IsAuthenticated]
+
     permission_classes = [AllowAny]
 
     # 로그아웃
@@ -127,44 +121,43 @@ class LogOutView(APIView):
         response = Response({
             "message": "Logout success"
             }, status=status.HTTP_202_ACCEPTED)
-        response.delete_cookie("access")
-        response.delete_cookie("refresh")
+        # response.delete_cookie("access")
+        # response.delete_cookie("refresh")
         return response
     
 # jwt 토근 인증 확인용 뷰셋
 # Header - Authorization : Bearer <발급받은토큰>
 class UserViewSet(viewsets.ModelViewSet):
-    # permission_classes = [TokenAuthentication]
-    authentication_classes = [TokenAuthentication]
     permission_classes = [IsAuthenticated]
     queryset = User.objects.all()
     serializer_class = UserSerializer
 
-@method_decorator(csrf_exempt, name='dispatch')
+# @method_decorator(csrf_exempt, name='dispatch')
 class VerifyTokenView(APIView):
-    # permission_classes = [TokenAuthentication]
-    authentication_classes = [TokenAuthentication]
     permission_classes = [IsAuthenticated]
-
     User = get_user_model()
-
+    
     def get(self, request):
-        access_token = request.COOKIES.get('access')
-        if not access_token:
-            return Response({'detail': 'Authentication credentials were sssnot provided.'}, status=status.HTTP_401_UNAUTHORIZED)
+        return Response(status=status.HTTP_200_OK)
+#     User = get_user_model()
 
-        try:
-            payload = jwt.decode(access_token, settings.SECRET_KEY, algorithms=['HS256'])
-            user_id = payload.get('user_id')
-            if not user_id:
-                return Response({'detail': 'Invalid payload in access token.'}, status=status.HTTP_401_UNAUTHORIZED)
+#     def get(self, request):
+#         access_token = request.COOKIES.get('access')
+#         if not access_token:
+#             return Response({'detail': 'Authentication credentials were sssnot provided.'}, status=status.HTTP_401_UNAUTHORIZED)
+
+#         try:
+#             payload = jwt.decode(access_token, settings.SECRET_KEY, algorithms=['HS256'])
+#             user_id = payload.get('user_id')
+#             if not user_id:
+#                 return Response({'detail': 'Invalid payload in access token.'}, status=status.HTTP_401_UNAUTHORIZED)
             
-            user = User.objects.get(id=user_id)
-            return Response({'detail': 'Token is valid'}, status=status.HTTP_200_OK)
-        except jwt.ExpiredSignatureError:
-            return Response({'detail': 'Access token expired'}, status=status.HTTP_401_UNAUTHORIZED)
-        except jwt.InvalidTokenError:
-            return Response({'detail': 'Invalid access token'}, status=status.HTTP_401_UNAUTHORIZED)
+#             user = User.objects.get(id=user_id)
+#             return Response({'detail': 'Token is valid'}, status=status.HTTP_200_OK)
+#         except jwt.ExpiredSignatureError:
+#             return Response({'detail': 'Access token expired'}, status=status.HTTP_401_UNAUTHORIZED)
+#         except jwt.InvalidTokenError:
+#             return Response({'detail': 'Invalid access token'}, status=status.HTTP_401_UNAUTHORIZED)
 
 
         # access_token = request.COOKIES.get('access')

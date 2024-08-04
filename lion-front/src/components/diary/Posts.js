@@ -3,10 +3,8 @@ import { Link, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { HandMetal, HeartHandshake, PartyPopper, ThumbsUp } from 'lucide-react';
 import { ReadPostsApi } from '../../api/diary';
-import { isAuthenticated } from '../../utils/auth';
 import { useSearch } from '../../contexts/SearchContext';
-import { useDispatch, useSelector } from 'react-redux';
-import { checkAuthStatus } from '../../redux/reducers/authReducer';
+import { useSelector } from 'react-redux';
 
 // export default Diary;
 const Wrapper = styled.div`
