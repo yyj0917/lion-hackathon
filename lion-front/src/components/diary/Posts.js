@@ -196,7 +196,13 @@ export default function Posts() {
                     }}
                   >
                     <h2>{post.title}</h2>
-                    <h2>{post.user.username}</h2>
+                    <h2 style={{
+                      color: '#666',
+                      fontSize: '12px',
+                      fontWeight: 'bold',
+                      marginRight: '10px',
+                      borderBottom: '1px solid #666',
+                    }}>작성자: {post.username}</h2>
                   </div>
                   <p>{post.body}</p>
                 </div>

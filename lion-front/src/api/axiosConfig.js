@@ -1,5 +1,7 @@
 import axios from 'axios';
 import { setCookie } from '../utils/cookie';
+import store from '../redux/store';
+import { logout } from '../redux/reducers/authReducer';
 
 const API_URL = 'http://localhost:8000/user/';
 
@@ -11,7 +13,6 @@ const axiosInstance = axios.create({
   },
   withCredentials: true,
 });
-
 // Request interceptor for adding the access token to requests
 axiosInstance.interceptors.request.use(
   async (config) => {
@@ -42,8 +43,10 @@ axiosInstance.interceptors.request.use(
           return axiosInstance(config);
         } catch (err) {
           console.error('Token refresh failed', err);
+          // 토큰 만료되었을 때 isAuthenticated = false로 바꿔서 인증판단오류검열
+          // store.dispatch(logout());
           // 만약 토큰 갱신에 실패하면 로그인 페이지로 리디렉션
-          // window.location.href = '/login';
+          window.location.href = '/login';
         }
       }
       return Promise.reject(error);

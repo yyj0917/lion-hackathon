@@ -38,12 +38,13 @@ class PublicDiaryViewSet(viewsets.ModelViewSet):
 
     queryset = PublicDiary.objects.all()
     serializer_class = PublicDiarySerializer
-
+    authentication_classes = [TokenAuthentication]
+    # permission_classes = [IsAuthenticated]
     # public diary 조회의 경우 모든 사용자에게 허용
     def get_permissions(self):
         if self.action in ['list', 'retrieve']:
             return [AllowAny()]
-        return [TokenAuthentication()]
+        return [IsAuthenticated()]
 
     def perform_create(self, serializer):
         access_token = self.request.COOKIES.get('access')
@@ -97,14 +98,14 @@ class PublicDiaryViewSet(viewsets.ModelViewSet):
         instance.delete()
 
 
-    @action(detail=False, methods=['get'], permissions_classes=[TokenAuthentication])
+    @action(detail=False, methods=['get'], permissions_classes=[IsAuthenticated])
     def my_diaries(self, request):
         user = request.user
         diaries = PublicDiary.objects.filter(user=user)
         serializer = self.get_serializer(diaries, many=True)
         return Response(serializer.data)    
     
-    @action(detail=True, methods=['post'], permissions_classes=[TokenAuthentication])
+    @action(detail=True, methods=['post'], permissions_classes=[IsAuthenticated])
     def react(self, request, pk=None):
         diary = self.get_object()
         user = request.user
@@ -124,7 +125,7 @@ class PublicDiaryViewSet(viewsets.ModelViewSet):
             return Response({"detail": "Reaction updated."}, status=status.HTTP_200_OK)
         return Response({"detail": "Reaction created."}, status=status.HTTP_201_CREATED)
 
-    @action(detail=True, methods=['delete'], permissions_classes=[TokenAuthentication])
+    @action(detail=True, methods=['delete'], permissions_classes=[IsAuthenticated])
     def unreact(self, request, pk=None):
         diary = self.get_object()
         user = request.user
@@ -135,7 +136,7 @@ class PublicDiaryViewSet(viewsets.ModelViewSet):
         except Reaction.DoesNotExist:
             return Response({"detail": "No reaction found to delete."}, status=status.HTTP_400_BAD_REQUEST)
         
-    @action(detail=True, methods=['post'], permissions_classes=[TokenAuthentication])
+    @action(detail=True, methods=['post'], permissions_classes=[IsAuthenticated])
     def report(self, request, pk=None):
         diary = self.get_object()
         user = request.user
@@ -160,7 +161,9 @@ class PrivateDiaryViewSet(viewsets.ModelViewSet):
 
     queryset = PrivateDiary.objects.all()
     serializer_class = PrivateDiarySerializer
-    permission_classes = [TokenAuthentication]
+    # permission_classes = [TokenAuthentication]
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
         return PrivateDiary.objects.filter(user=self.request.user)
@@ -225,8 +228,9 @@ class PrivateDiaryViewSet(viewsets.ModelViewSet):
 
 # 30일간 Naver API 감정분석 결과 평균을 계산 -> 부정이 가장 높으면 추가 분석 진행한 것을 포함한 결과값 반환 / 아닐경우 기존 30일간의 분석 결과만 반환
 class DiarySentimentSummaryView(APIView):
-    permission_classes = [TokenAuthentication]
-
+    # permission_classes = [TokenAuthentication]
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [IsAuthenticated]
     def get(self, request, *args, **kwargs):
         end_date = timezone.now().date()
         start_date = end_date - timedelta(days=30)
