@@ -69,7 +69,6 @@ class AdvisorListViewSet(viewsets.ModelViewSet):
 class AdvisorViewSet(viewsets.ModelViewSet):
     queryset = Advisor.objects.all()
     serializer_class = AdvisorSerializer
-    permission_classes = [IsAuthenticated]
 
     # def get_permissions(self):
     #     if self.action in ['list', 'retrieve']:
@@ -108,7 +107,6 @@ class AdvisorViewSet(viewsets.ModelViewSet):
 class ClientViewSet(viewsets.ModelViewSet):
     queryset = Client.objects.all()
     serializer_class = ClientSerializer
-    permission_classes = [IsAuthenticated]
 
     # client page: 자신의 client 활동
     def perform_create(self, serializer):

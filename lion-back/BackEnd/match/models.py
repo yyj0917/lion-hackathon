@@ -5,10 +5,6 @@ import re
 
 class AdvisorCategory(models.Model):
     name = models.CharField(blank=True,null=True, max_length=20, unique=True)
-    # python manage.py shell
-    # from .models import AdvisorCategory
-    # mental = AdvisorCategory.objects.create(name="Mental Health")
-    # stress_management = AdvisorCategory.objects.create(name="Stress Management")
 
     def __str__(self):
         return self.name
@@ -20,13 +16,13 @@ class ClientCategory(models.Model):
         return self.name
 
 class Advisor(models.Model):
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=False)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     advisor_name = models.CharField(default='', max_length=10) # 상담사 활동명
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     work_experience = models.IntegerField()
     openlink = models.URLField(blank=True, null=True)
-    giveTalk = models.CharField(max_length=100, blank=True)
+    giveTalk = models.CharField(max_length=50, blank=True)
     categories = models.ManyToManyField(AdvisorCategory)
 
     def clean(self):
@@ -35,7 +31,7 @@ class Advisor(models.Model):
             raise ValidationError({'advisor_name': '이름에는 한글과 숫자만 사용할 수 있습니다.'})
 
 class Client(models.Model):
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=False)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
     categories = models.ManyToManyField(ClientCategory)
     

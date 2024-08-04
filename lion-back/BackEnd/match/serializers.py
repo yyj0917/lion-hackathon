@@ -13,8 +13,7 @@ class AdvisorCategorySerializer(serializers.ModelSerializer):
         fields = '__all__'
  
 class AdvisorSerializer(serializers.ModelSerializer):
-    user = serializers.ReadOnlyField(source = 'user.username')
-    user_id = serializers.ReadOnlyField(source = 'user.id')
+    user = serializers.ReadOnlyField(source = 'user.id')
     # age = serializers.ReadOnlyField(source = 'user.age')
     age = serializers.SerializerMethodField()
     workIn = serializers.ReadOnlyField(source = 'user.office')
@@ -23,7 +22,7 @@ class AdvisorSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Advisor
-        fields = ['id','user','user_id','advisor_name','created_at','updated_at','age','work_experience','workIn','openlink','giveTalk','categories','matched_clients']
+        fields = ['id','user_id','advisor_name','created_at','updated_at','age','work_experience','workIn','openlink','giveTalk','categories','matched_clients']
     
     def get_matched_clients(self, objects):
         clients = objects.matched_clients.all()
@@ -57,15 +56,14 @@ class AdvisorSerializer(serializers.ModelSerializer):
             return 'Unknown'
 
 class ClientSerializer(serializers.ModelSerializer):
-    user = serializers.ReadOnlyField(source = 'user.username')
-    user_id = serializers.ReadOnlyField(source = 'user.id')
+    user = serializers.ReadOnlyField(source = 'user.id')
     age = serializers.SerializerMethodField()
     categories = serializers.SlugRelatedField(queryset=ClientCategory.objects.all(), many=True, slug_field='name')
     accepted = serializers.BooleanField(write_only=True, required=False)
 
     class Meta:
         model = Client
-        fields = ['id','user','user_id','created_at','age','work_experience','categories','accepted']
+        fields = ['id','user','created_at','age','categories','accepted']
         read_only_fields = ['matched_advisor']
     
     def create(self, validated_data):
