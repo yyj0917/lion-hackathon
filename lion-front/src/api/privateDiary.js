@@ -14,7 +14,7 @@ export const fetchPrivateDiaryEntry = async () => {
 // PrivateDiary id에 맞는 거 하나만 가져오기 GET
 export const fetchPrivateDiaryOne = async (diary_id) => {
   try {
-    const response = await axiosInstance.get(`${API_URL}/${diary_id}`);
+    const response = await axiosInstance.get(`${API_URL}/${diary_id}/`);
     return response.data;
   } catch (error) {
     throw new Error(error.response.data.message);

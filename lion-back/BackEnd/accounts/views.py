@@ -82,8 +82,10 @@ class LogInAPIView(APIView):
 
 #유저 정보 API
 class UserDetailView(APIView):
-    permission_classes = [TokenAuthentication] #로그인 된 사람만 접근 가능
+    # permission_classes = [TokenAuthentication] #로그인 된 사람만 접근 가능
     # permission_classes = [IsAuthenticated] #로그인 된 사람만 접근 가능
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [IsAuthenticated]
 
     def get(self, request): #요청이 들어오면 user의 데이터를 가져옴.
         user = request.user
@@ -92,8 +94,9 @@ class UserDetailView(APIView):
 
 #로그아웃 API
 class LogOutView(APIView):
-    permission_classes = [TokenAuthentication] #로그인 된 사람만 접근 가능
-
+    # permission_classes = [TokenAuthentication] #로그인 된 사람만 접근 가능
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [IsAuthenticated]
     # 로그아웃
     def post(self, request):
         # 쿠키에 저장된 토큰 삭제 => 로그아웃 처리
@@ -107,12 +110,16 @@ class LogOutView(APIView):
 # jwt 토근 인증 확인용 뷰셋
 # Header - Authorization : Bearer <발급받은토큰>
 class UserViewSet(viewsets.ModelViewSet):
-    permission_classes = [TokenAuthentication]
+    # permission_classes = [TokenAuthentication]
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [IsAuthenticated]
     queryset = User.objects.all()
     serializer_class = UserSerializer
 
 class VerifyTokenView(APIView):
-    permission_classes = [TokenAuthentication]
+    # permission_classes = [TokenAuthentication]
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [IsAuthenticated]
 
     User = get_user_model()
 
