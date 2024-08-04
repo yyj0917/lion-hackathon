@@ -14,7 +14,6 @@ class AdvisorCategorySerializer(serializers.ModelSerializer):
  
 class AdvisorSerializer(serializers.ModelSerializer):
     user = serializers.ReadOnlyField(source = 'user.id')
-    # age = serializers.ReadOnlyField(source = 'user.age')
     age = serializers.SerializerMethodField()
     workIn = serializers.ReadOnlyField(source = 'user.office')
     matched_clients = serializers.SerializerMethodField()
