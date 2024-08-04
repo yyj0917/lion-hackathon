@@ -138,6 +138,8 @@ const TextCard = styled.div`
   box-shadow: 0px 4px 6px 0px rgba(0, 0, 0, 0.1);
   margin-top: 10px;
   padding: 20px;
+  justify-content: center;
+  align-items: center;
   p {
     font-family: 'Poppins', sans-serif;
     font-size: 16px; /* 글자 크기 */
@@ -148,13 +150,13 @@ const TextCard = styled.div`
 `;
 
 function RandomMatching() {
-  const [categories, setCategories] = useState([]);
+  const [selectedCategories, setSelectedCategories] = useState([]);
   const [selectedCounselor, setSelectedCounselor] = useState(null);
   const [gatekeeper, setGatekeeper] = useState([]);
   const [loading, setLoading] = useState(false);
 
   const navigate = useNavigate();
-  const categoriess = [
+  const categories = [
     { id: 'mental', name: 'mental' },
     { id: 'stress', name: 'stress' },
     { id: 'physical', name: 'physical' },
@@ -166,9 +168,9 @@ function RandomMatching() {
   const handleCategoryChange = (e) => {
     const { value, checked } = e.target;
     if (checked) {
-      setCategories([...categories, value]);
+      setSelectedCategories([...selectedCategories, value]);
     } else {
-      setCategories(categories.filter((category) => category !== value));
+      setSelectedCategories(selectedCategories.filter((category) => category !== value));
     }
   };
 
@@ -176,6 +178,7 @@ function RandomMatching() {
     event.preventDefault();
     // 여기에서 랜덤 상담사 매칭 API 호출 로직을 추가합니다.
     try {
+      console.log(selectedCategories);
       const res = await RequestMatchingApi(selectedCategories);
       console.log(res);
       setLoading(true);
@@ -219,10 +222,15 @@ function RandomMatching() {
         // 카테고리 선택 UI
         <Wrapper>
           <TextCard>
-            <p>상담을 받고 싶은 카테고리를 선택해주세요.</p>
+            <p>
+              ** Gate Keeper Matching **
+              <br/>1. 상담을 받고 싶은 카테고리를 선택해주세요.
+              <br/>2. 복수 선택이 가능하며, Gate Keeper와의 더 나은 매칭을 위한 정보입니다.
+              <br/>3. Gate Keeper와 함께 많은 얘기를 나눠보세요.
+            </p>
           </TextCard>
           <CategoryContainer>
-            {categoriess.map((category) => (
+            {categories.map((category) => (
               <CategoryButton
                 key={category.id}
                 // checked={category.includes(category.id)}
