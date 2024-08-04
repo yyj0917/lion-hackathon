@@ -226,7 +226,7 @@ function Counselor() {
           <label>
             <CheckBoxInput
               type="checkbox"
-              value="정신건강"
+              value="mental"
               onChange={handleCategoryChange}
             />
             <span>정신건강</span>
@@ -234,7 +234,7 @@ function Counselor() {
           <label>
             <CheckBoxInput
               type="checkbox"
-              value="직업적 스트레스"
+              value="stress"
               onChange={handleCategoryChange}
             />
             <span>직업적 스트레스</span>
@@ -242,7 +242,7 @@ function Counselor() {
           <label>
             <CheckBoxInput
               type="checkbox"
-              value="신체건강"
+              value="physical"
               onChange={handleCategoryChange}
             />
             <span>신체건강</span>
@@ -250,18 +250,10 @@ function Counselor() {
           <label>
             <CheckBoxInput
               type="checkbox"
-              value="대인관계"
+              value="relationship"
               onChange={handleCategoryChange}
             />
             <span>대인관계</span>
-          </label>
-          <label>
-            <CheckBoxInput
-              type="checkbox"
-              value="기타"
-              onChange={handleCategoryChange}
-            />
-            <span>기타</span>
           </label>
         </CheckBoxGroup>
         <button type="submit">Submit</button>

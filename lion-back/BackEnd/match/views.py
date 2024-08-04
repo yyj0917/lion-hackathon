@@ -1,8 +1,6 @@
 from django.db.models import Q
-from django.shortcuts import render, redirect
 from rest_framework import viewsets, status
 from rest_framework.decorators import action
-from rest_framework import generics, permissions
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.exceptions import PermissionDenied
@@ -21,7 +19,7 @@ class AdvisorListViewSet(viewsets.ModelViewSet):
     def get_queryset(self):
         user = self.request.user
         current_client_ids = set(Advisor.objects.filter(user=user).values_list('id', flat=True))
-        return Advisor.objects.exclude(id__in=current_client_ids).order_by('-created_at')
+        return Advisor.objects.exclude(id__in=current_client_ids).order_by('-updated_at')
 
     def list(self, request, *args, **kwargs):
 
@@ -71,7 +69,6 @@ class AdvisorListViewSet(viewsets.ModelViewSet):
 class AdvisorViewSet(viewsets.ModelViewSet):
     queryset = Advisor.objects.all()
     serializer_class = AdvisorSerializer
-    permission_classes = [permissions.IsAuthenticated]
 
     # def get_permissions(self):
     #     if self.action in ['list', 'retrieve']:
@@ -110,7 +107,6 @@ class AdvisorViewSet(viewsets.ModelViewSet):
 class ClientViewSet(viewsets.ModelViewSet):
     queryset = Client.objects.all()
     serializer_class = ClientSerializer
-    permission_classes = [permissions.IsAuthenticated]
 
     # client page: 자신의 client 활동
     def perform_create(self, serializer):
@@ -143,13 +139,21 @@ class ClientViewSet(viewsets.ModelViewSet):
         user = self.request.user
         client = serializer.save(user=user)
 
-        selected_categories = set(request.data.get('categories', []))
+        if 'other' in selected_categories:
+            selected_categories = set(request.data.get('categories',[])) - {'other'}
+            if len(selected_categories)>0:
+                matching_advisors = Advisor.objects.filter(
+                categories__in=selected_categories
+                ).exclude(id__in=current_advisor_ids).distinct()
+            else:
+                matching_advisors = Advisor.objects.all()
 
-        current_advisor_ids = set(Advisor.objects.filter(user=user).values_list('id', flat=True))
-
-        matching_advisors = Advisor.objects.filter(
-            categories__in=selected_categories
-        ).exclude(id__in=current_advisor_ids).distinct()
+        else:
+            selected_categories = set(request.data.get('categories', []))
+            current_advisor_ids = set(Advisor.objects.filter(user=user).values_list('id', flat=True))
+            matching_advisors = Advisor.objects.filter(
+                categories__in=selected_categories
+            ).exclude(id__in=current_advisor_ids).distinct()
 
         advisor_with_category_count = []
         for advisor in matching_advisors:
