@@ -1,7 +1,7 @@
 from django.db import models
 from django.conf import settings
 from django.core.exceptions import ValidationError
-import re
+import re 
 
 class AdvisorCategory(models.Model):
     name = models.CharField(blank=True,null=True, max_length=20, unique=True)

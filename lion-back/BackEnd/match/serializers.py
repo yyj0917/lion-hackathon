@@ -67,8 +67,11 @@ class ClientSerializer(serializers.ModelSerializer):
         read_only_fields = ['matched_advisor']
     
     def create(self, validated_data):
+        request = self.context.get('request')
+        user = request.user
+        validated_data.pop('user', None)
         categories_data = validated_data.pop('categories')
-        client = Client.objects.create(**validated_data)
+        client = Client.objects.create(user=user,**validated_data)
         client.categories.set(categories_data)
         return client
     
