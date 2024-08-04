@@ -63,7 +63,6 @@ export default function SignUpComponent() {
   const [phonenumber, setPhoneNumber] = useState('');
   const [username, setUsername] = useState('');
 
-
   const handleRegister = async (e) => {
     e.preventDefault();
     try {

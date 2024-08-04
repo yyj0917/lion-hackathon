@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Outlet, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
-import { isAuthenticated } from '../../utils/auth';
 import { useDispatch, useSelector } from 'react-redux';
 import { checkAuthStatus } from '../../redux/reducers/authReducer';
 
@@ -81,7 +80,6 @@ const Box = styled.div`
 `;
 
 function Matching() {
-  
   const [isCounselor, setIsCounselor] = useState(false);
   const [isRecieveCounsel, setIsRecieveCounsel] = useState(false);
   const navigate = useNavigate();

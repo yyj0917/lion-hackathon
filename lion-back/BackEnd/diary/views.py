@@ -28,7 +28,6 @@ from django.db.models import Avg
 from django.contrib.auth import get_user_model
 import jwt
 from django.conf import settings
-from accounts.permissions import TokenAuthentication
 
 
 User = get_user_model()
@@ -38,7 +37,7 @@ class PublicDiaryViewSet(viewsets.ModelViewSet):
 
     queryset = PublicDiary.objects.all()
     serializer_class = PublicDiarySerializer
-    authentication_classes = [TokenAuthentication]
+    # authentication_classes = [TokenAuthentication]
     # permission_classes = [IsAuthenticated]
     # public diary 조회의 경우 모든 사용자에게 허용
     def get_permissions(self):
@@ -47,18 +46,7 @@ class PublicDiaryViewSet(viewsets.ModelViewSet):
         return [IsAuthenticated()]
 
     def perform_create(self, serializer):
-        access_token = self.request.COOKIES.get('access')
-        if not access_token:
-            raise PermissionDenied("Authentication credentials were not provided.")
         
-        try:
-            payload = jwt.decode(access_token, settings.SECRET_KEY, algorithms=['HS256'])
-            user_id = payload.get('user_id')
-            user = User.objects.get(id=user_id)
-            self.request.user = user
-        except (jwt.ExpiredSignatureError, jwt.InvalidTokenError, User.DoesNotExist):
-            raise PermissionDenied("Invalid or expired token.")
-        # 현재 로그인한 사용자를 user로 설정하여 일기 저장
         diary = serializer.save(user=self.request.user)
         
         # 감성 분석 수행 및 결과 저장
@@ -162,7 +150,7 @@ class PrivateDiaryViewSet(viewsets.ModelViewSet):
     queryset = PrivateDiary.objects.all()
     serializer_class = PrivateDiarySerializer
     # permission_classes = [TokenAuthentication]
-    authentication_classes = [TokenAuthentication]
+    # authentication_classes = [TokenAuthentication]
     permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
@@ -229,7 +217,7 @@ class PrivateDiaryViewSet(viewsets.ModelViewSet):
 # 30일간 Naver API 감정분석 결과 평균을 계산 -> 부정이 가장 높으면 추가 분석 진행한 것을 포함한 결과값 반환 / 아닐경우 기존 30일간의 분석 결과만 반환
 class DiarySentimentSummaryView(APIView):
     # permission_classes = [TokenAuthentication]
-    authentication_classes = [TokenAuthentication]
+    # authentication_classes = [TokenAuthentication]
     permission_classes = [IsAuthenticated]
     def get(self, request, *args, **kwargs):
         end_date = timezone.now().date()

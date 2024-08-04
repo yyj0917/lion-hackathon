@@ -3,6 +3,7 @@ import styled, { keyframes } from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 import { AlignJustify, IterationCcw } from 'lucide-react';
 import GateKeeperCard from './GateKeeperCard';
+import { RequestMatchingApi } from '../../../api/matching';
 
 // styled-components 정의
 const Wrapper = styled.div`
@@ -147,46 +148,47 @@ const TextCard = styled.div`
 `;
 
 function RandomMatching() {
-  const [selectedCategories, setSelectedCategories] = useState([]);
+  const [categories, setCategories] = useState([]);
   const [selectedCounselor, setSelectedCounselor] = useState(null);
   const [gatekeeper, setGatekeeper] = useState([]);
   const [loading, setLoading] = useState(false);
 
   const navigate = useNavigate();
-
-  const categories = [
-    { id: 'category1', name: '정신건강' },
-    { id: 'category2', name: '직업적 스트레스' },
-    { id: 'category3', name: '신체건강' },
-    { id: 'category4', name: '대인관계' },
-    { id: 'category5', name: '기타' },
+  const categoriess = [
+    { id: 'mental', name: 'mental' },
+    { id: 'stress', name: 'stress' },
+    { id: 'physical', name: 'physical' },
+    { id: 'relationship', name: 'relationship' },
+    { id: 'other', name: 'other' },
   ];
+
 
   const handleCategoryChange = (e) => {
     const { value, checked } = e.target;
     if (checked) {
-      setSelectedCategories([value]);
+      setCategories([...categories, value]);
     } else {
-      setSelectedCategories(
-        selectedCategories.filter((category) => category !== value)
-      );
+      setCategories(categories.filter((category) => category !== value));
     }
   };
 
-  const handleConfirm = () => {
+  const handleConfirm = async (event) => {
+    event.preventDefault();
     // 여기에서 랜덤 상담사 매칭 API 호출 로직을 추가합니다.
-    // 예: fetch('/api/randomMatching', { method: 'POST', body: JSON.stringify({ categories: selectedCategories }) })
-    //     .then(response => response.json())
-    //     .then(data => setSelectedCounselor(data));
-
-    // 임시 데이터로 랜덤 상담사를 설정합니다.
-    setLoading(true);
-    setTimeout(() => {
+    try {
+      const res = await RequestMatchingApi(selectedCategories);
+      console.log(res);
+      setLoading(true);
+      setTimeout(() => {
       alert('제출이 완료되었습니다. 잠시만 기다려주세요. ');
       const mockCounselor = { id: 1, name: '랜덤 상담사' };
       setSelectedCounselor(mockCounselor);
       setLoading(false);
     }, 2000);
+    } catch (error) {
+    }
+    // 임시 데이터로 랜덤 상담사를 설정합니다.
+    
   };
   const handleRematching = () => {
     const confirm = window.confirm('다시 매칭하시겠습니까?');
@@ -220,15 +222,15 @@ function RandomMatching() {
             <p>상담을 받고 싶은 카테고리를 선택해주세요.</p>
           </TextCard>
           <CategoryContainer>
-            {categories.map((category) => (
+            {categoriess.map((category) => (
               <CategoryButton
                 key={category.id}
-                checked={selectedCategories.includes(category.id)}
+                // checked={category.includes(category.id)}
               >
                 <CheckInput
                   type="checkbox"
                   value={category.id}
-                  checked={selectedCategories.includes(category.id)}
+                  // checked={category.includes(category.id)}
                   onChange={handleCategoryChange}
                   style={{ marginRight: '10px' }}
                 />
