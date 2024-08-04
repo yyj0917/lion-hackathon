@@ -24,6 +24,15 @@ from django.utils import timezone
 from datetime import timedelta
 from django.db.models import Avg
 
+# 유저 모델
+from django.contrib.auth import get_user_model
+import jwt
+from django.conf import settings
+from accounts.permissions import TokenAuthentication
+
+
+User = get_user_model()
+
 # Public Diary의 목록, detail 보여주기, 수정하기, 삭제하기
 class PublicDiaryViewSet(viewsets.ModelViewSet):
 
@@ -31,13 +40,23 @@ class PublicDiaryViewSet(viewsets.ModelViewSet):
     serializer_class = PublicDiarySerializer
 
     # public diary 조회의 경우 모든 사용자에게 허용
-    # def get_permissions(self):
-    #     if self.action in ['list', 'retrieve']:
-    #         return [AllowAny()]
-    #     return [AllowAny()]
+    def get_permissions(self):
+        if self.action in ['list', 'retrieve']:
+            return [AllowAny()]
+        return [TokenAuthentication()]
 
     def perform_create(self, serializer):
-
+        access_token = self.request.COOKIES.get('access')
+        if not access_token:
+            raise PermissionDenied("Authentication credentials were not provided.")
+        
+        try:
+            payload = jwt.decode(access_token, settings.SECRET_KEY, algorithms=['HS256'])
+            user_id = payload.get('user_id')
+            user = User.objects.get(id=user_id)
+            self.request.user = user
+        except (jwt.ExpiredSignatureError, jwt.InvalidTokenError, User.DoesNotExist):
+            raise PermissionDenied("Invalid or expired token.")
         # 현재 로그인한 사용자를 user로 설정하여 일기 저장
         diary = serializer.save(user=self.request.user)
         
@@ -78,14 +97,14 @@ class PublicDiaryViewSet(viewsets.ModelViewSet):
         instance.delete()
 
 
-    @action(detail=False, methods=['get'])
+    @action(detail=False, methods=['get'], permissions_classes=[TokenAuthentication])
     def my_diaries(self, request):
         user = request.user
         diaries = PublicDiary.objects.filter(user=user)
         serializer = self.get_serializer(diaries, many=True)
         return Response(serializer.data)    
     
-    @action(detail=True, methods=['post'])
+    @action(detail=True, methods=['post'], permissions_classes=[TokenAuthentication])
     def react(self, request, pk=None):
         diary = self.get_object()
         user = request.user
@@ -105,7 +124,7 @@ class PublicDiaryViewSet(viewsets.ModelViewSet):
             return Response({"detail": "Reaction updated."}, status=status.HTTP_200_OK)
         return Response({"detail": "Reaction created."}, status=status.HTTP_201_CREATED)
 
-    @action(detail=True, methods=['delete'])
+    @action(detail=True, methods=['delete'], permissions_classes=[TokenAuthentication])
     def unreact(self, request, pk=None):
         diary = self.get_object()
         user = request.user
@@ -116,7 +135,7 @@ class PublicDiaryViewSet(viewsets.ModelViewSet):
         except Reaction.DoesNotExist:
             return Response({"detail": "No reaction found to delete."}, status=status.HTTP_400_BAD_REQUEST)
         
-    @action(detail=True, methods=['post'])
+    @action(detail=True, methods=['post'], permissions_classes=[TokenAuthentication])
     def report(self, request, pk=None):
         diary = self.get_object()
         user = request.user
@@ -141,7 +160,7 @@ class PrivateDiaryViewSet(viewsets.ModelViewSet):
 
     queryset = PrivateDiary.objects.all()
     serializer_class = PrivateDiarySerializer
-    # permission_classes = [IsAuthenticated]
+    permission_classes = [TokenAuthentication]
 
     def get_queryset(self):
         return PrivateDiary.objects.filter(user=self.request.user)
@@ -206,7 +225,7 @@ class PrivateDiaryViewSet(viewsets.ModelViewSet):
 
 # 30일간 Naver API 감정분석 결과 평균을 계산 -> 부정이 가장 높으면 추가 분석 진행한 것을 포함한 결과값 반환 / 아닐경우 기존 30일간의 분석 결과만 반환
 class DiarySentimentSummaryView(APIView):
-    # permission_classes = [IsAuthenticated]
+    permission_classes = [TokenAuthentication]
 
     def get(self, request, *args, **kwargs):
         end_date = timezone.now().date()

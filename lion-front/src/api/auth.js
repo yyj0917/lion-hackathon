@@ -6,16 +6,19 @@ import axiosInstance from "./axiosConfig";
 // 인증 관련 API 호출을 담당하는 모듈입니다.
 const API_URL = 'http://localhost:8000/user/auth/';
 // 로그인 API 호출
-export const loginApi = (email, password) => async (dispatch) => {
+export const loginApi = async (email, password) => {
   try {
-    const response = await axiosInstance.post(`${API_URL}login/`, {
+    const response = await axios.post(`${API_URL}login/`, {
       email,
       password,
+    }, {
+      withCredentials: true,
     });
+    console.log(response.data)
     if (response.data.token) {
       setCookie("access", response.data.token.access, 5);
       setCookie("refresh", response.data.token.refresh, 1400);
-      dispatch(login());
+      console.log('login success', response.data);
     }
     return response.data;
   } catch (error) {
@@ -35,7 +38,7 @@ export const registerApi = async (
   username
 ) => {
   try {
-    const response = await axiosInstance.post(`${API_URL}register/`, {
+    const response = await axios.post(`${API_URL}register/`, {
       email,
       password,
       name,

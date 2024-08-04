@@ -13,6 +13,8 @@ from rest_framework.permissions import AllowAny
 from BackEnd import settings 
 from datetime import datetime, timezone
 from django.contrib.auth import get_user_model
+from .permissions import TokenAuthentication
+
 utc_now = datetime.now(timezone.utc)
 
 
@@ -45,6 +47,11 @@ class LogInAPIView(APIView):
     # 로그인
     def post(self, request):#프론트에서 유저 이메일과 password가 포함된 request를 받음
     	# 유저 인증
+        email = request.data.get("email")
+        password = request.data.get("password")
+
+        if email is None or password is None:
+            return Response({'detail': 'Please provide both email and password'}, status=status.HTTP_400_BAD_REQUEST)
         user = authenticate(
             email=request.data.get("email"), password=request.data.get("password")
         )
@@ -75,6 +82,7 @@ class LogInAPIView(APIView):
 
 #유저 정보 API
 class UserDetailView(APIView):
+    permission_classes = [TokenAuthentication] #로그인 된 사람만 접근 가능
     # permission_classes = [IsAuthenticated] #로그인 된 사람만 접근 가능
 
     def get(self, request): #요청이 들어오면 user의 데이터를 가져옴.
@@ -84,7 +92,7 @@ class UserDetailView(APIView):
 
 #로그아웃 API
 class LogOutView(APIView):
-    # permission_classes = [IsAuthenticated] #로그인 된 사람만 접근 가능
+    permission_classes = [TokenAuthentication] #로그인 된 사람만 접근 가능
 
     # 로그아웃
     def post(self, request):
@@ -99,17 +107,19 @@ class LogOutView(APIView):
 # jwt 토근 인증 확인용 뷰셋
 # Header - Authorization : Bearer <발급받은토큰>
 class UserViewSet(viewsets.ModelViewSet):
-    # permission_classes = [IsAuthenticated]
+    permission_classes = [TokenAuthentication]
     queryset = User.objects.all()
     serializer_class = UserSerializer
 
 class VerifyTokenView(APIView):
+    permission_classes = [TokenAuthentication]
+
     User = get_user_model()
 
     def get(self, request):
         access_token = request.COOKIES.get('access')
         if not access_token:
-            return Response({'detail': 'Authentication credentials were not provided.'}, status=status.HTTP_401_UNAUTHORIZED)
+            return Response({'detail': 'Authentication credentials were sssnot provided.'}, status=status.HTTP_401_UNAUTHORIZED)
 
         try:
             payload = jwt.decode(access_token, settings.SECRET_KEY, algorithms=['HS256'])
@@ -118,7 +128,6 @@ class VerifyTokenView(APIView):
                 return Response({'detail': 'Invalid payload in access token.'}, status=status.HTTP_401_UNAUTHORIZED)
             
             user = User.objects.get(id=user_id)
-            request.user = user
             return Response({'detail': 'Token is valid'}, status=status.HTTP_200_OK)
         except jwt.ExpiredSignatureError:
             return Response({'detail': 'Access token expired'}, status=status.HTTP_401_UNAUTHORIZED)
