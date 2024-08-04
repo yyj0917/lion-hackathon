@@ -26,6 +26,7 @@ client_info = ClientViewSet.as_view({
 }) # 이것도 모르겠삼
 
 router = DefaultRouter()
+router.register(r'advisors', AdvisorViewSet, basename='advisor')
 router.register(r'clients', ClientViewSet, basename='client')
 
 urlpatterns = [
