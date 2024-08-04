@@ -5,7 +5,7 @@ const API_URL = 'http://localhost:8000/diary/private';
 // PrivateDiary Entry 가져오기 GET
 export const fetchPrivateDiaryEntry = async () => {
   try {
-    const response = await axiosInstance.get(`${API_URL}`);
+    const response = await axiosInstance.get(`${API_URL}/`);
     return response.data;
   } catch (error) {
     throw new Error(error.response.data.message);

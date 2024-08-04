@@ -1,3 +1,4 @@
+import axios from 'axios';
 import axiosInstance from './axiosConfig';
 
 const API_URL = 'http://localhost:8000/';
@@ -19,7 +20,7 @@ export const WritePostApi = async (title, body, date) => {
 // 일기 전체 읽어오기 GET - Posts.js
 export const ReadPostsApi = async () => {
   try {
-    const response = await axiosInstance.get(`${API_URL}diary/`);
+    const response = await axios.get(`${API_URL}diary/`);
     return response.data;
   } catch (error) {
     throw new Error(error.response.data.message);

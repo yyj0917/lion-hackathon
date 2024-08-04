@@ -5,6 +5,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { loginApi } from '../api/auth';
 import SignUp from '../components/SignUpComponent';
 import { useDispatch } from 'react-redux';
+import { login } from '../redux/reducers/authReducer';
 
 const Wrapper = styled.div`
   height: calc(100vh - 100px - 40px);
@@ -207,18 +208,21 @@ export default function Login() {
     setIsRightPanelActive(false);
   };
 
-  const handleLogin =  (event) => {
+  const handleLogin =  async (event) => {
     event.preventDefault();
     try {
-      // const response = await loginApi(email, password);
-      dispatch(loginApi(email, password))
+      
+      const response = await loginApi(email, password );
+      dispatch(login());
+
       alert('로그인 성공');
-      setTimeout(1000);
-      navigate('/', { replace: true });
+      setTimeout(() => {
+        navigate('/', { replace: true });
+      }, 1000);
     } catch (error) {
       alert('로그인 실패');
       console.error('Login failed', error);
-      console.log('로그인 실패');
+      alert('로그인 실패');
     }
   };
 
