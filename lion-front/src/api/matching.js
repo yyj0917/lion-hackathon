@@ -4,9 +4,7 @@ const API_URL = 'http://localhost:8000/';
 
 // 상담사 지원 폼 작성 POST 요청 - WritePost.js
 export const WriteCounselorApi = async (
-  name,
-  age,
-  workIn,
+  advisor_name,
   work_experience,
   openlink,
   giveTalk,
@@ -14,9 +12,7 @@ export const WriteCounselorApi = async (
 ) => {
   try {
     const response = await axiosInstance.post(`${API_URL}matching/advisor/`, {
-      name,
-      age,
-      workIn,
+      advisor_name,
       work_experience,
       openlink,
       giveTalk,
@@ -27,11 +23,23 @@ export const WriteCounselorApi = async (
     throw new Error(error.response.data.message);
   }
 };
+// Client가 카테고리 누르고 요청하기 - POST
+export const RequestMatchingApi = async (categories) => {
+  try {
+    const response = await axiosInstance.post(
+      `${API_URL}matching/client/`,{
+        categories,
+      } );
+    return response.data;
+  } catch (error) {
+    throw new Error(error.response.data.message);
+  }
+};
 // 카테고리 기준으로 랜덤 Gate Keeper 매칭해주기 - GET
 export const randomMatchingApi = async (categories) => {
   try {
     const response = await axiosInstance.get(
-      `${API_URL}matching/${categories}`
+      `${API_URL}matching/${categories}/`
     );
     return response.data;
   } catch (error) {

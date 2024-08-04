@@ -14,32 +14,30 @@ from BackEnd import settings
 from datetime import datetime, timezone
 from django.contrib.auth import get_user_model
 from .permissions import TokenAuthentication
+from django.utils.decorators import method_decorator
+from django.views.decorators.csrf import csrf_exempt
+from rest_framework_simplejwt.views import TokenRefreshView
+from rest_framework_simplejwt.exceptions import TokenError, InvalidToken
 
+from rest_framework_simplejwt.serializers import TokenRefreshSerializer
 utc_now = datetime.now(timezone.utc)
 
-
-#회원가입 API
-class RegisterAPIView(APIView):
-    permission_classes = [AllowAny] #누구나 접근 가능!!
-
-    def post(self, request): #프론트에서 유저 데이터가 포함된 request를 받음
-        serializer = UserSerializer(data=request.data) #데이터를 직렬화하여 데이터베이스가 받을 수 있게 함
-        if serializer.is_valid(): #직렬화한 데이터가 유효하다면
-            serializer.save() #데이터베이스에 저장
-
-            res = Response(
-                {
-                    "user": serializer.data,
-                    "message": "register success",
-                },
-                status=status.HTTP_200_OK,
-            ) #프론트에 보낼 응답 작성
-
-            return res
-        else: #직렬화한 데이터가 유효하지 않다면
-            print(serializer.errors)
-            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-    
+# 리프레시토큰을 이용한 액세스토큰 재발급 - 쿠키를 까서 해주는
+class RefreshTokenView(TokenRefreshView):
+    def get(self, request):
+        refresh_in_cookie = request.COOKIES.get("refresh")
+        if not refresh_in_cookie:
+            return Response({"detail": "Refresh token not provided"}, status=status.HTTP_400_BAD_REQUEST)
+        
+        try:
+            refresh = TokenRefreshSerializer.token_class(refresh_in_cookie)
+            new_access_token = {"access": str(refresh.access_token)}
+            return Response(new_access_token, status=status.HTTP_200_OK)
+        except (TokenError, InvalidToken):
+            # Delete the expired refresh token from the cookie
+            response = Response({"detail": "Invalid refresh token"}, status=status.HTTP_401_UNAUTHORIZED)
+            response.delete_cookie("refresh")
+            return response
 #로그인 API
 class LogInAPIView(APIView):
     permission_classes = [AllowAny] #누구나 접근 가능?
@@ -80,6 +78,30 @@ class LogInAPIView(APIView):
         else:
             return Response(status=status.HTTP_400_BAD_REQUEST) 
 
+#회원가입 API
+class RegisterAPIView(APIView):
+    permission_classes = [AllowAny] #누구나 접근 가능!!
+
+    def post(self, request): #프론트에서 유저 데이터가 포함된 request를 받음
+        serializer = UserSerializer(data=request.data) #데이터를 직렬화하여 데이터베이스가 받을 수 있게 함
+        if serializer.is_valid(): #직렬화한 데이터가 유효하다면
+            serializer.save() #데이터베이스에 저장
+
+            res = Response(
+                {
+                    "user": serializer.data,
+                    "message": "register success",
+                },
+                status=status.HTTP_200_OK,
+            ) #프론트에 보낼 응답 작성
+
+            return res
+        else: #직렬화한 데이터가 유효하지 않다면
+            print(serializer.errors)
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+
+
 #유저 정보 API
 class UserDetailView(APIView):
     # permission_classes = [TokenAuthentication] #로그인 된 사람만 접근 가능
@@ -95,8 +117,10 @@ class UserDetailView(APIView):
 #로그아웃 API
 class LogOutView(APIView):
     # permission_classes = [TokenAuthentication] #로그인 된 사람만 접근 가능
-    authentication_classes = [TokenAuthentication]
-    permission_classes = [IsAuthenticated]
+    # authentication_classes = [TokenAuthentication]
+    # permission_classes = [IsAuthenticated]
+    permission_classes = [AllowAny]
+
     # 로그아웃
     def post(self, request):
         # 쿠키에 저장된 토큰 삭제 => 로그아웃 처리
@@ -116,6 +140,7 @@ class UserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all()
     serializer_class = UserSerializer
 
+@method_decorator(csrf_exempt, name='dispatch')
 class VerifyTokenView(APIView):
     # permission_classes = [TokenAuthentication]
     authentication_classes = [TokenAuthentication]

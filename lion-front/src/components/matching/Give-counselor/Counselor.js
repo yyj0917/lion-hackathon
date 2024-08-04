@@ -125,7 +125,7 @@ function Counselor() {
   const inputRef = useRef(null);
 
   // const [formWrite, setFormWrite] = useState(false);
-  const [name, setName] = useState('');
+  const [advisor_name, setAdvisor_name] = useState('');
   const [work_experience, setWork_experience] = useState('');
   const [openlink, setOpenlink] = useState('');
   const [giveTalk, setGiveTalk] = useState('');
@@ -135,18 +135,14 @@ function Counselor() {
     event.preventDefault();
     try {
       const response = await WriteCounselorApi(
-        name,
-        age,
-        workIn,
+        advisor_name,
         work_experience,
         openlink,
         giveTalk,
         categories
       );
-      console.log('Diary entry created:', response.data);
-      setName('');
-      setAge();
-      setWorkIn('');
+      console.log(categories);
+      setAdvisor_name('');
       setOpenlink('');
       setGiveTalk('');
       setWork_experience('');
@@ -176,8 +172,8 @@ function Counselor() {
         <input
           type="text"
           placeholder="원하는 닉네임"
-          defaultValue={name}
-          onChange={(e) => setName(e.target.value)}
+          defaultValue={advisor_name}
+          onChange={(e) => setAdvisor_name(e.target.value)}
           required
         />
         <input

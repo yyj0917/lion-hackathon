@@ -15,14 +15,11 @@ export const loginApi = async (email, password) => {
       {
         email,
         password,
-      },
-      {
-        withCredentials: true,
       }
     );
     if (response.data.token) {
-      setCookie('access', response.data.token.access, 15);
-      setCookie('refresh', response.data.token.refresh, 1400);
+      localStorage.setItem("accessToken", response.data.token.access);
+      localStorage.setItem("refreshToken", response.data.token.refresh);
     }
     return response.data;
   } catch (error) {
@@ -53,9 +50,6 @@ export const registerApi = async (
         office,
         phonenumber,
         username,
-      },
-      {
-        withCredentials: true,
       }
     );
     return response.data;
@@ -71,9 +65,9 @@ export const registerApi = async (
 // 로그아웃 API 호출
 export const logoutApi = async () => {
   try {
-    const response = await axiosInstance.post(`${API_URL}logout/`);
-    deleteCookie('access');
-    deleteCookie('refresh');
+    const response = await axios.post(`${API_URL}logout/`, {}, { withCredentials: true });
+    localStorage.removeItem("accessToken");
+    localStorage.removeItem("refreshToken");
     return response.data;
   } catch (error) {
     throw new Error(error.response.data.message);

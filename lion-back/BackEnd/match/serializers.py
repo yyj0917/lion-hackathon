@@ -22,7 +22,7 @@ class AdvisorSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Advisor
-        fields = ['id','user_id','advisor_name','created_at','updated_at','age','work_experience','workIn','openlink','giveTalk','categories','matched_clients']
+        fields = ['id','user','advisor_name','created_at','updated_at','age','work_experience','workIn','openlink','giveTalk','categories','matched_clients']
     
     def get_matched_clients(self, objects):
         clients = objects.matched_clients.all()

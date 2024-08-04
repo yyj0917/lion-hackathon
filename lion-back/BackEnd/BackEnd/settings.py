@@ -83,7 +83,7 @@ AUTH_USER_MODEL = 'accounts.User' #장고에게 내가 만든 커스텀 모델�
 # jwt 토큰은 simplejwt의 JWTAuthentication으로 인증한다.
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
-        'rest_framework_simplejwt.authentication.JWTAuthentication',
+        'accounts.permissions.TokenAuthentication',
     ),
     'TOKEN_MODEL': None,
     'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend']
@@ -92,7 +92,7 @@ REST_FRAMEWORK = {
 
 #추가적 설정
 SIMPLE_JWT ={
-    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=30),
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=0.5),
     'REFRESH_TOKEN_LIFETIME': timedelta(days=7),
     'ROTATE_REFRESH_TOKENS': False,
     'BLACKLIST_AFTER_ROTATION': False,
@@ -135,6 +135,7 @@ MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'allauth.account.middleware.AccountMiddleware',
+    'accounts.middleware.CustomExceptionMiddleware',
 ]
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",  # React 앱의 주소
@@ -255,4 +256,6 @@ LOGGING = {
     },
 }
 
-
+CSRF_TRUSTED_ORIGINS = ['http://localhost:3000']
+CSRF_COOKIE_SECURE = False
+CSRF_COOKIE_HTTPONLY = False
