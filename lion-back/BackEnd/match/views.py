@@ -5,6 +5,7 @@ from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.exceptions import PermissionDenied
 from django_filters.rest_framework import DjangoFilterBackend
+from accounts.permissions import TokenAuthentication
 import random
 
 from .models import *
@@ -15,6 +16,11 @@ class AdvisorListViewSet(viewsets.ModelViewSet):
     serializer_class = AdvisorSerializer
     filter_backends = [DjangoFilterBackend]
     filterset_class = AdvisorFilter
+    permission_classes = [TokenAuthentication()]
+
+    def get_permissions(self):
+        self.permission_classes = [TokenAuthentication,]
+        return super(AdvisorViewSet,self).get_permissions()
 
     def get_queryset(self):
         user = self.request.user
@@ -69,11 +75,11 @@ class AdvisorListViewSet(viewsets.ModelViewSet):
 class AdvisorViewSet(viewsets.ModelViewSet):
     queryset = Advisor.objects.all()
     serializer_class = AdvisorSerializer
+    permission_classes = [TokenAuthentication()]
 
-    # def get_permissions(self):
-    #     if self.action in ['list', 'retrieve']:
-    #         return [AllowAny()]
-    #     return [IsAuthenticated()]
+    def get_permissions(self):
+        self.permission_classes = [TokenAuthentication,]
+        return super(AdvisorViewSet,self).get_permissions()
 
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
@@ -107,6 +113,11 @@ class AdvisorViewSet(viewsets.ModelViewSet):
 class ClientViewSet(viewsets.ModelViewSet):
     queryset = Client.objects.all()
     serializer_class = ClientSerializer
+    permission_classes = [TokenAuthentication()]
+
+    def get_permissions(self):
+        self.permission_classes = [TokenAuthentication,]
+        return super(ClientViewSet,self).get_permissions()
 
     # client page: 자신의 client 활동
     def perform_create(self, serializer):
