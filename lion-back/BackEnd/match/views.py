@@ -131,6 +131,8 @@ class AdvisorViewSet(viewsets.ModelViewSet):
 # Advisor post 내역이 없는 경우 첫 create viewset
 class AdvisorCreateViewSet(viewsets.ModelViewSet):
     queryset = Advisor.objects.all()
+    serializer_class = AdvisorSerializer
+
     permission_classes = [IsAuthenticated]
 
     def perform_create(self, serializer):
@@ -175,8 +177,9 @@ class ClientViewSet(viewsets.ModelViewSet):
 
         user = self.request.user
         client = serializer.save(user=user)
-
-        selected_categories = set(request.data.get('categories', []))
+        
+        selected_categories_name = set(request.data.get('categories', []))
+        selected_categories = set(ClientCategory.objects.filter(name__in=selected_categories_name).values_list('id', flat=True))
         current_advisor_ids = set(Advisor.objects.filter(user=user).values_list('id', flat=True))
 
         if 'other' in selected_categories:
@@ -275,7 +278,8 @@ class ClientCreateViewSet(viewsets.ModelViewSet):
         user = self.request.user
         client = serializer.save(user=user)
 
-        selected_categories = set(request.data.get('categories', []))
+        selected_categories_name = set(request.data.get('categories', []))
+        selected_categories = set(ClientCategory.objects.filter(name__in=selected_categories_name).values_list('id', flat=True))
         current_advisor_ids = set(Advisor.objects.filter(user=user).values_list('id', flat=True))
 
         if 'other' in selected_categories:
