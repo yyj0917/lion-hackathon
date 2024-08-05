@@ -217,14 +217,6 @@ function Counselor() {
             />
             <span>대인관계</span>
           </label>
-          {/* <label>
-            <CheckBoxInput
-              type="checkbox"
-              value="기타"
-              onChange={handleCategoryChange}
-            />
-            <span>기타</span>
-          </label> */}
         </CheckBoxGroup>
         <button type="submit">Submit</button>
       </FormPosts>

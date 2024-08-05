@@ -8,6 +8,7 @@ import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import Tooltip from '../../../utils/Tooltip';
+import { useNavigate } from 'react-router-dom';
 
 const Container = styled.div`
   display: flex;
@@ -19,7 +20,7 @@ const CardWrapper = styled.div`
   height: 400px;
   background: #fff;
   border-radius: 15px;
-  border: 5px solid #fff;
+  border: 3px solid #f5af19;
   /* overflow: hidden; */
   color: #616161;
   box-shadow:
@@ -40,11 +41,11 @@ const CardWrapper = styled.div`
 const CardHeader = styled.div`
   height: 200px;
   width: 100%;
-  background: red;
-  border-radius: 100% 0% 100% 0% / 0% 50% 50% 100%;
+  /* background: red; */
+  border-bottom: 3px solid #f5af19;
   display: grid;
   place-items: center;
-  background: linear-gradient(to bottom left, #f12711, #f5af19);
+  /* background: linear-gradient(to bottom left, #f12711, #f5af19); */
 `;
 const CardContent = styled.div`
   display: flex;
@@ -114,7 +115,7 @@ const Others = styled.div`
 // PropType 정의
 
 export default function GateKeeperCard({ gatekeeper }) {
-  const [gateKeeper, setGateKeeper] = useState([]);
+  const [matchGateKeeper, setMatchGateKeeper] = useState(null);
   const [tooltip, setTooltip] = useState(null);
   const showTooltip = (text) => {
     setTooltip(text);
@@ -122,17 +123,7 @@ export default function GateKeeperCard({ gatekeeper }) {
 
   const hideTooltip = () => setTooltip(null);
   useEffect(() => {
-    setGateKeeper({
-      id: 1,
-      name: '홍길동',
-      age: 30,
-      work_experience: '5년',
-      position: '소방교',
-      workplace: '서울시청',
-      comment: '항상 응원합니다!',
-      link: 'https://open.kakao.com/o/sdEKmaEg',
-      category: '정신건강',
-    });
+    setMatchGateKeeper(gatekeeper.matched_advisor);
   }, []);
   // 백에서 랜덤매칭된 게이트 키퍼 정보 받아오기
 
@@ -140,38 +131,37 @@ export default function GateKeeperCard({ gatekeeper }) {
     <Container>
       <CardWrapper
         onMouseEnter={() =>
-          showTooltip('https://open.kakao.com/o/sdEKmaEg 이동하기')
+          showTooltip(`${matchGateKeeper?.openlink} 이동하기`)
         }
         onMouseLeave={hideTooltip}
+        onClick={()=>window.open(`${matchGateKeeper?.openlink}`)}
       >
         <CardHeader>
-          <CircleUserRound size={100} color="white" />
+          <CircleUserRound size={100} color="#f5af19" />
         </CardHeader>
         <CardContent>
           <Intro>
             <h3>
-              {gateKeeper.name} ({gateKeeper.age}){' '}
+              {matchGateKeeper?.advisor_name} ({matchGateKeeper?.age}){' '}
               <SquareMousePointer strokeWidth="3" color="#FF8200" />
             </h3>
           </Intro>
           <Info>
             <p>
               <Award />
-              {gateKeeper.work_experience} /{gateKeeper.position} /
-              {gateKeeper.workplace}
+              {matchGateKeeper?.work_experience}년 / {matchGateKeeper?.workIn}
             </p>
             <p>
               <MessageSquareText />
-              {gateKeeper.comment}
+              {matchGateKeeper?.giveTalk}
             </p>
           </Info>
           <Others>
-            <button>{gateKeeper.category}</button>
-            <button>신체건강</button>
+            <button>{matchGateKeeper?.categories}</button>
           </Others>
         </CardContent>
-        {tooltip === 'https://open.kakao.com/o/sdEKmaEg 이동하기' && (
-          <Tooltip text="https://open.kakao.com/o/sdEKmaEg 이동하기" />
+        {tooltip === `${matchGateKeeper?.openlink} 이동하기` && (
+          <Tooltip text={`${matchGateKeeper?.openlink} 이동하기`} />
         )}
       </CardWrapper>
     </Container>
