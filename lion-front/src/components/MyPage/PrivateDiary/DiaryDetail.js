@@ -22,11 +22,13 @@ const images = [
 ];
 const Wrapper = styled.div`
   width: 100%;
-  height: 100%;
+  height: 90%;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
 `;
 const Title = styled.h2`
   margin: 0;
@@ -40,7 +42,7 @@ const DiaryContainer = styled.div`
   background-position: center;
   opacity: ${({ theme }) => (theme === 'image' ? 0.7 : 1)};
   color: ${({ theme }) => (theme === 'image' ? 'white' : 'black')};
-  box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.1);
+  /* box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.1); */
   padding: 20px;
   border-radius: 20px;
   max-width: 600px;

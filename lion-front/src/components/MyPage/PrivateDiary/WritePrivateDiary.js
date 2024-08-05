@@ -5,11 +5,12 @@ import { WritePrivateDiaryApi } from '../../../api/privateDiary';
 
 const Wrapper = styled.div`
   width: 100%;
-  height: 80%;
-  margin-top: 40px;
+  height: 90%;
   overflow: hidden;
   display: flex;
   flex-direction: column;
+  box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
 `;
 const FormPosts = styled.form`
   display: flex;
@@ -17,8 +18,8 @@ const FormPosts = styled.form`
   width: 100%;
   min-height: 300px; /* 고정된 높이 설정 */
   height: 100%;
-  padding: 20px;
   box-sizing: border-box;
+  padding: 20px;
 
   input,
   textarea {

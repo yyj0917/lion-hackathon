@@ -45,6 +45,9 @@ const ModalHeader = styled.div`
   justify-content: space-between;
   align-items: center;
   margin: 10px 0;
+  border-bottom: 3px solid #ddd;
+  padding-bottom: 10px;
+  padding-left: 10px;
   span {
     display: flex;
     gap: 5px;
@@ -70,6 +73,7 @@ const ModalContent = styled.div`
   flex-direction: column;
   justify-content: space-between;
   height: 70%;
+  padding-left: 10px;
   p {
     display: -webkit-box;
     -webkit-box-orient: vertical;
