@@ -30,7 +30,7 @@ class PrivateDiary(models.Model):
     positive = models.FloatField(blank=True, default=-1) # positive confidence
     negative = models.FloatField(blank=True, default=-1) # negative confidence
     neutral = models.FloatField(blank=True, default=-1) # neutral confidence
-    highlights = models.JSONField(blank=True, null=True) # 문장별 감정 수치 정보
+    highlights = models.TextField(blank=True, null=True) # 문장별 감정 수치 정보
 
     # user 정보 저장 
     # related_name은 user정보 기반으로 diary를 불러오기 위한 역참조 기능을 수행할 수 있도록 함  ex) user.public_diaries

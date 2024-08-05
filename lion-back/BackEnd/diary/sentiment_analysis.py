@@ -6,6 +6,12 @@ from django.utils import timezone
 from datetime import timedelta
 from .models import PrivateDiary
 
+from pathlib import Path
+import torch
+from transformers import BertTokenizer, BertModel
+import torch.nn as nn
+import numpy as np
+
 # Naver 감정분석 API 적용 함수
 def sentimentAnalysis(content) :
 
@@ -54,7 +60,7 @@ def sentimentAnalysis(content) :
 def collect_negative_sentences(user):
 
     # 최근 30일에 해당하는 데이터만 수집 대상으로 함
-    end_date = timezone.now().date() 
+    end_date = timezone.now().date()
     start_date = end_date - timedelta(days=30)
 
     # PrivateDiary 중 요청을 보낸 사용자의 최근 30일 일기만 불러옴  
@@ -63,43 +69,92 @@ def collect_negative_sentences(user):
     # 하이라이트 분석 결과값 활용 부정적 수치가 높은 문장만 수집
     negative_sentences = []
     for diary in diaries:
-        for sentence in diary.highlights['sentences']:
-            if sentence['confidence']['negative'] > sentence['confidence']['positive'] and sentence['confidence']['negative'] > sentence['confidence']['neutral']:
+
+        # hightlight 문자열을 dictionary로 변환
+        highlights = json.loads(diary['highlights'])
+
+        for sentence in highlights:
+
+            if sentence['sentiment'] == 'negative' :
                 negative_sentences.append(sentence['content'])
     
     return negative_sentences
 
 
-def perform_kobert_analysis(sentences):
-    # Kobert 모델을 호출하는 코드를 여기에 추가합니다.
-    # 이 예제에서는 가상의 결과를 반환합니다.
-    return {
-        "detailed_sentiments": [
-            {"sentence": sentence, "sentiment": "anger"} for sentence in sentences
-        ]
-    }
+# BERTClassifier 클래스 정의
+class BERTClassifier(nn.Module):
+    def __init__(self, bert, hidden_size=768, num_classes=7, dr_rate=None):
+        super(BERTClassifier, self).__init__()
+        self.bert = bert
+        self.dr_rate = dr_rate
+        self.classifier = nn.Linear(hidden_size, num_classes)
+        if dr_rate:
+            self.dropout = nn.Dropout(p=dr_rate)
+    
+    def forward(self, input_ids, attention_mask, token_type_ids):
+        outputs = self.bert(input_ids=input_ids, attention_mask=attention_mask, token_type_ids=token_type_ids)
+        pooled_output = outputs[1]  # BERT의 두 번째 출력은 pooled_output입니다.
+        if self.dr_rate:
+            pooled_output = self.dropout(pooled_output)
+        return self.classifier(pooled_output)
 
 
+# 모델 파일 경로 설정
+# model_path = "/Users/hybyu/lion-hackathon-감정분석 추가/sentiment-analysis/bert_model.pth"
+def Kobert_sentiment_analysis(sentences) :
+
+    current_folder_path = Path.cwd()
+    file_name = "diary/bert_model.pth"
+    file_path = current_folder_path / file_name
+    model_path = file_path.as_posix()
+    model_path = model_path[2:]
+
+    # KoBERT 모델과 토크나이저 로드
+    tokenizer = BertTokenizer.from_pretrained('monologg/kobert')
+    bertmodel = BertModel.from_pretrained('monologg/kobert')
+
+    # 저장된 모델 로드
+    device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+    model = BERTClassifier(bertmodel, dr_rate=0.5).to(device)
+
+    # 모델의 state_dict를 로드할 때, 불일치를 무시하고 강제로 로드하는 코드
+    state_dict = torch.load(model_path, map_location=device)
+    new_state_dict = {}
+    for k, v in state_dict.items():
+        if k in model.state_dict():
+            new_state_dict[k] = v
+        # else:
+        #     print(f"Skipping key {k} because it does not exist in the model's state_dict")
+
+    model.load_state_dict(new_state_dict, strict=False)
+    model.eval()
+    
+    result = []
+    for sentence in sentences :
+
+        # 예측 함수 정의
+        inputs = tokenizer(sentence, return_tensors='pt', padding=True, truncation=True, max_length=64)
+        input_ids = inputs['input_ids'].to(device)
+        attention_mask = inputs['attention_mask'].to(device)
+        token_type_ids = inputs['token_type_ids'].to(device)
+
+        with torch.no_grad():
+            output = model(input_ids, attention_mask, token_type_ids)
+            logits = output.cpu().numpy()
+
+        probs = torch.softmax(torch.tensor(logits), dim=-1).numpy().flatten()
+
+        # label_dict = {0: "분노", 1: "불안", 2: "슬픔"}
+        # prediction = label_dict[np.argmax(probs)]
+
+        analysis = {'sentence':sentence, 'anger':probs[0], 'anxiety':probs[1], 'sadness':probs[2]}
+        result.append(analysis)
+
+    average_anger = sum(analysis['anger'] for analysis in result) / len(result)
+    average_anxiety = sum(analysis['anxiety'] for analysis in result) / len(result)
+    average_sadness = sum(analysis['sadness'] for analysis in result) / len(result)
+    average_result = {'average_anger':average_anger, 'average_anxiety':average_anxiety, 'average_sadness':average_sadness}
+
+    return average_result
 
 
-# 분석 결과는 dictionary 형태
-
-# ├── 'document'    # 글 전체 감정 분석 결과
-# │   ├── 'sentiment'
-# │   └── 'confidence' ├── 'negative'
-# │                    ├── 'positive'
-# │                    └── 'neutral'
-# │
-# └── 'sentences' : [list로 구성]   # 글 하이라이트 감정 분석 결과 
-#         │   
-#         ├── 'content' 
-#         ├── 'offset' # 문장 시작점
-#         ├── 'length' # 문장 길이
-#         ├── 'sentiment' 
-#         ├── 'confidence' ├── 'negative'
-#         │                ├── 'positive'
-#         │                └── 'neutral'
-#         │ 
-#         ├── 'highlights' ├── 'offset'
-#         │                └── 'length'      
-#         └── ...

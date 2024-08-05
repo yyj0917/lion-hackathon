@@ -5,7 +5,7 @@ from rest_framework import viewsets
 
 from rest_framework.response import Response
 from rest_framework import status
-from .sentiment_analysis import sentimentAnalysis, collect_negative_sentences, perform_kobert_analysis
+from .sentiment_analysis import sentimentAnalysis, collect_negative_sentences, Kobert_sentiment_analysis
 
 # 감정분석 결과 반환
 from rest_framework.views import APIView
@@ -168,7 +168,7 @@ class PrivateDiaryViewSet(viewsets.ModelViewSet):
         diary.positive = confidence['positive']
         diary.negative = confidence['negative']
         diary.neutral = confidence['neutral']
-        diary.highlights = highlights
+        diary.highlights = str(highlights)
         diary.save()
     
 
@@ -188,7 +188,7 @@ class PrivateDiaryViewSet(viewsets.ModelViewSet):
         updated_diary.positive = confidence['positive']
         updated_diary.negative = confidence['negative']
         updated_diary.neutral = confidence['neutral']
-        updated_diary.highlights = highlights
+        updated_diary.highlights = str(highlights)
         updated_diary.save()
         
         return super().perform_update(serializer)
@@ -232,14 +232,17 @@ class DiarySentimentSummaryView(APIView):
             avg_negative=Avg('negative'),
             avg_neutral=Avg('neutral')
         )
+            
+        negative_sentences = collect_negative_sentences(request.user)
+        detailed_sentiments = None
 
-        if average_sentiment['avg_negative'] > average_sentiment['avg_positive'] and average_sentiment['avg_negative'] > average_sentiment['avg_neutral']:
-            negative_sentences = collect_negative_sentences(request.user)
-            detailed_sentiments = perform_kobert_analysis(negative_sentences)
-            return Response({
-                "average_sentiment": average_sentiment,
-                "detailed_sentiments": detailed_sentiments
-            }, status=status.HTTP_200_OK)
+        if len(negative_sentences) != 0 :
+            detailed_sentiments = Kobert_sentiment_analysis(negative_sentences)
+        
+        return Response({
+            "average_sentiment": average_sentiment,
+            "detailed_sentiments": detailed_sentiments
+        }, status=status.HTTP_200_OK)
 
-        return Response(average_sentiment, status=status.HTTP_200_OK)
+
 
