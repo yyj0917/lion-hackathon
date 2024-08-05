@@ -11,13 +11,33 @@ export const WriteCounselorApi = async (
   categories
 ) => {
   try {
-    const response = await axiosInstance.post(`${API_URL}matching/advisor/`, {
+    const response = await axiosInstance.post(`${API_URL}matching/advisor/create/`, {
       advisor_name,
       work_experience,
       openlink,
       giveTalk,
       categories,
     });
+    return response.data;
+  } catch (error) {
+    throw new Error(error.response.data.message);
+  }
+};
+// Advisor List 불러오기 - GET 
+export const fetchAdvisorListApi = async () => {
+  try {
+    const response = await axiosInstance.get(`${API_URL}matching/advisor/list/`);
+    return response.data;
+  } catch (error) {
+    throw new Error(error.response.data.message);
+  }
+};
+// 특정 카테고리 Advisor List 불러오기 - GET
+export const fetchCategoryAdvisorListApi = async (categories) => {
+  try {
+    const response = await axiosInstance.get(
+      `${API_URL}matching/advisor/list/?categories=${categories}`
+    );
     return response.data;
   } catch (error) {
     throw new Error(error.response.data.message);

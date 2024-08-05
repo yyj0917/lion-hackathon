@@ -1,11 +1,11 @@
 import styled from 'styled-components';
 import React, { useState } from 'react';
 import '../styles/App.css';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { loginApi } from '../api/auth';
 import SignUp from '../components/SignUpComponent';
 import { useDispatch } from 'react-redux';
-import { checkAuthStatus, login, setAuth } from '../redux/reducers/authReducer';
+import { login } from '../redux/reducers/authReducer';
 
 const Wrapper = styled.div`
   height: calc(100vh - 100px - 40px);
@@ -236,7 +236,7 @@ export default function Login() {
     <Container>
       <Wrapper className={isRightPanelActive ? 'right-panel-active' : ''}>
         <FormContainer className="sign-up-container">
-          <SignUp />
+          <SignUp setIsRightPanelActive={setIsRightPanelActive} />
         </FormContainer>
         <FormContainer className="sign-in-container">
           <FormLogin onSubmit={handleLogin}>

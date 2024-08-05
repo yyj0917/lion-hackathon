@@ -1,9 +1,10 @@
 // RecieveCounsel.js
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { Award, CircleUserRound, MessageSquareText } from 'lucide-react';
 import CategorySidebar from './CategorySideBar';
+import { fetchAdvisorListApi, fetchCategoryAdvisorListApi } from '../../../api/matching';
 
 const Wrapper = styled.div`
   display: flex;
@@ -139,95 +140,34 @@ const CardList = styled.div`
 `;
 function RecieveCounselor() {
   const [selectedCategories, setSelectedCategories] = useState(['전체']);
-  const [openChatRooms, setOpenChatRooms] = useState([
-    {
-      id: 1,
-      name: '홍길동',
-      age: 30,
-      workplace: '서울시청',
-      comment: '항상 응원합니다!',
-      link: 'https://open.kakao.com/o/sdEKmaEg',
-      category: '정신건강',
-    },
-    {
-      id: 2,
-      name: '김철수',
-      age: 28,
-      workplace: '부산지검',
-      comment: '힘내세요!',
-      link: 'https://open.kakao.com/o/gFkGj9Cd',
-      category: '직업적 스트레스',
-    },
-    {
-      id: 3,
-      name: '이영희',
-      age: 35,
-      workplace: '삼성전자',
-      comment: '할 수 있습니다!',
-      link: 'https://open.kakao.com/o/gTkGj9Cd',
-      category: '직업적 스트레스',
-    },
-    {
-      id: 4,
-      name: '박지수',
-      age: 27,
-      workplace: '네이버',
-      comment: '당신을 응원합니다!',
-      link: 'https://open.kakao.com/o/gHkGj9Cd',
-      category: '정신건강',
-    },
-    {
-      id: 5,
-      name: '김영미',
-      age: 32,
-      workplace: 'LG전자',
-      comment: '잘하고 있어요!',
-      link: 'https://open.kakao.com/o/gQkGj9Cd',
-      category: '대인관계',
-    },
-    {
-      id: 6,
-      name: '최민호',
-      age: 29,
-      workplace: '카카오',
-      comment: '응원합니다!',
-      link: 'https://open.kakao.com/o/gPkGj9Cd',
-      category: '신체건강',
-    },
-    {
-      id: 7,
-      name: '장철수',
-      age: 33,
-      workplace: '현대차',
-      comment: '화이팅!',
-      link: 'https://open.kakao.com/o/gOkGj9Cd',
-      category: '신체건강',
-    },
-    {
-      id: 8,
-      name: '박민지',
-      age: 26,
-      workplace: '기아차',
-      comment: '힘내세요!',
-      link: 'https://open.kakao.com/o/gNkGj9Cd',
-      category: '기타',
-    },
-    // 더 많은 오픈채팅방 데이터를 여기에 추가할 수 있습니다.
-  ]);
+
+  const [advisorList, setAdvisorList] = useState([]);
+  const fetchAdvisorList = async () => {
+    try {
+      const response = await fetchAdvisorListApi(); 
+      setAdvisorList(response);
+    } catch (error) {
+      console.error('상담사 목록 오류', error);
+    }
+  };
+  useEffect(() => {
+    fetchAdvisorList();
+  },[]);
   const handleCategoryChange = (e) => {
     const { value } = e.target;
     setSelectedCategories([value]);
+    setCurrentPage(1);
   };
   const filteredRooms = selectedCategories.includes('전체')
-    ? openChatRooms
-    : openChatRooms.filter((room) =>
+    ? advisorList
+    : advisorList.filter((room) =>
         selectedCategories.includes(room.category)
       );
   const [currentPage, setCurrentPage] = useState(1);
   const chatPerPage = 4;
   const indexOfLastPost = currentPage * chatPerPage;
   const indexOfFirstPost = indexOfLastPost - chatPerPage;
-  const currentRooms = filteredRooms.slice(indexOfFirstPost, indexOfLastPost);
+  const currentAdvisor = filteredRooms.slice(indexOfFirstPost, indexOfLastPost);
 
   // 페이지네이션 페이지 수 계산
   const pageNumbers = [];
@@ -242,30 +182,30 @@ function RecieveCounselor() {
       />
       <CardList>
         <ListWrapper>
-          {currentRooms.map((room) => (
+          {currentAdvisor.map((advisor) => (
             <Link
-              key={room.id}
-              to={room.link}
+              key={advisor.id}
+              to={advisor.openlink}
               className="chatroom-card"
               target="_blank"
               rel=""
             >
               <Icon>
                 <CircleUserRound size={70} color="#f5af19" />
-                <span>카테고리</span>
+                <span>{advisor.categories}</span>
               </Icon>
               <TextSpace>
                 <h3>
-                  {room.name} ({room.age})
+                  {advisor.advisor_name} ({advisor.age})
                 </h3>
                 <Info>
                   <p>
                     <Award size={12} />
-                    5년 / 소방교/ 서울소방청
+                    {advisor.work_experience}년 / {advisor.workIn}
                   </p>
                   <p>
                     <MessageSquareText size={12} />
-                    {room.comment}
+                    {advisor.giveTalk}
                   </p>
                 </Info>
               </TextSpace>

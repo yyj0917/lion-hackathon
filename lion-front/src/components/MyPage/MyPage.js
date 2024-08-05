@@ -6,12 +6,15 @@ import {
   Phone,
   SquarePen,
   SquareUser,
+  Undo2,
   UserRoundCheck,
 } from 'lucide-react';
 import styled from 'styled-components';
 import { Outlet, useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { getUserInfo } from '../../api/auth';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchSentimentResult } from '../../redux/reducers/sentimentSlice';
 
 const Wrapper = styled.div`
   width: 70%;
@@ -108,6 +111,7 @@ const IconWrapper = styled.div`
     font-weight: 400;
     font-style: normal;
     font-size: 25px;
+    margin: 15px;
     width: 100px;
     height: 20px;
     border-radius: 20px;
@@ -124,6 +128,8 @@ const IconWrapper = styled.div`
 export default function MyPage() {
   const [user, setUser] = useState({});
   const navigate = useNavigate();
+
+
 
   // 유저 정보 가져오기
   const fetchUserInfo = async () => {
@@ -168,6 +174,9 @@ export default function MyPage() {
           </p>
           <p onClick={() => navigate('/mypage/writePrivateDiary')}>
             <SquarePen /> Write
+          </p>
+          <p onClick={() => navigate(-1)}>
+            <Undo2 style={{ color: '#FF5A5A' }} /> Back
           </p>
         </IconWrapper>
       </Navbar>

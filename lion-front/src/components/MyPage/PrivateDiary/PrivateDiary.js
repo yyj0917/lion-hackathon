@@ -7,6 +7,9 @@ import background2 from '../../../assets/background/background_2.jpg';
 import background3 from '../../../assets/background/background_3.jpg';
 import background4 from '../../../assets/background/background_4.jpg';
 import background5 from '../../../assets/background/background_5.jpg';
+import background6 from '../../../assets/background/background6.jpg';
+import background7 from '../../../assets/background/background7.jpg';
+import background8 from '../../../assets/background/background8.jpg';
 
 const images = [
   background1,
@@ -14,6 +17,9 @@ const images = [
   background3,
   background4,
   background5,
+  background6,
+  background7,
+  background8,
 ];
 const Wrapper = styled.div`
   width: 100%;

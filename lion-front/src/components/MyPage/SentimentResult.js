@@ -3,17 +3,11 @@ import { Bar } from 'react-chartjs-2';
 import { Chart, registerables } from 'chart.js';
 import styled, { keyframes } from 'styled-components';
 import { fetchPrivateDiaryAnalysis } from '../../api/privateDiary';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchSentimentResult } from '../../redux/reducers/sentimentSlice';
 
 Chart.register(...registerables);
-// const data = [
-//     { positive: 40, negative: 30, neutral: 30 },
-//     { positive: 50, negative: 20, neutral: 30 },
-//     { positive: 60, negative: 10, neutral: 30 },
-//     { positive: 30, negative: 50, neutral: 20 },
-//     { positive: 70, negative: 20, neutral: 10 },
-//     { positive: 40, negative: 30, neutral: 30 },
-//     { positive: 50, negative: 30, neutral: 20 },
-// ];
+
 const fadeIn = keyframes`
   from {
     opacity: 0;
@@ -22,7 +16,46 @@ const fadeIn = keyframes`
     opacity: 1;
   }
 `;
-const data = [
+const spin = keyframes`
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+`;
+const Spinner = styled.div`
+  border: 16px solid #f3f3f3; /* Light grey */
+  border-top: 16px solid #3498db; /* Blue */
+  border-radius: 50%;
+  width: 120px;
+  height: 120px;
+  animation: ${spin} 2s linear infinite;
+  margin: 50px auto;
+`;
+const ErrorPage = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  color: #ff5a5a;
+  text-align: center;
+
+  h1 {
+    font-size: 4em;
+  }
+
+  p {
+    font-size: 1.5em;
+  }
+
+  a {
+    color: #3498db;
+    text-decoration: none;
+    font-size: 1.2em;
+    margin-top: 20px;
+  }
+`;
+
+
+const example = [
   {
     day: '월',
     positive: 40,
@@ -136,20 +169,44 @@ const Footer = styled.div`
 function SentimentResult() {
   // const [isChecked, setIsChecked] = useState(true);
   const [result, setResult] = useState('긍정');
+  const [anaalysisResult, setAnalysisResult] = useState(null);
+  const dispatch = useDispatch();
+  const { data, loading, error } = useSelector((state) => state.sentiment);
   useEffect(() => {
-    const fetchSentiment = async () => {
-      try {
-        setTimeout(async () => {
-          const response = await fetchPrivateDiaryAnalysis();
-
-        }, 8000);
-        console.log(response)
-      } catch (error) {
-        console.error('감정분석 오류', error);
-      }
-    };
-    fetchSentiment();
+    dispatch(fetchSentimentResult());
   }, []);
+
+  // useEffect(() => {
+  //   const fetchSentiment = async () => {
+  //     try {
+  //       setTimeout(async () => {
+  //         const response = await fetchPrivateDiaryAnalysis();
+
+  //       }, 8000);
+  //       console.log(response)
+  //     } catch (error) {
+  //       console.error('감정분석 오류', error);
+  //     }
+  //   };
+  //   fetchSentiment();
+  // }, []);
+  useEffect(() => {
+    if (data && !loading && !error) {
+      setAnalysisResult(data);
+    }
+  }, [data, loading, error]);
+
+  if (loading) {
+    return <Spinner />;
+  } else if (error) {
+    return (
+      <ErrorPage>
+        <h1>404</h1>
+        <p>Error loading sentiment results: {error}</p>
+        <a href="/">Go back to homepage</a>
+      </ErrorPage>
+    );
+  }
   let message;
   switch (result) {
     case '긍정':
@@ -167,21 +224,21 @@ function SentimentResult() {
     datasets: [
       {
         label: '긍정',
-        data: data.map((day) => day.positive),
+        data: example.map((day) => day.positive),
         backgroundColor: 'rgba(75, 192, 192, 0.6)',
         borderColor: 'rgba(75, 192, 192, 1)',
         borderWidth: 1,
       },
       {
         label: '부정',
-        data: data.map((day) => day.negative),
+        data: example.map((day) => day.negative),
         backgroundColor: 'rgba(255, 99, 132, 0.6)',
         borderColor: 'rgba(255, 99, 132, 1)',
         borderWidth: 1,
       },
       {
         label: '중립',
-        data: data.map((day) => day.neutral),
+        data: example.map((day) => day.neutral),
         backgroundColor: 'rgba(153, 102, 255, 0.6)',
         borderColor: 'rgba(153, 102, 255, 1)',
         borderWidth: 1,

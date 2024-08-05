@@ -151,8 +151,7 @@ const TextCard = styled.div`
 
 function RandomMatching() {
   const [selectedCategories, setSelectedCategories] = useState([]);
-  const [selectedCounselor, setSelectedCounselor] = useState(null);
-  const [gatekeeper, setGatekeeper] = useState([]);
+  const [matchGateKeeper, setMatchGateKeeper] = useState(null);
   const [loading, setLoading] = useState(false);
 
   const navigate = useNavigate();
@@ -180,12 +179,10 @@ function RandomMatching() {
     try {
       console.log(selectedCategories);
       const res = await RequestMatchingApi(selectedCategories);
-      console.log(res);
+      setMatchGateKeeper(res);
       setLoading(true);
       setTimeout(() => {
       alert('제출이 완료되었습니다. 잠시만 기다려주세요. ');
-      const mockCounselor = { id: 1, name: '랜덤 상담사' };
-      setSelectedCounselor(mockCounselor);
       setLoading(false);
     }, 2000);
     } catch (error) {
@@ -199,8 +196,6 @@ function RandomMatching() {
       setLoading(true);
       setTimeout(() => {
         alert('다시 매칭중입니다. 잠시만 기다려주세요. ');
-        const mockCounselor = { id: 2, name: '랜덤 아무나' };
-        setSelectedCounselor(mockCounselor);
         setLoading(false);
       }, 2000);
     } else {
@@ -218,7 +213,7 @@ function RandomMatching() {
         <Wrapper>
           <Spinner />
         </Wrapper>
-      ) : selectedCounselor === null ? (
+      ) : matchGateKeeper === null ? (
         // 카테고리 선택 UI
         <Wrapper>
           <TextCard>
@@ -252,8 +247,7 @@ function RandomMatching() {
       ) : (
         // 상담사 정보 및 전체보기 버튼
         <Wrapper>
-          <GateKeeperCard key={selectedCounselor.id} gatekeeper={gatekeeper}>
-            {selectedCounselor.name}
+          <GateKeeperCard key={matchGateKeeper.id} gatekeeper={matchGateKeeper}>
           </GateKeeperCard>
           <FooterButton>
             <button className="rematching" onClick={handleRematching}>

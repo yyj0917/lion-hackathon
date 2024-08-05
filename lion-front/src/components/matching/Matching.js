@@ -11,6 +11,7 @@ const MatchingWrapper = styled.div`
   align-items: center;
   height: 100%;
   gap: 20px;
+  overflow: auto;
 `;
 const Btn = styled.button`
   width: 20%;

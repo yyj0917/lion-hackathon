@@ -12,6 +12,9 @@ import background2 from '../../../assets/background/background_2.jpg';
 import background3 from '../../../assets/background/background_3.jpg';
 import background4 from '../../../assets/background/background_4.jpg';
 import background5 from '../../../assets/background/background_5.jpg';
+import background6 from '../../../assets/background/background6.jpg';
+import background7 from '../../../assets/background/background7.jpg';
+import background8 from '../../../assets/background/background8.jpg';
 
 const images = [
   background1,
@@ -19,6 +22,9 @@ const images = [
   background3,
   background4,
   background5,
+  background6,
+  background7,
+  background8,
 ];
 const Wrapper = styled.div`
   width: 100%;
@@ -36,8 +42,8 @@ const Title = styled.h2`
 const DiaryContainer = styled.div`
   background: ${({ theme }) =>
     theme === 'default' ? '#fff' : theme === 'red' ? '#FFF0F0' : 'transparent'};
-  background-image: ${({ theme, backgroundImage }) =>
-    theme === 'image' ? `url(${backgroundImage})` : 'none'};
+  background-image: ${({ theme, bgimage }) =>
+    theme === 'image' ? `url(${bgimage})` : 'none'};
   background-size: cover;
   background-position: center;
   opacity: ${({ theme }) => (theme === 'image' ? 0.7 : 1)};
@@ -98,6 +104,7 @@ const DiaryContent = styled.div`
     word-break: break-word;
     white-space: normal;
     font-size: 14px;
+    font-weight: 700;
   }
   .username {
     text-align: end;
@@ -178,8 +185,8 @@ const ThemeButton = styled.button`
   border: 1px solid #ddd;
   background: ${({ theme }) =>
     theme === 'default' ? '#fff' : theme === 'red' ? '#FFF0F0' : 'transparent'};
-  background-image: ${({ theme, backgroundImage }) =>
-    theme === 'image' ? `url(${backgroundImage})` : 'none'};
+  background-image: ${({ theme, bgimage }) =>
+    theme === 'image' ? `url(${bgimage})` : 'none'};
   background-size: cover;
   background-position: center;
   cursor: pointer;
@@ -285,24 +292,24 @@ function DiaryDetail() {
       ) : (
         <DiaryContainer
           theme={theme}
-          backgroundImage={images[id % images.length]}
+          bgimage={images[id % images.length]}
         >
           <DiaryHeader>
             <Title>{diary.title}</Title>
             <div>
               <ThemeButton
                 theme="default"
-                backgroundImage={images[id % images.length]}
+                bgimage={images[id % images.length]}
                 onClick={() => setTheme('default')}
               />
               <ThemeButton
                 theme="red"
-                backgroundImage={images[id % images.length]}
+                bgimage={images[id % images.length]}
                 onClick={() => setTheme('red')}
               />
               <ThemeButton
                 theme="image"
-                backgroundImage={images[id % images.length]}
+                bgimage={images[id % images.length]}
                 onClick={() => setTheme('image')}
               />
             </div>
