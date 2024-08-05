@@ -1,10 +1,7 @@
 // src/components/Tabs.js
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import Diary from '../diary/PublicDiary';
-import PublicDiary from '../diary/PublicDiary';
-import PrivateDiary from '../diary/PrivateDiary';
-import Matching from '../matching/Matching';
+import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 
 const TabContainer = styled.div`
   display: flex;
@@ -13,9 +10,8 @@ const TabContainer = styled.div`
   overflow: hidden;
   position: relative;
   margin-top: 10px;
-  width: 80%;
+  width: 70%;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-
 `;
 
 const RadioInput = styled.input`
@@ -53,7 +49,7 @@ const ActiveTabIndicator = styled.div`
   left: 0;
   width: calc(100% / 2);
   height: 100%;
-  background-color: #FF5A5A	;
+  background-color: #ff5a5a;
   border-radius: 25px;
   transition: left 0.3s ease;
   z-index: 0;
@@ -61,7 +57,7 @@ const ActiveTabIndicator = styled.div`
 
 const TabContent = styled.div`
   width: 80%;
-  height: 80%;
+  height: 85%;
   margin: auto;
   overflow: hidden;
   display: flex;
@@ -69,8 +65,18 @@ const TabContent = styled.div`
   position: relative;
 `;
 
-const Tabs = () => {
-  const [activeIndex, setActiveIndex] = React.useState(0);
+function Tabs() {
+  const [activeIndex, setActiveIndex] = useState(0);
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  useEffect(() => {
+    if (location.pathname === '/') {
+      setActiveIndex(0);
+    } else if (location.pathname === '/matching') {
+      setActiveIndex(1);
+    }
+  }, [location]);
 
   return (
     <>
@@ -80,26 +86,33 @@ const Tabs = () => {
           id="tab1"
           name="tab"
           checked={activeIndex === 0}
-          onChange={() => setActiveIndex(0)}
+          onChange={() => {
+            setActiveIndex(0);
+            navigate('/');
+          }}
         />
         <TabLabel htmlFor="tab1">공유 일기</TabLabel>
-        <ActiveTabIndicator style={{ left: `calc(${activeIndex * 100}% / 2)` }} />
+        <ActiveTabIndicator
+          style={{ left: `calc(${activeIndex * 100}% / 2)` }}
+        />
 
         <RadioInput
           type="radio"
           id="tab2"
           name="tab"
           checked={activeIndex === 1}
-          onChange={() => setActiveIndex(1)}
+          onChange={() => {
+            setActiveIndex(1);
+            navigate('/matching');
+          }}
         />
         <TabLabel htmlFor="tab2">동료 매칭</TabLabel>
       </TabContainer>
       <TabContent>
-        {activeIndex === 0 && <PublicDiary/>}
-        {activeIndex === 1 && <Matching/>}
+        <Outlet />
       </TabContent>
     </>
   );
-};
+}
 
 export default Tabs;

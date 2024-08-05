@@ -9,7 +9,7 @@
 /coverage
 
 # production
-/build
+
 
 # misc
 .DS_Store
@@ -24,3 +24,10 @@ yarn-error.log*
 
 # README
 .README
+
+# .pyc
+__pycache/
+# db.sqlite3
+db.sqlite3
+
+bert_model.pth

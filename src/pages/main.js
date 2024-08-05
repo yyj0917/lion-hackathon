@@ -1,8 +1,6 @@
-// login이 되었을 때 page
-import styled from "styled-components";
+import styled from 'styled-components';
 import '../styles/App.css';
-import Section from "../components/Section";
-
+import Section from '../components/Section';
 
 const SectionWrapper = styled.div`
   display: flex;
@@ -10,17 +8,11 @@ const SectionWrapper = styled.div`
   padding: 20px 0;
 `;
 
-
-
 function Main() {
-
-
   return (
-    <>
-      <SectionWrapper>
-        <Section/>
-      </SectionWrapper>
-    </>
+    <SectionWrapper>
+      <Section />
+    </SectionWrapper>
   );
 }
 

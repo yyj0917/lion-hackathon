@@ -1,152 +1,262 @@
-
-import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
-import styled from "styled-components";
-import { ReadPostsApi } from "../../api/diary";
-
-// const Diary = () => {
-//     const [diaryEntries, setDiaryEntries] = useState([]);
-
-//     const handleEntrySubmit = (event) => {
-//         event.preventDefault();
-//         // Get the value of the input field or textarea
-//         const entry = event.target.elements.entry.value;
-//         // Update the diary entries state with the new entry
-//         setDiaryEntries([...diaryEntries, entry]);
-//         // Clear the input field or textarea
-//         event.target.elements.entry.value = '';
-//     };
-
-//     return (
-//         <div>
-//             <h1>Diary Board</h1>
-//             <ul>
-//                 {diaryEntries.map((entry, index) => (
-//                     <li key={index}>{entry}</li>
-//                 ))}
-//             </ul>
-//             <form onSubmit={handleEntrySubmit}>
-//                 <textarea name="entry" rows="4" cols="50" placeholder="Write your diary entry"></textarea>
-//                 <br />
-//                 <button type="submit">Submit</button>
-//             </form>
-//         </div>
-//     );
-// };
+import { useEffect, useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import styled from 'styled-components';
+import { HandMetal, HeartHandshake, PartyPopper, ThumbsUp } from 'lucide-react';
+import { ReadPostsApi } from '../../api/diary';
+import { useSearch } from '../../contexts/SearchContext';
+import { useSelector } from 'react-redux';
 
 // export default Diary;
+const Wrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+`;
 const PostWrapper = styled.div`
-    flex: 1;
-    height: 100%;
-    width: 100%;
-    /* margin-right: 5px; */
-    border-radius: 10px;
-    position: relative;
-    box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.1);
-    display: grid;
-    grid-template-columns: repeat(2, 1fr); /* 처음에 4개의 요소가 꽉 차게 */
-    grid-auto-rows: minmax(150px, auto); /* 각 행의 높이 */
-
-    gap: 20px;
-    overflow-y: auto;
-    box-sizing: border-box;
-    padding: 20px;
-    @media (max-width: 600px) {
-    grid-template-columns: 1fr; /* 화면이 좁아지면 1열 */
-    }
-
+  height: 100%;
+  width: 100%;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: wrap;
+  overflow-y: auto;
+  box-sizing: border-box;
+  padding-bottom: 1px;
 `;
 const Post = styled.div`
-    &:hover {
-        background-color: #f9f9f9;
-    }
-    width: 100%;
-    padding: 20px;
-    margin-bottom: -1px;
-    box-sizing: border-box;
-    border-radius: 20px;
+  &:hover {
+    background-color: #f9f9f9;
+  }
+  width: 100%;
+  height: 25%;
+  padding: 5px;
+  margin-bottom: -1px;
+  box-sizing: border-box;
+  border: 1px solid #ddd;
 
-    box-shadow: 0px 0px 5px 0px rgba(0,0,0,0.1);
-
-    background-color: #fff;
-    border-width: 1px 0;
-    a {
-        color: #666;
-        text-decoration: none;
-        -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
-    }
+  background-color: #fff;
+  border-width: 1px 0;
+  a {
+    color: #666;
+    text-decoration: none;
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+  }
 `;
 const Desc = styled.div`
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
+  h2 {
+    line-height: 20px;
+    white-space: nowrap;
     overflow: hidden;
-    display: flex;
-    flex-direction: column;
+    text-overflow: ellipsis;
+    font-size: 14px;
+  }
+  p {
+    margin: 0;
+    margin-bottom: 4px;
+    max-height: 100px;
+    line-height: 20px;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    word-break: break-word;
+    white-space: normal;
+    font-size: 14px;
+    color: #444444;
+  }
+  .info {
+    display: inline-flex;
+    line-height: 18px;
+    font-size: 12px;
     justify-content: space-between;
-    height: 100%;
-    h2 {
-        line-height: 20px;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        font-size: 14px;
+    gap: 10px;
+  }
+`;
+const IconSpan = styled.div`
+  display: inline-flex;
+  line-height: 18px;
+  font-size: 12px;
+  gap: 10px;
+  span {
+    font-size: 16px;
+    display: flex;
+    gap: 5px;
+    align-items: center;
+  }
+`;
+const DateSpan = styled.div`
+  text-align: center;
+  border: 1px solid #ddd;
+  padding: 3px;
+  border-radius: 10px;
+`;
+const PostFooter = styled.div`
+  display: flex;
+  box-sizing: border-box;
+  justify-content: center;
+  padding: 10px 0;
+  label {
+    margin: 0 5px;
+    color: black;
+    box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    border-radius: 20px;
+    width: 20px;
+    text-align: center;
+    height: auto;
+  }
+  .active {
+    background-color: #ff5a5a;
+    color: #fff;
+  }
+  label input {
+    display: none;
+
+    &:checked + span {
+      font-weight: bold;
+      text-decoration: underline;
     }
-    p {
-        display: -webkit-box;
-        -webkit-box-orient: vertical;
-        -webkit-line-clamp: 2;
-        text-overflow: ellipsis;
-        overflow: hidden;
-        word-break: break-word;
-        margin-bottom: 4px;
-        max-height: 100px;
-        line-height: 20px;
-        white-space: normal;
-        font-size: 14px;
-        color: #444444;
-    }
-    .info {
-        display: inline-flex;
-        line-height: 18px;
-        font-size: 12px;
-        gap: 10px;
-    }
+  }
+  label span {
+    padding: 5px;
+  }
 `;
 
 export default function Posts() {
-    const [posts, setPosts] = useState([]);
-    // Post list 전부 가져오기
-    const fetchPosts = async () => {
-        try {
-            const response = await ReadPostsApi();
-            console.log('Diary entry Read:', response);
-            setPosts(response);
-          } catch (error) {
-            console.error('Error creating diary entry:', error);
-          }
-        }
-    useEffect(() => {
-        fetchPosts();
-    }, []);
+  const [posts, setPosts] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const postsPerPage = 4;
+  const navigate = useNavigate();
+  const { searchTerm } = useSearch();
+  // const dispatch = useDispatch();
+  const isAuth = useSelector((state) => state.auth.isAuthenticated);
 
-    return (
-            <PostWrapper>
-                {posts.map(post => (
-                    <Post key={post.id} className="post">
-                        <Link>
-                            <Desc>
-                                <div>
-                                    <h2>{post.title}</h2>
-                                    <p>{post.body}</p>
-                                </div>
-                                <div className="info">
-                                    <span>❤️ {post.likes}</span>
-                                    <span>💬 {post.comments}</span>
-                                    <span>{post.date}</span>
-                                </div>
-                            </Desc>
-                        </Link>
-                    </Post>
-                ))}   
-            </PostWrapper>
+  const handlePostVerify = () => {
+    if (!isAuth) {
+      alert('로그인 후 이용해주세요.');
+      navigate('/login', { replace: 'true' }); // 로그인 페이지로 리디렉트
+    }
+  };
+  const fetchPosts = async () => {
+    try {
+      const response = await ReadPostsApi();
+      setPosts(response);
+    } catch (error) {
+      console.error('Error creating diary entry:', error);
+    }
+  };
+  useEffect(() => {
+    fetchPosts();
+  }, []);
 
-    );
+  // 검색어에 따른 필터링
+  const filteredPosts = posts.filter(
+    (post) => post.title.includes(searchTerm) || post.body.includes(searchTerm)
+  );
+
+  // 1페이지당 4개의 일기 -> 현재 페이지에 보여줄 일기 계산
+  const indexOfLastPost = currentPage * postsPerPage;
+  const indexOfFirstPost = indexOfLastPost - postsPerPage;
+  const currentPosts = Array.isArray(filteredPosts)
+    ? filteredPosts.slice(indexOfFirstPost, indexOfLastPost)
+    : [];
+
+  // 페이지네이션 페이지 수 계산
+  const pageNumbers = [];
+  for (let i = 1; i <= Math.ceil(filteredPosts.length / postsPerPage); i++) {
+    pageNumbers.push(i);
+  }
+
+  return (
+    <Wrapper>
+      <PostWrapper>
+        {currentPosts.map((post) => (
+          <Post key={post.id} className="diary-card" onClick={handlePostVerify}>
+            <Link to={`/publicDiary/${post.id}`}>
+              <Desc>
+                <div>
+                  <div
+                    style={{
+                      display: 'flex',
+                      justifyContent: 'space-between',
+                      alignItems: 'center',
+                    }}
+                  >
+                    <h2>{post.title}</h2>
+                    <h2
+                      style={{
+                        color: '#666',
+                        fontSize: '12px',
+                        fontWeight: 'bold',
+                        marginRight: '10px',
+                        borderBottom: '1px solid #666',
+                      }}
+                    >
+                      작성자: {post.username}
+                    </h2>
+                  </div>
+                  <p>{post.body}</p>
+                </div>
+                <div className="info">
+                  <IconSpan>
+                    <span>
+                      <ThumbsUp size={16} style={{ color: '#0064FF' }} />
+                      {post.reactions && post.reactions.like !== undefined
+                        ? post.reactions.like
+                        : 0}
+                    </span>
+                    <span>
+                      <PartyPopper size={16} style={{ color: '#008C8C' }} />
+                      {post.reactions && post.reactions.congrats !== undefined
+                        ? post.reactions.congrats
+                        : 0}
+                    </span>
+                    <span>
+                      <HandMetal size={16} style={{ color: '#FF8200' }} />
+                      {post.reactions && post.reactions.excited !== undefined
+                        ? post.reactions.excited
+                        : 0}
+                    </span>
+                    <span>
+                      <HeartHandshake size={16} style={{ color: '#FF5A5A' }} />
+                      {post.reactions && post.reactions.together !== undefined
+                        ? post.reactions.together
+                        : 0}
+                    </span>
+                  </IconSpan>
+                  <DateSpan>
+                    <span>{post.date}</span>
+                  </DateSpan>
+                </div>
+              </Desc>
+            </Link>
+          </Post>
+        ))}
+      </PostWrapper>
+      <PostFooter>
+        {pageNumbers.map((number) => (
+          <label
+            key={number}
+            className={`${currentPage === number ? 'active' : ''}`}
+          >
+            <input
+              type="checkbox"
+              checked={currentPage === number}
+              onChange={() => setCurrentPage(number)}
+            />
+            {number}
+          </label>
+        ))}
+      </PostFooter>
+    </Wrapper>
+  );
 }
