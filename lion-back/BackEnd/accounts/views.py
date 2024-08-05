@@ -110,6 +110,14 @@ class UserDetailView(APIView):
         serializers = UserSerializer(user)
         return Response(serializers.data) #유저 데이터를 응답으로 보냄
 
+    def put(self, request):
+        user = request.user
+        serializer = UserUpdateSerializer(user, data=request.data, partial=True) # 부분 업데이트 허용
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
 #로그아웃 API
 class LogOutView(APIView):
 
