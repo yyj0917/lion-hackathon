@@ -5,12 +5,23 @@ import { Meh, Frown, Book, Laugh } from 'lucide-react'; // 감정 아이콘
 import { fetchPrivateDiaryEntry } from '../../api/privateDiary';
 import '../../styles/custom-calendar.css'; // 추가적인 스타일링을 위한 CSS
 import { useNavigate } from 'react-router-dom';
+import styled from 'styled-components';
 
 const emotionIcons = {
   positive: <Laugh size={22} style={{ color: '#f44336' }} />,
   neutral: <Meh size={22} style={{ color: '#f44336' }} />,
   negative: <Frown size={22} style={{ color: '#f44336' }} />,
 };
+const Wrapper = styled.div`
+  width: 100%;
+  height: 90%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+`;
 
 function Sentiment() {
   const navigate = useNavigate();
@@ -72,21 +83,24 @@ function Sentiment() {
   };
 
   return (
-    <div
-      style={{
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-      }}
-    >
-      <Calendar
-        onClickDay={handleDateClick}
-        value={date}
-        tileClassName={tileClassName}
-        tileContent={tileContent}
-        className="custom-calendar"
-      />
-    </div>
+    <Wrapper>
+
+      <div
+        style={{
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+        }}
+      >
+        <Calendar
+          onClickDay={handleDateClick}
+          value={date}
+          tileClassName={tileClassName}
+          tileContent={tileContent}
+          className="custom-calendar"
+        />
+      </div>
+    </Wrapper>
   );
 }
 

@@ -15,7 +15,17 @@ const images = [
   background4,
   background5,
 ];
-
+const Wrapper = styled.div`
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  height: 90%;
+  position: relative;
+  box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+`;
 const FilterWrapper = styled.div`
   display: flex;
   align-items: center;
@@ -104,15 +114,7 @@ const BookInfo = styled.div`
     color: #444444;
   }
 `;
-const Wrapper = styled.div`
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  align-items: center;
-  height: 100%;
-  position: relative;
-`;
+
 const DiaryContainer = styled.div`
   width: 100%;
   height: 80%; /* 원하는 높이로 설정 */

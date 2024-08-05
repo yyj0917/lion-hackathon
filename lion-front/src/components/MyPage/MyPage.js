@@ -1,9 +1,12 @@
 import {
   BarChart4,
+  Building2,
   Laugh,
   Notebook,
+  Phone,
   SquarePen,
   SquareUser,
+  UserRoundCheck,
 } from 'lucide-react';
 import styled from 'styled-components';
 import { Outlet, useNavigate } from 'react-router-dom';
@@ -29,7 +32,6 @@ const Navbar = styled.div`
   align-items: center;
   gap: 20px;
   padding: 20px 0;
-  border-right: 2px solid #f7f7f7;
 `;
 const Contents = styled.div`
   margin-left: 5px;
@@ -52,28 +54,52 @@ const ImgWrapper = styled.div`
   flex-direction: column;
   align-items: center;
   position: relative;
+  border-radius: 10px;
+  box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.1);
+  button {
+    background-color: #FF5A5A;
+    color: white;
+    font-weight: 600;
+    border: none;
+    border-radius: 8px;
+    padding: 5px 10px;
+    cursor: pointer;
+    &:hover {
+      background-color: #f44336;
+    }
+  }
   .profile-text {
+    width: 80%;
     display: flex;
+    flex-direction: column;
     align-items: center; /* 세로 정렬 */
     font-size: 16px;
     line-height: 1.5;
+    margin-top: 10px;
   }
   p {
     width: 100%;
     display: flex;
-    justify-content: center;
+    justify-content: space-between;
+    align-items: center;
     font-family: 'Dongle', sans-serif;
     font-weight: 400;
     font-style: normal;
-    font-size: 25px;
+    font-size: 20px;
+    margin: 2px;
+    padding: 2px;
   }
 `;
 const IconWrapper = styled.div`
+  width: 100%;
   height: 50%;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  border-radius: 10px;
+  box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.1);
+  box-sizing: border-box;
 
   p {
     cursor: pointer;
@@ -116,13 +142,18 @@ export default function MyPage() {
     <Wrapper>
       <Navbar>
         <ImgWrapper>
-          <SquareUser color="#FF5A5A" strokeWidth={1} size={100} />
+          <SquareUser color="#FF5A5A" strokeWidth={1} size={100}
+            style={{
+              // borderRadius: '50%',
+              // boxShadow: '0px 0px 10px 0px rgba(0, 0, 0, 0.1)',
+              padding: '10px',
+            }}
+          />
+          <button>프로필 수정하기</button>
           <div className="profile-text">
-            <p>
-              {user.name}({user.age})/ {user.username}
-              <br /> {user.office} / {user.position}
-              <br /> {user.phonenumber}
-            </p>
+            <p> <UserRoundCheck/>{user.name}({user.age})/ {user.username}</p>
+            <p><Building2 /> {user.office} / {user.position}</p>
+            <p><Phone /> {user.phonenumber}</p>
           </div>
         </ImgWrapper>
         <IconWrapper>
@@ -141,7 +172,7 @@ export default function MyPage() {
         </IconWrapper>
       </Navbar>
       <Contents>
-        <Outlet />
+        <Outlet user={user}/>
       </Contents>
     </Wrapper>
   );
