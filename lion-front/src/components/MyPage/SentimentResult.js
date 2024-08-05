@@ -139,8 +139,10 @@ function SentimentResult() {
   useEffect(() => {
     const fetchSentiment = async () => {
       try {
+        setTimeout(async () => {
+          const response = await fetchPrivateDiaryAnalysis();
 
-        const response = await fetchPrivateDiaryAnalysis();
+        }, 8000);
         console.log(response)
       } catch (error) {
         console.error('감정분석 오류', error);
