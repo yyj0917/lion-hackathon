@@ -86,3 +86,20 @@ export const getUserInfo = async () => {
     throw new Error(error.response?.data?.message || 'Network Error');
   }
 };
+
+// 프로필 정보 수정하기
+export const UpdateUserInfoApi = async (name, age, position, office, phonenumber, username) => {
+  try {
+    const response = await axiosInstance.put(`${API_URL}user/`, {
+      name,
+      age,
+      position,
+      office,
+      phonenumber,
+      username,
+    });
+    return response.data;
+  } catch (error) {
+    throw new Error(error.response.data.message);
+  }
+};

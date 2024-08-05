@@ -36,20 +36,24 @@ def sentimentAnalysis(content) :
     # 감정분석 API 결과값 중 필요한 데이터만 선별해서 반환
     if(rescode == 200):
 
-        sentiment = result['document']['sentiment']
-        confidence = result['document']['confidence']
+        sentiment = result["document"]["sentiment"]
+        confidence = result["document"]["confidence"]
 
         highlights = []
-        for sentence in result['sentences'] :
+        for sentence in result["sentences"] :
             
             sentence_result = {
-                'content': sentence['content'],
-                'sentiment': sentence['sentiment'],
-                'confidence': sentence['confidence']
+                "content": sentence["content"],
+                "sentiment": sentence["sentiment"],
+                "confidence": sentence["confidence"]
             }
 
             highlights.append(sentence_result)
-
+        # json 변환
+        highlights = json.dumps(highlights)
+        # sentiment = json.dumps(sentiment)
+        # confidence = json.dumps(confidence)
+        
         return sentiment, confidence, highlights 
     
     else:
@@ -71,12 +75,12 @@ def collect_negative_sentences(user):
     for diary in diaries:
 
         # hightlight 문자열을 dictionary로 변환
-        highlights = json.loads(diary['highlights'])
+        highlights = json.loads(diary.highlights)
 
         for sentence in highlights:
 
-            if sentence['sentiment'] == 'negative' :
-                negative_sentences.append(sentence['content'])
+            if sentence["sentiment"] == "negative" :
+                negative_sentences.append(sentence["content"])
     
     return negative_sentences
 

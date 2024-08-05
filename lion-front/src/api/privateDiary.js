@@ -55,3 +55,13 @@ export const DeletePrivateDiaryApi = async (diary_id) => {
     throw new Error(error.response.data.message);
   }
 };
+
+// PrivateDiary 감정분석 결과 받아오기 - GET
+export const fetchPrivateDiaryAnalysis = async () => {
+  try {
+    const response = await axiosInstance.get(`http://localhost:8000/diary/sentiment-summary/`);
+    return response.data;
+  } catch (error) {
+    throw new Error(error.response.data.message);
+  }
+};
