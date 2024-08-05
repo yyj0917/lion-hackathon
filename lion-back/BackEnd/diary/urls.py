@@ -53,6 +53,10 @@ public_diary_report = PublicDiaryViewSet.as_view({
     'post': 'report'
 })
 
+sentiment_analysis_summary = DiarySentimentSummaryViewSet.as_view({
+    'get': 'sentiment_summary'
+})
+
 urlpatterns = [
     path('', public_diary_list),
     path('<int:pk>/', public_diary_detail),
@@ -62,5 +66,5 @@ urlpatterns = [
     path('<int:pk>/report/',public_diary_report, name='publicdiary-report'),
     path('private/', private_diary_list),
     path('private/<int:pk>/', private_diary_detail),
-    path('sentiment-summary/', DiarySentimentSummaryView.as_view(), name='diary-sentiment-summary'),
+    path('sentiment-summary/', sentiment_analysis_summary, name='diary-sentiment-summary'),
 ]

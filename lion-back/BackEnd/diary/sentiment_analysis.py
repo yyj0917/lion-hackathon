@@ -49,11 +49,7 @@ def sentimentAnalysis(content) :
             }
 
             highlights.append(sentence_result)
-        # json 변환
-        highlights = json.dumps(highlights)
-        # sentiment = json.dumps(sentiment)
-        # confidence = json.dumps(confidence)
-        
+
         return sentiment, confidence, highlights 
     
     else:
@@ -74,14 +70,13 @@ def collect_negative_sentences(user):
     negative_sentences = []
     for diary in diaries:
 
-        # hightlight 문자열을 dictionary로 변환
-        highlights = json.loads(diary.highlights)
+        sentiment, confidence, highlights = sentimentAnalysis(diary.body)
 
         for sentence in highlights:
 
             if sentence["sentiment"] == "negative" :
                 negative_sentences.append(sentence["content"])
-    
+    # print(negative_sentences)
     return negative_sentences
 
 
@@ -157,7 +152,7 @@ def Kobert_sentiment_analysis(sentences) :
     average_anger = sum(analysis['anger'] for analysis in result) / len(result)
     average_anxiety = sum(analysis['anxiety'] for analysis in result) / len(result)
     average_sadness = sum(analysis['sadness'] for analysis in result) / len(result)
-    average_result = {'average_anger':average_anger, 'average_anxiety':average_anxiety, 'average_sadness':average_sadness}
+    average_result = {'average_anger':average_anger * 100, 'average_anxiety':average_anxiety * 100, 'average_sadness':average_sadness * 100}
 
     return average_result
 

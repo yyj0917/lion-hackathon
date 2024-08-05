@@ -168,7 +168,7 @@ class PrivateDiaryViewSet(viewsets.ModelViewSet):
         diary.positive = confidence['positive']
         diary.negative = confidence['negative']
         diary.neutral = confidence['neutral']
-        diary.highlights = str(highlights)
+        diary.highlights = highlights
         diary.save()
     
 
@@ -188,7 +188,7 @@ class PrivateDiaryViewSet(viewsets.ModelViewSet):
         updated_diary.positive = confidence['positive']
         updated_diary.negative = confidence['negative']
         updated_diary.neutral = confidence['neutral']
-        updated_diary.highlights = str(highlights)
+        updated_diary.highlights = highlights
         updated_diary.save()
         
         return super().perform_update(serializer)
@@ -198,51 +198,53 @@ class PrivateDiaryViewSet(viewsets.ModelViewSet):
             raise PermissionDenied("You do not have permission to delete this diary.")
         instance.delete()
 
-# # 감정분석 결과 반환용 view
-# class DiarySentimentSummaryView(APIView):
 
-#     def get(self, request, *args, **kwargs):
-
-#         # PublicDiary와 PrivateDiary의 날짜별 감정 분석 결과 집계
-#         public_diary_sentiment = PublicDiary.objects.all().annotate().values('date', 'sentiment', 'positive', 'negative', 'neutral')
-#         private_diary_sentiment = PrivateDiary.objects.all().annotate().values('date', 'sentiment', 'positive', 'negative', 'neutral')
-
-#         # 감정 분석 결과를 집계하여 반환
-#         return Response({
-#             'public_diaries' : list(public_diary_sentiment),
-#             'private_diaries': list(private_diary_sentiment)
-#         }, status=status.HTTP_200_OK)
-
-
-# 30일간 Naver API 감정분석 결과 평균을 계산 -> 부정이 가장 높으면 추가 분석 진행한 것을 포함한 결과값 반환 / 아닐경우 기존 30일간의 분석 결과만 반환
-class DiarySentimentSummaryView(APIView):
-    # permission_classes = [TokenAuthentication]
-    # authentication_classes = [TokenAuthentication]
+class DiarySentimentSummaryViewSet(viewsets.ViewSet):
     permission_classes = [IsAuthenticated]
-    def get(self, request, *args, **kwargs):
-        end_date = timezone.now().date()
-        start_date = end_date - timedelta(days=30)
-        diaries = PrivateDiary.objects.filter(user=request.user, date__range=[start_date, end_date])
-        
-        if not diaries.exists():
-            return Response({"detail": "No diaries found for the specified period."}, status=status.HTTP_404_NOT_FOUND)
-        
-        average_sentiment = diaries.aggregate(
-            avg_positive=Avg('positive'),
-            avg_negative=Avg('negative'),
-            avg_neutral=Avg('neutral')
-        )
-            
-        negative_sentences = collect_negative_sentences(request.user)
-        detailed_sentiments = None
 
-        if len(negative_sentences) != 0 :
-            detailed_sentiments = Kobert_sentiment_analysis(negative_sentences)
+    @action(detail=False, methods=['get'], permissions_classes=[IsAuthenticated])
+    def sentiment_summary(self, request):
+        try:
+            end_date = timezone.now().date()
+            start_date = end_date - timedelta(days=30)
+            diaries = PrivateDiary.objects.filter(user=request.user, date__range=[start_date, end_date])
+            
+            if not diaries.exists():
+                return Response({"detail": "No diaries found for the specified period."}, status=status.HTTP_404_NOT_FOUND)
+            
+            average_positive = 0
+            average_negative = 0
+            average_neutral = 0
+            diaryNum = 0
+
+            for diary in diaries :
+                diaryNum += 1
+                average_positive += diary.positive
+                average_negative += diary.negative
+                average_neutral += diary.neutral
+
+            average_sentiment = {
+                'avg_positive' : average_positive / diaryNum ,
+                'avg_negative' : average_negative / diaryNum,
+                'avg_neutral' : average_neutral / diaryNum
+            }
+                
+            negative_sentences = collect_negative_sentences(request.user)
+            detailed_sentiments = None
+ 
+            if len(negative_sentences) != 0:
+                detailed_sentiments = Kobert_sentiment_analysis(negative_sentences)
+            
+            response_data = {
+                "average_sentiment": average_sentiment,
+                "detailed_sentiments": detailed_sentiments
+            }
+            # print("Response Data:", response_data)  # 디버깅 출력
+            return Response(data=response_data, status=status.HTTP_200_OK)
         
-        return Response({
-            "average_sentiment": average_sentiment,
-            "detailed_sentiments": detailed_sentiments
-        }, status=status.HTTP_200_OK)
+        except Exception as e:
+            print(f"Exception: {str(e)}")  # 디버깅 출력
+            return Response({"detail": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
 
