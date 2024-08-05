@@ -37,11 +37,11 @@ const CategoryButton = styled.label`
 function CategorySidebar({ selectedCategories, onCategoryChange }) {
   const categories = [
     { id: '전체', name: '전체' },
-    { id: '정신건강', name: '정신건강', icon: 'path/to/icon1' },
-    { id: '직업적 스트레스', name: '직업적 스트레스', icon: 'path/to/icon2' },
-    { id: '신체건강', name: '신체건강', icon: 'path/to/icon3' },
-    { id: '대인관계', name: '대인관계', icon: 'path/to/icon4' },
-    { id: '기타', name: '기타', icon: 'path/to/icon5' },
+    { id: 'mental', name: '정신건강'},
+    { id: 'stress', name: '직업적 스트레스'},
+    { id: 'physical', name: '신체건강'},
+    { id: 'relationship', name: '대인관계'},
+    { id: 'other', name: '기타'},
   ];
 
   return (

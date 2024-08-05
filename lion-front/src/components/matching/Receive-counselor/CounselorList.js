@@ -161,7 +161,7 @@ function RecieveCounselor() {
   const filteredRooms = selectedCategories.includes('전체')
     ? advisorList
     : advisorList.filter((room) =>
-        selectedCategories.includes(room.category)
+      room.categories.some(category => selectedCategories.includes(category))
       );
   const [currentPage, setCurrentPage] = useState(1);
   const chatPerPage = 4;

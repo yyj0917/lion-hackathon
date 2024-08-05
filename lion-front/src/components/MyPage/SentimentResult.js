@@ -22,12 +22,12 @@ const spin = keyframes`
 `;
 const Spinner = styled.div`
   border: 16px solid #f3f3f3; /* Light grey */
-  border-top: 16px solid #3498db; /* Blue */
+  border-top: 16px solid #FF5A5A; /* Blue */
   border-radius: 50%;
-  width: 120px;
-  height: 120px;
+  width: 80px;
+  height: 80px;
   animation: ${spin} 2s linear infinite;
-  margin: 50px auto;
+  margin: 30px auto;
 `;
 const ErrorPage = styled.div`
   display: flex;
@@ -176,20 +176,6 @@ function SentimentResult() {
     dispatch(fetchSentimentResult());
   }, []);
 
-  // useEffect(() => {
-  //   const fetchSentiment = async () => {
-  //     try {
-  //       setTimeout(async () => {
-  //         const response = await fetchPrivateDiaryAnalysis();
-
-  //       }, 8000);
-  //       console.log(response)
-  //     } catch (error) {
-  //       console.error('감정분석 오류', error);
-  //     }
-  //   };
-  //   fetchSentiment();
-  // }, []);
   useEffect(() => {
     if (data && !loading && !error) {
       setAnalysisResult(data);
@@ -197,7 +183,12 @@ function SentimentResult() {
   }, [data, loading, error]);
 
   if (loading) {
-    return <Spinner />;
+    return (
+      <Wrapper>
+        <Spinner />
+        <p style={{fontWeight: '700'}}>최근 30일동안의 기록을 감정분석중입니다. 잠시만 기다려주세요.</p>
+      </Wrapper>
+      );
   } else if (error) {
     return (
       <ErrorPage>
@@ -210,7 +201,7 @@ function SentimentResult() {
   let message;
   switch (result) {
     case '긍정':
-      message = '긍정';
+      message = '윤영준님은 최근 30일동안의 기록에 대한 결과가 "긍정"입니다. 힘들고 어려운 하루가 있음에도 늘 긍정을 잃지 않는 윤영준님은 최고의 소방관이자 사람입니다. 앞으로도 긍정으로 가득찬 하루를 보내고, 항상 좋은 일만 있기를 FORHERO는 응원하겠습니다. \n다른 동료에게 긍정적인 기운을 나눠주고 싶다면 Gate Keeper에 지원하세요.';
       break;
     case '부정':
       message = '부정';
@@ -295,7 +286,7 @@ function SentimentResult() {
         </BarWrapper>     
       </Content>
       <Footer delay={2.5}>
-        <h1>{message}</h1>
+        <p>{message}</p>
       </Footer>
     </Wrapper>
   );

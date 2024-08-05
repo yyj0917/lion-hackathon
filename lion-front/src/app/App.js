@@ -26,6 +26,7 @@ import DiaryDetail from '../components/MyPage/PrivateDiary/DiaryDetail';
 import WritePublicDiary from '../components/diary/WritePublicDiary';
 import WritePrivateDiary from '../components/MyPage/PrivateDiary/WritePrivateDiary';
 import { SearchProvider } from '../contexts/SearchContext';
+import ProfileModal from '../components/MyPage/ProfileUpdate';
 
 function App() {
   return (
@@ -66,6 +67,7 @@ function App() {
               {/* 마이 페이지 루트로 라우팅 */}
               <Route path="/mypage" element={<MyPage />}>
                 <Route path="" element={<PrivateDiary />} />
+                <Route path="profileUpdate" element={<ProfileModal />} />
                 <Route path="privateDiary" element={<PrivateDiary />} />
                 <Route path="privateDiary/:id" element={<DiaryDetail />} />
 

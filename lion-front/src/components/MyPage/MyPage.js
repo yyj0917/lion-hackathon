@@ -15,6 +15,7 @@ import { useEffect, useState } from 'react';
 import { getUserInfo } from '../../api/auth';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchSentimentResult } from '../../redux/reducers/sentimentSlice';
+import ProfileModal from './ProfileUpdate';
 
 const Wrapper = styled.div`
   width: 70%;
@@ -126,9 +127,26 @@ const IconWrapper = styled.div`
   }
 `;
 export default function MyPage() {
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const [user, setUser] = useState({});
   const navigate = useNavigate();
 
+  // 유저 정보 수정하기
+  const handleOpenModal = () => {
+    navigate('/mypage/profileUpdate');
+    setIsModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    navigate(-1);
+    setIsModalOpen(false);
+
+  };
+
+  const handleSaveProfile = (updatedUser) => {
+    setUser(updatedUser);
+    handleCloseModal();
+  };
 
 
   // 유저 정보 가져오기
@@ -150,12 +168,10 @@ export default function MyPage() {
         <ImgWrapper>
           <SquareUser color="#FF5A5A" strokeWidth={1} size={100}
             style={{
-              // borderRadius: '50%',
-              // boxShadow: '0px 0px 10px 0px rgba(0, 0, 0, 0.1)',
               padding: '10px',
             }}
           />
-          <button>프로필 수정하기</button>
+          <button onClick={handleOpenModal}>프로필 수정하기</button>
           <div className="profile-text">
             <p> <UserRoundCheck/>{user.name}({user.age})/ {user.username}</p>
             <p><Building2 /> {user.office} / {user.position}</p>
@@ -183,6 +199,9 @@ export default function MyPage() {
       <Contents>
         <Outlet user={user}/>
       </Contents>
+      {isModalOpen && (
+        <ProfileModal user={user} onClose={handleCloseModal} onSave={handleSaveProfile} />
+      )}
     </Wrapper>
   );
 }

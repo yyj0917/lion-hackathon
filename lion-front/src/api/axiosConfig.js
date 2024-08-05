@@ -16,7 +16,6 @@ const axiosInstance = axios.create({
 axiosInstance.interceptors.request.use(
   async (config) => {
     const accessToken = localStorage.getItem('accessToken');
-    console.log('accessToken', accessToken);
     if (accessToken) {
       config.headers.Authorization = `Bearer ${accessToken}`;
     }
@@ -36,6 +35,8 @@ axiosInstance.interceptors.response.use(
         const refreshToken = localStorage.getItem('refreshToken');
         if (!refreshToken) {
           // No refresh token, redirect to login
+          alert('토큰이 만료되었습니다. 다시 로그인해주세요.');
+          store.dispatch(logout());
           window.location.href = '/login';
           return Promise.reject();
         }
@@ -47,6 +48,7 @@ axiosInstance.interceptors.response.use(
         return axiosInstance(originalRequest);
       } catch (err) {
         console.error('Token refresh failed', err);
+        alert('토큰이 만료되었습니다. 다시 로그인해주세요.');
         localStorage.removeItem('accessToken');
         localStorage.removeItem('refreshToken');
         store.dispatch(logout());
