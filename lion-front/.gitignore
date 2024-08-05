@@ -29,3 +29,5 @@ yarn-error.log*
 __pycache/
 # db.sqlite3
 db.sqlite3
+
+bert_model.pth

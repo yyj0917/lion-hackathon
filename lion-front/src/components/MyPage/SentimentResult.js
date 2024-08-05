@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Bar } from 'react-chartjs-2';
 import { Chart, registerables } from 'chart.js';
 import styled, { keyframes } from 'styled-components';
+import { fetchPrivateDiaryAnalysis } from '../../api/privateDiary';
 
 Chart.register(...registerables);
 // const data = [
@@ -135,6 +136,18 @@ const Footer = styled.div`
 function SentimentResult() {
   // const [isChecked, setIsChecked] = useState(true);
   const [result, setResult] = useState('긍정');
+  useEffect(() => {
+    const fetchSentiment = async () => {
+      try {
+
+        const response = await fetchPrivateDiaryAnalysis();
+        console.log(response)
+      } catch (error) {
+        console.error('감정분석 오류', error);
+      }
+    };
+    fetchSentiment();
+  }, []);
   let message;
   switch (result) {
     case '긍정':
