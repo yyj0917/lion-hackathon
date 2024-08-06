@@ -8,6 +8,9 @@ Back-end  : 변호영, 이석원, 정세진, 김지민
 Tech Stack
 
 Front-end: React js, node js, Redux
+
 Back-end: Django, Django Rest Framework
+
 배포&통신: Axios, aws
+
 소통&협업: git, Figma, Notion
