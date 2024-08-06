@@ -33,9 +33,9 @@ class User(AbstractBaseUser, PermissionsMixin):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     email = models.EmailField(max_length=30, null=False, blank=False, unique=True) #유니크를 사용해서 동일 이메일 사용 불가
     name = models.CharField(max_length=10, null=False, blank=False)
-    age = models.IntegerField(blank=True, default=0) #age 대신 생년월일..?
-    position = models.CharField(max_length=30, null=False, blank=False)
-    office = models.CharField(max_length=50, null=False, blank=False)
+    age = models.IntegerField(blank=True, default=0) 
+    position = models.CharField(max_length=30, null=False, blank=False) #직급
+    office = models.CharField(max_length=50, null=False, blank=False) #근무지
     phonenumber = models.CharField(max_length=20, null=False, blank=False)
     username = models.CharField(max_length=50, null=False, blank=False)
     is_superuser = models.BooleanField(default=False)
