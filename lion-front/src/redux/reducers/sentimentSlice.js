@@ -6,6 +6,7 @@ export const fetchSentimentResult = createAsyncThunk(
     'sentiment/fetchSentimentResult', // 액션 타입 문자열
     async () => { // 비동기 작업 함수
       const response = await fetchPrivateDiaryAnalysis(); // API 호출
+      console.log(response);
       return response.data; // API 응답 데이터 반환
     }
   );

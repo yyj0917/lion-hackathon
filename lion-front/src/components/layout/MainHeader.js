@@ -86,7 +86,6 @@ export default function MainHeader() {
       dispatch(logout());
       navigate('/');
     } catch (error) {
-      console.error('Logout failed', error);
     }
   };
   // MyPage Route

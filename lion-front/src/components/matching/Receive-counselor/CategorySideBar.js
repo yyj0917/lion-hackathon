@@ -6,7 +6,7 @@ const SideBar = styled.div`
   height: 70%;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: space-around;
 `;
 
 const CategoryButton = styled.label`
@@ -41,7 +41,6 @@ function CategorySidebar({ selectedCategories, onCategoryChange }) {
     { id: 'stress', name: '직업적 스트레스'},
     { id: 'physical', name: '신체건강'},
     { id: 'relationship', name: '대인관계'},
-    { id: 'other', name: '기타'},
   ];
 
   return (

@@ -133,14 +133,18 @@ const PostFooter = styled.div`
 export default function SharedDiary() {
   const [currentPage, setCurrentPage] = useState(1);
   const postsPerPage = 4;
-  const navigate = useNavigate();
   const { searchTerm } = useSearch();
   const [sharedDiary, setSharedDiary] = useState([]);
+  const [emptyDiary, setEmptyDiary] = useState(false);
 
   useEffect(() => {
     const fetchSharedDiary = async () => {
       try {
         const response = await ReadSharedPostsApi();
+        console.log(response);
+        if (response.length === 0) {
+          setEmptyDiary(true);
+        }
         setSharedDiary(response);
       } catch (error) {
         console.error('Error creating shared diary entry:', error);
@@ -169,75 +173,81 @@ export default function SharedDiary() {
 
   return (
     <Wrapper>
-      <PostWrapper>
-        {currentPosts.map((post) => (
-          <Post key={post.id} className="diary-card">
-            <Link to={`/publicDiary/mypublic/${post.id}`}>
-              <Desc>
-                <div>
-                  <div
-                    style={{
-                      display: 'flex',
-                      justifyContent: 'space-between',
-                      alignItems: 'center',
-                    }}
-                  >
-                    <h2>{post.title}</h2>
-                    <h2>{post.user.username}</h2>
-                  </div>
-                  <p>{post.body}</p>
-                </div>
-                <div className="info">
-                  <IconSpan>
-                    <span>
-                      <ThumbsUp size={16} style={{ color: '#0064FF' }} />
-                      {post.reactions && post.reactions.like !== undefined
-                        ? post.reactions.like
-                        : 0}
-                    </span>
-                    <span>
-                      <PartyPopper size={16} style={{ color: '#008C8C' }} />
-                      {post.reactions && post.reactions.congrats !== undefined
-                        ? post.reactions.congrats
-                        : 0}
-                    </span>
-                    <span>
-                      <HandMetal size={16} style={{ color: '#FF8200' }} />
-                      {post.reactions && post.reactions.excited !== undefined
-                        ? post.reactions.excited
-                        : 0}
-                    </span>
-                    <span>
-                      <HeartHandshake size={16} style={{ color: '#FF5A5A' }} />
-                      {post.reactions && post.reactions.together !== undefined
-                        ? post.reactions.together
-                        : 0}
-                    </span>
-                  </IconSpan>
-                  <DateSpan>
-                    <span>{post.date}</span>
-                  </DateSpan>
-                </div>
-              </Desc>
-            </Link>
-          </Post>
-        ))}
-      </PostWrapper>
-      <PostFooter>
-        {pageNumbers.map((number) => (
-          <label
-            key={number}
-            className={`${currentPage === number ? 'active' : ''}`}
-          >
-            <input
-              type="checkbox"
-              checked={currentPage === number}
-              onChange={() => setCurrentPage(number)}
-            />
-            {number}
-          </label>
-        ))}
-      </PostFooter>
+      {emptyDiary ? (
+        <h3>내가 작성한 공유길기가 없습니다. 일기를 작성하고, 동료와 하루를 공유하세요.</h3>
+      ) : (
+        <>
+          <PostWrapper>
+            {currentPosts.map((post) => (
+              <Post key={post.id} className="diary-card">
+                <Link to={`/publicDiary/mypublic/${post.id}`}>
+                  <Desc>
+                    <div>
+                      <div
+                        style={{
+                          display: 'flex',
+                          justifyContent: 'space-between',
+                          alignItems: 'center',
+                        }}
+                      >
+                        <h2>{post.title}</h2>
+                        <h2>{post.user.username}</h2>
+                      </div>
+                      <p>{post.body}</p>
+                    </div>
+                    <div className="info">
+                      <IconSpan>
+                        <span>
+                          <ThumbsUp size={16} style={{ color: '#0064FF' }} />
+                          {post.reactions && post.reactions.like !== undefined
+                            ? post.reactions.like
+                            : 0}
+                        </span>
+                        <span>
+                          <PartyPopper size={16} style={{ color: '#008C8C' }} />
+                          {post.reactions && post.reactions.congrats !== undefined
+                            ? post.reactions.congrats
+                            : 0}
+                        </span>
+                        <span>
+                          <HandMetal size={16} style={{ color: '#FF8200' }} />
+                          {post.reactions && post.reactions.excited !== undefined
+                            ? post.reactions.excited
+                            : 0}
+                        </span>
+                        <span>
+                          <HeartHandshake size={16} style={{ color: '#FF5A5A' }} />
+                          {post.reactions && post.reactions.together !== undefined
+                            ? post.reactions.together
+                            : 0}
+                        </span>
+                      </IconSpan>
+                      <DateSpan>
+                        <span>{post.date}</span>
+                      </DateSpan>
+                    </div>
+                  </Desc>
+                </Link>
+              </Post>
+            ))}
+          </PostWrapper>
+          <PostFooter>
+            {pageNumbers.map((number) => (
+              <label
+                key={number}
+                className={`${currentPage === number ? 'active' : ''}`}
+              >
+                <input
+                  type="checkbox"
+                  checked={currentPage === number}
+                  onChange={() => setCurrentPage(number)}
+                />
+                {number}
+              </label>
+            ))}
+          </PostFooter>
+        </>
+      )}
     </Wrapper>
   );
 }

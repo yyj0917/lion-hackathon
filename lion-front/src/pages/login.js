@@ -127,6 +127,7 @@ const FormLogin = styled.form`
   padding: 0 50px;
   height: 100%;
   text-align: center;
+  gap: 5px;
 `;
 const OverlayContainer = styled.div`
   position: absolute;
@@ -224,10 +225,10 @@ export default function Login() {
     try {
       await loginApi(email, password);
       dispatch(login());
-      alert('로그인 성공');
+      alert('로그인 되었습니다.');
       navigate('/', { replace: true });
     } catch (error) {
-      alert('로그인 실패');
+      alert('로그인에 실패하였습니다. 다시 시도해주세요.');
       console.error('Login failed', error);
     }
   };
@@ -240,7 +241,7 @@ export default function Login() {
         </FormContainer>
         <FormContainer className="sign-in-container">
           <FormLogin onSubmit={handleLogin}>
-            <h1>Sign in</h1>
+            <h1>LOGIN</h1>
             <span>email은 @korea.kr만 가능합니다</span>
             <input
               id="email"
