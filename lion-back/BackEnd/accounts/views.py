@@ -21,22 +21,7 @@ from rest_framework_simplejwt.exceptions import TokenError, InvalidToken
 from rest_framework_simplejwt.serializers import TokenRefreshSerializer
 utc_now = datetime.now(timezone.utc)
 
-# 리프레시토큰을 이용한 액세스토큰 재발급 - 쿠키를 까서 해주는
-# class RefreshTokenView(TokenRefreshView):
-#     def get(self, request):
-#         refresh_in_cookie = request.COOKIES.get("refresh")
-#         if not refresh_in_cookie:
-#             return Response({"detail": "Refresh token not provided"}, status=status.HTTP_400_BAD_REQUEST)
-        
-#         try:
-#             refresh = TokenRefreshSerializer.token_class(refresh_in_cookie)
-#             new_access_token = {"access": str(refresh.access_token)}
-#             return Response(new_access_token, status=status.HTTP_200_OK)
-#         except (TokenError, InvalidToken):
-#             # Delete the expired refresh token from the cookie
-#             response = Response({"detail": "Invalid refresh token"}, status=status.HTTP_401_UNAUTHORIZED)
-#             response.delete_cookie("refresh")
-#             return response
+
 #로그인 API
 class LogInAPIView(APIView):
     permission_classes = [AllowAny] #누구나 접근 가능?
@@ -122,7 +107,6 @@ class UserDetailView(APIView):
 class LogOutView(APIView):
 
     permission_classes = [AllowAny]
-
     # 로그아웃
     def post(self, request):
         # 쿠키에 저장된 토큰 삭제 => 로그아웃 처리
@@ -146,113 +130,4 @@ class VerifyTokenView(APIView):
     User = get_user_model()
     
     def get(self, request):
-        return Response(status=status.HTTP_200_OK)
-#     User = get_user_model()
-
-#     def get(self, request):
-#         access_token = request.COOKIES.get('access')
-#         if not access_token:
-#             return Response({'detail': 'Authentication credentials were sssnot provided.'}, status=status.HTTP_401_UNAUTHORIZED)
-
-#         try:
-#             payload = jwt.decode(access_token, settings.SECRET_KEY, algorithms=['HS256'])
-#             user_id = payload.get('user_id')
-#             if not user_id:
-#                 return Response({'detail': 'Invalid payload in access token.'}, status=status.HTTP_401_UNAUTHORIZED)
-            
-#             user = User.objects.get(id=user_id)
-#             return Response({'detail': 'Token is valid'}, status=status.HTTP_200_OK)
-#         except jwt.ExpiredSignatureError:
-#             return Response({'detail': 'Access token expired'}, status=status.HTTP_401_UNAUTHORIZED)
-#         except jwt.InvalidTokenError:
-#             return Response({'detail': 'Invalid access token'}, status=status.HTTP_401_UNAUTHORIZED)
-
-
-        # access_token = request.COOKIES.get('access')
-        # refresh_token = request.COOKIES.get('refresh')
-        
-        # # access 토큰 검증
-        # try :
-        #     payload = jwt.decode(access_token, SECRET_KEY, algorithms=['HS256'])
-        #     user_id = payload.get('user_id')
-            
-        #     user = get_object_or_404(User, pk=user_id)
-        #     serializer = UserSerializer(instance=user)
-        #     return Response(serializer.data, status=status.HTTP_200_OK)
-
-        # # access token만 만료
-        # except jwt.ExpiredSignatureError:
-        #     #refresh token 검증
-        #     try:
-        #         refresh_payload = jwt.decode(refresh_token, REFRESH_TOKEN_SECRET, algorithms=['HS256'])
-        #         user_id = refresh_payload.get('user_id')
-
-        #         new_access_token = jwt.encode({'user_id': user_id,  'exp': datetime.datetime.utcnow() + datetime.timedelta(minutes=30)}, SECRET_KEY, algorithm='HS256')
-        #         new_refresh_token = jwt.encode({'user_id': user_id, 'exp': datetime.datetime.utcnow() + datetime.timedelta(days=3)}, REFRESH_TOKEN_SECRET, algorithm='HS256')
-
-        #         user = get_object_or_404(User, pk=user_id)
-        #         serializer = UserSerializer(instance=user)
-
-        #         response = Response(serializer.data, status=status.HTTP_200_OK)
-        #         response.set_cookie('access', new_access_token, httponly=True, secure=True, samesite='Lax')
-        #         response.set_cookie('refresh', new_refresh_token, httponly=True, secure=True, samesite='Lax')
-        #         return response
-        #     #리프레시도 만료
-        #     except jwt.ExpiredSignatureError:
-        #         response = Response({'detail': 'Refresh token expired, please log in again'}, status=status.HTTP_401_UNAUTHORIZED)
-        #         response.delete_cookie('access')
-        #         response.delete_cookie('refresh')
-        #         return Response({'detail': 'Refresh token expired, please log in again'}, status=status.HTTP_401_UNAUTHORIZED)
-            
-        #     except jwt.InvalidTokenError: #유효하지 않은 리프레시
-        #         return Response({'detail': 'Invalid refresh token'}, status=status.HTTP_401_UNAUTHORIZED)
-        # except jwt.InvalidTokenError: #ㅇ효하지 않은 액세스 토큰
-        #     return Response({'detail': 'Invalid access token'}, status=status.HTTP_401_UNAUTHORIZED)
-
-
-#class VerifyTokenView(APIView):
-#    permission_classes = [IsAuthenticated]
-#    # 유저 토큰 검증
-#    def get(self, request):
-#        access_token = request.COOKIES.get('access')
-#        refresh_token = request.COOKIES.get('refresh')
-#
-#        # access 토큰 검증
-#        try :
-#            payload = jwt.decode(access_token, SECRET_KEY, algorithms=['HS256'])
-#            user_id = payload.get('user_id')
-#            
-#            user = get_object_or_404(User, pk=user_id)
-#            serializer = UserSerializer(instance=user)
-#            return Response(serializer.data, status=status.HTTP_200_OK)
-#
-#        # access token만 만료
-#        except jwt.ExpiredSignatureError:
-#            #refresh token 검증
-#            try:
-#                refresh_payload = jwt.decode(refresh_token, REFRESH_TOKEN_SECRET, algorithms=['HS256'])
-#                user_id = refresh_payload.get('user_id')
-#
-#                new_access_token = jwt.encode({'user_id': user_id}, SECRET_KEY, algorithm='HS256')
-#                new_refresh_token = jwt.encode({'user_id': user_id}, REFRESH_TOKEN_SECRET, algorithm='HS256')
-#
-#                user = get_object_or_404(User, pk=user_id)
-#                serializer = UserSerializer(instance=user)
-#
-#                response = Response(serializer.data, status=status.HTTP_200_OK)
-#                response.set_cookie('access', new_access_token, httponly=True, secure=True, samesite='Lax')
-#                response.set_cookie('refresh', new_refresh_token, httponly=True, secure=True, samesite='Lax')
-#                return response
-#            #리프레시도 만료
-#            except jwt.ExpiredSignatureError:
-#                response = Response({'detail': 'Refresh token expired, please log in again'}, status=status.HTTP_401_UNAUTHORIZED)
-#                response.delete_cookie('access')
-#                response.delete_cookie('refresh')
-#                return Response({'detail': 'Refresh token expired, please log in again'}, status=status.HTTP_401_UNAUTHORIZED)
-#            
-#            except jwt.InvalidTokenError: #유효하지 않은 리프레시
-#                return Response({'detail': 'Invalid refresh token'}, status=status.HTTP_401_UNAUTHORIZED)
-#        except jwt.InvalidTokenError: #ㅇ효하지 않은 액세스 토큰
-#            return Response({'detail': 'Invalid access token'}, status=status.HTTP_401_UNAUTHORIZED)
-        
-       
+        return Response(status=status.HTTP_200_OK)       
