@@ -5,7 +5,8 @@ Front-end : 윤영준, 김연진
 
 Back-end  : 변호영, 이석원, 정세진, 김지민
 
-<Tech Stack>
+
+Tech Stack
 
 Front-end: React js, node js, Redux
 
@@ -15,7 +16,8 @@ Back-end: Django, Django Rest Framework
 
 소통&협업: github, Figma, Notion
 
-<Front-End>
+
+Front-End
 
 로그인/회원가입 : 액세스-리프레쉬 토큰, 로컬스토리지 저장 -> 추후 쿠키, csrf토큰으로 보안강화
 
@@ -27,7 +29,8 @@ CSS : Styled-component활용 및 일부 .css파일 사용. -> 코드 가독성 �
 
 Router : react-router-dom 을 활용하여 링크 이동을 통한 UX개선노력 -> 라우팅 연결 간소화 및 최적화
 
-<Back-End>
+
+Back-End
 
 
 
@@ -35,7 +38,7 @@ Router : react-router-dom 을 활용하여 링크 이동을 통한 UX개선노�
 
 
 
-<기능별 로직>
+기능별 로직
 
 응원 메시지 : 구글 폼을 통해 받아온 메시지를 DB에 저장. fetch를 통해 서비스에 제공
 
