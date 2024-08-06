@@ -197,7 +197,7 @@ export default function MyPage() {
         </IconWrapper>
       </Navbar>
       <Contents>
-        <Outlet user={user}/>
+        <Outlet/>
       </Contents>
       {isModalOpen && (
         <ProfileModal user={user} onClose={handleCloseModal} onSave={handleSaveProfile} />

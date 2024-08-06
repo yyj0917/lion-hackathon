@@ -135,7 +135,7 @@ const FilterAndWrite = styled.div`
   z-index: 1000;
   border-radius: 20px;
 `;
-const ModalBtn = styled.div`
+const ModalBtn = styled('div', { shouldForwardProp: prop => !['delay'].includes(prop) })`
   opacity: 0;
   /* transform: translateY(20px); */
   animation: ${({ $delay }) => $delay}ms ${slideUp} forwards;

@@ -6,7 +6,7 @@ export const fetchSentimentResult = createAsyncThunk(
     'sentiment/fetchSentimentResult', // 액션 타입 문자열
     async () => { // 비동기 작업 함수
       const response = await fetchPrivateDiaryAnalysis(); // API 호출
-      console.log(response);
+      console.log(response.data);
       return response.data; // API 응답 데이터 반환
     }
   );
@@ -24,6 +24,7 @@ const sentimentSlice = createSlice({
       .addCase(fetchSentimentResult.fulfilled, (state, action) => {
         state.loading = false; // 비동기 작업 성공 시 로딩 상태 해제
         state.data = action.payload; // API 응답 데이터 저장
+        console.log('Data received:', action.payload); // 응답 데이터 확인
       })
       .addCase(fetchSentimentResult.rejected, (state, action) => {
         state.loading = false; // 비동기 작업 실패시 로딩 상태 해제
