@@ -100,11 +100,13 @@ const DiaryContent = styled.div`
     display: -webkit-box;
     -webkit-box-orient: vertical;
     text-overflow: ellipsis;
-    overflow: hidden;
+    overflow: auto;
     word-break: break-word;
     white-space: normal;
     font-size: 14px;
     font-weight: 700;
+    color: ${({ textTheme }) => 
+    textTheme === 'black' ? 'black' : textTheme === 'white' ? 'white' : 'blue'};
   }
   .username {
     text-align: end;
@@ -115,7 +117,7 @@ const DiaryContent = styled.div`
 `;
 const DiaryFooter = styled.div`
   display: flex;
-  justify-content: end;
+  justify-content: space-between;
 `;
 const EditButton = styled.button`
   background-color: #007bff;
@@ -141,7 +143,7 @@ const EditContainer = styled.div`
   box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.1);
   border-radius: 20px;
   max-width: 600px;
-  max-height: 500px;
+  max-height: 700px;
   width: 100%;
   height: 100%;
   display: flex;
@@ -191,11 +193,24 @@ const ThemeButton = styled.button`
   background-position: center;
   cursor: pointer;
 `;
+const TextThemeButton = styled.button`
+  margin: 5px;
+  padding: 10px;
+  border-radius: 50%;
+  border: 1px solid #ddd;
+  background: ${({ textTheme }) =>
+    textTheme === 'black' ? 'black' : textTheme === 'white' ? 'white' : 'blue'};
+  background-size: cover;
+  background-position: center;
+  cursor: pointer;
+`;
+
 
 function DiaryDetail() {
   const { id } = useParams();
   const [diary, setDiary] = useState(null);
   const [theme, setTheme] = useState('default');
+  const [textTheme, setTextTheme] = useState('black');
 
   const navigate = useNavigate();
   const [isEditing, setIsEditing] = useState(false);
@@ -315,13 +330,29 @@ function DiaryDetail() {
             </div>
             <Undo2 className="back" onClick={() => navigate(-1)} />
           </DiaryHeader>
-          <DiaryContent>
+          <DiaryContent textTheme={textTheme}>
             <p>{diary.body}</p>
             <p className="username">{diary.date}</p>
           </DiaryContent>
           <DiaryFooter>
-            <EditButton onClick={handleEditClick}>수정하기</EditButton>
-            <DeleteButton onClick={handleDeleteClick}>삭제하기</DeleteButton>
+            <div> 
+              <TextThemeButton
+                textTheme="black"
+                onClick={() => setTextTheme('black')}
+                />
+              <TextThemeButton
+                textTheme="white"
+                onClick={() => setTextTheme('white')}
+              />
+              <TextThemeButton
+                textTtheme="blue"
+                onClick={() => setTextTheme('blue')}
+              />
+            </div>
+            <div>
+              <EditButton onClick={handleEditClick}>수정하기</EditButton>
+              <DeleteButton onClick={handleDeleteClick}>삭제하기</DeleteButton>
+            </div>
           </DiaryFooter>
         </DiaryContainer>
       )}

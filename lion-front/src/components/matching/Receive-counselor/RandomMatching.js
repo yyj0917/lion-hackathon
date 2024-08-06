@@ -92,16 +92,17 @@ const FooterButton = styled.div`
   width: 300px;
   margin-top: 20px;
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   button {
     display: flex;
     align-items: center;
+    justify-content: center;
     border: 1px solid #007bff;
     border-radius: 4px;
     cursor: pointer;
     background-color: #007bff;
     color: white;
-    width: 48%;
+    width: 70%;
     padding: 5px;
     &:hover {
       background-color: #0056b3;
@@ -177,30 +178,28 @@ function RandomMatching() {
     event.preventDefault();
     // 여기에서 랜덤 상담사 매칭 API 호출 로직을 추가합니다.
     try {
-      console.log(selectedCategories);
       const res = await RequestMatchingApi(selectedCategories);
-      setMatchGateKeeper(res);
       setLoading(true);
       setTimeout(() => {
-      alert('제출이 완료되었습니다. 잠시만 기다려주세요. ');
-      setLoading(false);
-    }, 2000);
+        alert('제출이 완료되었습니다. 매칭중입니다.');
+        if (selectedCategories[0] === 'other') {
+          alert('전체 Gate Keeper 리스트로 이동합니다');
+          navigate('/matching/counselor-list');
+        } else {
+          if (selectedCategories[0] !== res.matched_advisor.categories[0]) {
+            alert('선택하신 카테고리에 매치된 상담사가 없습니다. 전체 리스트로 이동합니다.');
+            navigate('/matching/counselor-list');
+          } else {
+            setMatchGateKeeper(res.matched_advisor);
+          }
+        }
+        setLoading(false);
+        }, 2000);
+      
     } catch (error) {
     }
     // 임시 데이터로 랜덤 상담사를 설정합니다.
     
-  };
-  const handleRematching = () => {
-    const confirm = window.confirm('다시 매칭하시겠습니까?');
-    if (confirm) {
-      setLoading(true);
-      setTimeout(() => {
-        alert('다시 매칭중입니다. 잠시만 기다려주세요. ');
-        setLoading(false);
-      }, 2000);
-    } else {
-      alert('매칭을 취소하였습니다.');
-    }
   };
 
   const handleViewAll = () => {
@@ -212,6 +211,7 @@ function RandomMatching() {
       {loading ? (
         <Wrapper>
           <Spinner />
+          <p style={{fontWeight: '700'}}>선택하신 카테고리에 맞는 Gate Keeper와 매칭중입니다. 잠시만 기다려주세요.</p>
         </Wrapper>
       ) : matchGateKeeper === null ? (
         // 카테고리 선택 UI
@@ -220,7 +220,7 @@ function RandomMatching() {
             <p>
               ** Gate Keeper Matching **
               <br/>1. 상담을 받고 싶은 카테고리를 선택해주세요.
-              <br/>2. 복수 선택이 가능하며, Gate Keeper와의 더 나은 매칭을 위한 정보입니다.
+              <br/>2. 자기 자신을 제외한 Gate Keeper와 매칭됩니다. 
               <br/>3. Gate Keeper와 함께 많은 얘기를 나눠보세요.
             </p>
           </TextCard>
@@ -250,13 +250,9 @@ function RandomMatching() {
           <GateKeeperCard key={matchGateKeeper.id} gatekeeper={matchGateKeeper}>
           </GateKeeperCard>
           <FooterButton>
-            <button className="rematching" onClick={handleRematching}>
-              <IterationCcw />
-              <p>다시 매칭하기</p>
-            </button>
             <button className="viewAll" onClick={handleViewAll}>
               <AlignJustify />
-              <p>전체 상담사리스트</p>
+              <p>전체 Gate Keeper 리스트</p>
             </button>
           </FooterButton>
         </Wrapper>

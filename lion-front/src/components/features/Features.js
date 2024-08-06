@@ -224,7 +224,10 @@ export default function Features() {
           </ModalBtn>
           <ModalBtn
             $delay={300}
-            onClick={() => navigate('/publicDiary/sharedDiary')}
+            onClick={() => {
+              alert("내가 쓴 공유일기로 이동합니다.");
+              navigate('/publicDiary/sharedDiary');}
+            }
             onMouseEnter={() => showTooltip('내가 쓴 공유 일기')}
             onMouseLeave={hideTooltip}
           >

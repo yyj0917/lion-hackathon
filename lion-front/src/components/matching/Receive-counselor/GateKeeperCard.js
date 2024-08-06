@@ -114,7 +114,7 @@ const Others = styled.div`
 `;
 // PropType 정의
 
-export default function GateKeeperCard({ gatekeeper }) {
+export default function GateKeeperCard( {gatekeeper} ) {
   const [matchGateKeeper, setMatchGateKeeper] = useState(null);
   const [tooltip, setTooltip] = useState(null);
   const showTooltip = (text) => {
@@ -123,7 +123,7 @@ export default function GateKeeperCard({ gatekeeper }) {
 
   const hideTooltip = () => setTooltip(null);
   useEffect(() => {
-    setMatchGateKeeper(gatekeeper.matched_advisor);
+    setMatchGateKeeper(gatekeeper);
   }, []);
   // 백에서 랜덤매칭된 게이트 키퍼 정보 받아오기
 
@@ -168,5 +168,5 @@ export default function GateKeeperCard({ gatekeeper }) {
   );
 }
 GateKeeperCard.propTypes = {
-  gatekeeper: PropTypes.arrayOf(PropTypes.string).isRequired,
+  gatekeeper: PropTypes.object.isRequired, // 객체로 수정
 };

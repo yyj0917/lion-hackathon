@@ -89,12 +89,12 @@ const TextCard = styled.div`
   border-radius: 8px;
   box-shadow: 0px 4px 6px 0px rgba(0, 0, 0, 0.1);
   margin-top: 10px;
-  padding: 20px;
+  padding: 10px;
   justify-content: center;
   align-items: center;
   p {
-    font-family: 'Sunflower', sans-serif;
-    font-size: 16px; /* 글자 크기 */
+    font-family: 'Courier', sans-serif;
+    font-size: 14px; /* 글자 크기 */
     color: #333; /* 글자 색상 */
     margin: 0; /* 마진 제거 */
     line-height: 1.5; /* 줄 간격 */
@@ -151,7 +151,7 @@ function Counselor() {
         <p>**Gate Keeper 신청 주의사항**
           <br/>
           <br/> 1. Gate Keeper는 익명으로 오픈채팅방을 개설한 뒤 하단의 폼을 작성합니다.
-          <br/> 2. 닉네임은 자유이며, 카테고리는 복수선택이 가능합니다. 
+          <br/> 2. 닉네임:자유, 근무기간:숫자, 오픈채팅방:링크, 카테고리는 복수선택이 가능합니다. 
           <br/> 3. Gate Keeper가 되어 어려움을 겪고 있는 동료에게 힘이 되어주세요.
         </p>
       </TextCard>

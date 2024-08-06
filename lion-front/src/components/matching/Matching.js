@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { Outlet, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
-import { useDispatch, useSelector } from 'react-redux';
-import { checkAuthStatus } from '../../redux/reducers/authReducer';
+import { useSelector } from 'react-redux';
+import Tooltip from '../../utils/Tooltip';
 
 const MatchingWrapper = styled.div`
   display: flex;
@@ -91,6 +91,7 @@ function Matching() {
   const navigate = useNavigate();
   const isAuth = useSelector((state) => state.auth.isAuthenticated);
 
+
   const handleCounselorClick = () => {
     if (isAuth) {
       setIsCounselor(true);
@@ -121,7 +122,7 @@ function Matching() {
             <Box>
               <div>
                 <h2>Gate Keeper로 지원하기</h2>
-                <p>Gate Keeper는 주변을 도와주는 사람입니다. <br/> FORHERO에서 동료 소방관을 위한 Gate Keeper가 되어 도움이 필요한 동료에게 다가가 힘이 되어주세요.</p>
+                <p>Gate Keeper란, 주변의 어려움을 겪고 있는 사람들을 위해 지속적인 관심을 가지며 도움을 주는 사람입니다. <br/> FORHERO에서 동료 소방관을 위한 Gate Keeper가 되어 도움이 필요한 동료에게 다가가 힘이 되어주세요.</p>
               </div>
               <span>
                 <Btn onClick={handleCounselorClick}>지원하기</Btn>

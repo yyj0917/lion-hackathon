@@ -99,6 +99,13 @@ const example = [
     neutral: 20,
   },
 ];
+const example2 = [
+  {
+    'sadness': 0.1,
+    'anger': 0.2,
+    'anxiety': 0.7,
+  }
+];
 const Wrapper = styled.div`
   width: 100%;
   height: 90%;
@@ -166,6 +173,46 @@ const Footer = styled.div`
     color: #333;
   }
 `;
+const Positive = () => {
+  return (
+    <p>윤영준님은 최근 30일동안의 기록에 대한 결과가 "긍정"입니다. 힘들고 어려운 하루가 있음에도 늘 긍정을 잃지 않는 윤영준님은 최고의 소방관이자 사람입니다. 앞으로도 긍정으로 가득찬 하루를 보내고, 항상 좋은 일만 있기를 FORHERO는 응원하겠습니다. 다른 동료에게 긍정적인 기운을 나눠주고 싶다면 Gate Keeper에 지원하세요.</p>
+  )
+}
+const Negative = () => {
+  return (
+    <>
+      <p>결과는 부정입니다.</p>
+    </>
+  )
+}
+const Neutral = () => {
+  return (
+    <>
+      <p>결과는 중립입니다.</p>
+    </>
+  )
+}
+const Sad = () => {
+  return (
+    <>
+      <p>결과는 부정: 슬픔입니다.</p>
+    </>
+  )
+}
+const Angry = () => {
+  return (
+    <>
+      <p>결과는 부정: 분노입니다.</p>
+    </>
+  )
+}
+const Anxiety = () => {
+  return (
+    <>
+      <p></p>
+    </>
+  )
+}
 function SentimentResult() {
   // const [isChecked, setIsChecked] = useState(true);
   const [result, setResult] = useState('긍정');
@@ -193,22 +240,10 @@ function SentimentResult() {
     return (
       <ErrorPage>
         <h1>404</h1>
-        <p>Error loading sentiment results: {error}</p>
+        <p>Error loading sentiment results</p>
         <a href="/">Go back to homepage</a>
       </ErrorPage>
     );
-  }
-  let message;
-  switch (result) {
-    case '긍정':
-      message = '윤영준님은 최근 30일동안의 기록에 대한 결과가 "긍정"입니다. 힘들고 어려운 하루가 있음에도 늘 긍정을 잃지 않는 윤영준님은 최고의 소방관이자 사람입니다. 앞으로도 긍정으로 가득찬 하루를 보내고, 항상 좋은 일만 있기를 FORHERO는 응원하겠습니다. \n다른 동료에게 긍정적인 기운을 나눠주고 싶다면 Gate Keeper에 지원하세요.';
-      break;
-    case '부정':
-      message = '부정';
-      break;
-    case '중립':
-      message = '중립';
-      break;
   }
   const chartData = {
     labels: ['30일동안 전체 감정분석'],
@@ -232,6 +267,32 @@ function SentimentResult() {
         data: example.map((day) => day.neutral),
         backgroundColor: 'rgba(153, 102, 255, 0.6)',
         borderColor: 'rgba(153, 102, 255, 1)',
+        borderWidth: 1,
+      },
+    ],
+  };
+  const highlightData = {
+    labels: ['하이라이트 문장분석'],
+    datasets: [
+      {
+        label: '슬픔',
+        data: example2.map((day) => day.sadness),
+        backgroundColor: '#00A5FF',
+        borderColor: '#00A5FF',
+        borderWidth: 1,
+      },
+      {
+        label: '분노',
+        data: example2.map((day) => day.anger),
+        backgroundColor: '#40A940',
+        borderColor: '#40A940',
+        borderWidth: 1,
+      },
+      {
+        label: '우울',
+        data: example2.map((day) => day.anxiety),
+        backgroundColor: '#FF92B1',
+        borderColor: '#FF92B1',
         borderWidth: 1,
       },
     ],
@@ -268,7 +329,7 @@ function SentimentResult() {
             width: '100%',
             height: '100%',
           }}
-              data={chartData}
+              data={highlightData}
               options={{
                 responsive: true,
                 maintainAspectRatio: false,
@@ -286,7 +347,10 @@ function SentimentResult() {
         </BarWrapper>     
       </Content>
       <Footer delay={2.5}>
-        <p>{message}</p>
+        {(result === '긍정') && <Positive />}
+        {(result === '부정') && <Negative />}
+        {(result === '중립') && <Neutral />}
+
       </Footer>
     </Wrapper>
   );
