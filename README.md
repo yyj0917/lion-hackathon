@@ -32,13 +32,18 @@ Router : react-router-dom 을 활용하여 링크 이동을 통한 UX개선노�
 
 Back-End
 
+로그인/회원가입/로그아웃 : 액세스-리프레쉬 토큰 발급 및 저장, 삭제 -> 추후 쿠키, csrf토큰으로 보안강화
 
+감정분석 : 사용자가 작성한 일기를 Naver Clova Sentiment-Analysis API 사용하여 감정분석 진행, 한국어 감정분석 모형 KOBERT 기반 언어모델 사용 (현재는 사용 X) 
+
+배포 : DRF 백엔드, React 프론트엔드 서버를 AWS EC2로 배포함
 
 
 
 
 
 기능별 로직
+
 
 응원 메시지 : 구글 폼을 통해 받아온 메시지를 DB에 저장. fetch를 통해 서비스에 제공
 
