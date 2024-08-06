@@ -13,7 +13,7 @@ import CounselorList from '../components/matching/Receive-counselor/CounselorLis
 import Counselor from '../components/matching/Give-counselor/Counselor';
 import RandomMatching from '../components/matching/Receive-counselor/RandomMatching';
 import MyPage from '../components/MyPage/MyPage';
-import SentimentResult from '../components/MyPage/SentimentResult';
+import SentimentResultNot from '../components/MyPage/SentimentResultNot';
 import Sentiment from '../components/MyPage/Sentiment';
 import MyPublicDiary from '../components/diary/MyPublicDiary';
 import PrivateDiary from '../components/MyPage/PrivateDiary/PrivateDiary';
@@ -72,7 +72,8 @@ function App() {
                 <Route path="privateDiary/:id" element={<DiaryDetail />} />
 
                 <Route path="sentiment" element={<Sentiment />} />
-                <Route path="sentimentResult" element={<SentimentResult />} />
+                {/* <Route path="sentimentResult" element={<SentimentResult />} /> */}
+                <Route path="sentimentResult" element={<SentimentResultNot />} />
                 <Route
                   path="writePrivateDiary"
                   element={<WritePrivateDiary />}

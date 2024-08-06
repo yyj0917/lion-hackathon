@@ -229,15 +229,15 @@ class DiarySentimentSummaryViewSet(viewsets.ViewSet):
                 'avg_neutral' : average_neutral / diaryNum
             }
                 
-            negative_sentences = collect_negative_sentences(request.user)
-            detailed_sentiments = None
+            #negative_sentences = collect_negative_sentences(request.user)
+            #detailed_sentiments = None
  
-            if len(negative_sentences) != 0:
-                detailed_sentiments = Kobert_sentiment_analysis(negative_sentences)
+            #if len(negative_sentences) != 0:
+            #    detailed_sentiments = Kobert_sentiment_analysis(negative_sentences)
             
             response_data = {
                 "average_sentiment": average_sentiment,
-                "detailed_sentiments": detailed_sentiments
+             #   "detailed_sentiments": detailed_sentiments
             }
             # print("Response Data:", response_data)  # 디버깅 출력
             return Response(data=response_data, status=status.HTTP_200_OK)

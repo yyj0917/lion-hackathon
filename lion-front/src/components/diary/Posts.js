@@ -149,6 +149,7 @@ export default function Posts() {
   const fetchPosts = async () => {
     try {
       const response = await ReadPostsApi();
+      console.log(response);
       setPosts(response);
     } catch (error) {
       console.error('Error creating diary entry:', error);
